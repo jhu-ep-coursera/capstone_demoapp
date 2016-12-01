@@ -8,11 +8,11 @@ default: &default
 
 development:
   <<: *default
-  database: myapp_development
+  database: capstone_demoapp_development
 
 test:
   <<: *default
-  database: myapp_test
+  database: capstone_demoapp_test
 
 production:
   adapter: postgresql
