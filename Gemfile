@@ -17,3 +17,4 @@ group :development, :test do
 end
 
 gem 'pg', '~>0.19', '>=0.19.0'
+gem 'mongoid', '~>5.1', '>=5.1.5'
