@@ -21,3 +21,29 @@ services:
       - POSTGRES_HOST=postgres
       - POSTGRES_PASSWORD
       - MONGO_HOST=mongo:27017
+  rake:
+      build: .
+      command: docker/docker-rake-commands.sh
+      volumes:
+        - .:/myapp
+      depends_on:
+        - postgres
+        - mongo
+      environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_HOST=postgres
+        - POSTGRES_PASSWORD
+        - MONGO_HOST=mongo:27017
+  test:
+      build: .
+      command: docker/docker-test-commands.sh
+      volumes:
+        - .:/myapp
+      depends_on:
+        - postgres
+        - mongo
+      environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_HOST=postgres
+        - POSTGRES_PASSWORD
+        - MONGO_HOST=mongo:27017
