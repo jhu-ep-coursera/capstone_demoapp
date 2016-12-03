@@ -14,6 +14,7 @@ end
 group :development, :test do
   gem 'webrick', '~>1.3', '>=1.3.1', :platforms=>[:mingw, :mswin, :x64_mingw, :jruby]
   gem 'tzinfo-data', :platforms=>[:mingw, :mswin, :x64_mingw, :jruby]
+  gem 'byebug', '~>9.0', '>=9.0.6'
   gem 'httparty', '~>0.14', '>=0.14.0'
 
   gem 'rspec-rails', '~> 3.5', '>=3.5.2'
