@@ -150,3 +150,38 @@ gulp.task("run", ["build", "browserSync"], function (){
   gulp.watch(cfg.css.src, ["css"]);
 });
 
+
+//build assets referenced from root-level HTML file and create refs in HTML file
+gulp.task("dist:assets", ["build"], function(){
+  return gulp.src(cfg.root_html.src).pipe(debug())
+    .pipe(useref({ searchPath: devResourcePath }))
+    .pipe(gulpif(["**/*constant.js"], replace(cfg.apiUrl.dev,cfg.apiUrl.prd))) //change URLs
+    .pipe(gulpif(["**/*.js"], uglify()))  //minify JS
+    .pipe(gulpif(["**/*.css"], cssMin())) //minify CSS
+    .pipe(gulp.dest(distPath)).pipe(debug());
+});
+
+//build/copy over font resources into dist tree
+gulp.task("dist:fonts", function(){
+  return gulp.src(cfg.vendor_fonts.bld + "/**/*", {base: cfg.vendor_css.bld})
+    .pipe(gulp.dest(distPath));
+});
+
+//build/copy over HTML resources into dist tree
+gulp.task("dist:html", function(){
+  return gulp.src(cfg.html.src).pipe(debug())
+    .pipe(htmlMin({collapseWhitespace: true})) //minify HTML
+    .pipe(gulp.dest(distPath)).pipe(debug());
+});
+
+//build all dist artifacts ready for deployment
+gulp.task("dist", sync.sync(["clean:dist","build", "dist:assets", "dist:fonts", "dist:html"]));
+
+//execute the dist webapp in a web server
+gulp.task("dist:run", ["dist"], function() {
+  browserSyncInit(distPath);
+});
+
+
+//default task will build the development area and launch the browser
+gulp.task("default", ["run"]);
