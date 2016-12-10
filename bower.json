@@ -6,7 +6,6 @@
     "jim <ejavaguy@gmail.com>"
   ],
   "license": "ISC",
-  "homepage": "https://github.com/jhu-web/capstone-examples-lecture",
   "ignore": [
     "**/.*",
     "node_modules",

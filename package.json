@@ -6,16 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jhu-web/capstone-examples-lecture.git"
-  },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jhu-web/capstone-examples-lecture/issues"
-  },
-  "homepage": "https://github.com/jhu-web/capstone-examples-lecture#readme",
   "devDependencies": {
     "browser-sync": "^2.18.2",
     "del": "^2.2.2",
