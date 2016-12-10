@@ -125,4 +125,28 @@ gulp.task('css', function() {
 gulp.task("build", sync.sync(["clean:build", ["vendor_css", "vendor_js", "vendor_fonts", "css"]]));
 
 
+//helper method to launch server and to watch for changes
+function browserSyncInit(baseDir, watchFiles) {
+  browserSync.instance = browserSync.init(watchFiles, {
+    server: { baseDir: baseDir },
+    port:   8080,
+    ui:     { port: 8090 }
+  });
+};
+
+//run the browser against the development/build area and watch files being edited
+gulp.task("browserSync", ["build"], function() {
+  browserSyncInit(devResourcePath,[
+      cfg.root_html.src,
+      cfg.css.bld + "/**/*.css",
+      cfg.js.src,
+      cfg.html.src,
+    ]);
+});
+
+//prepare the development environment, launch server, and watch for changes
+gulp.task("run", ["build", "browserSync"], function (){
+  //extensions to watch() within even if we need to pre-process source code
+  gulp.watch(cfg.css.src, ["css"]);
+});
 
