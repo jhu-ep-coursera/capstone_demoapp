@@ -58,3 +58,71 @@ var cfg={
   apiUrl: { dev: "http://localhost:3000",
             prd: "https://glacial-earth-69618.herokuapp.com"},
 };
+
+//files within these paths will be served as root-level resources in this priority order
+var devResourcePath = [
+    cfg.vendor_js.bld,
+    cfg.vendor_css.bld,
+    buildPath+"/javascripts",
+    buildPath+"/stylesheets",
+    srcPath,
+    srcPath+"/javascripts",
+    srcPath+"/stylesheets",
+    ];    
+
+//remove all files below the build area
+gulp.task("clean:build", function() {
+  return del(buildPath);
+});
+
+//remove all files below the dist area
+gulp.task("clean:dist", function() {
+  return del(distPath);
+});
+
+//remove all files below both the build and dist area
+gulp.task("clean", ["clean:build", "clean:dist"]);
+
+
+//place vendor css files in build area
+gulp.task("vendor_css", function(){
+  return gulp.src([
+          //cfg.bootstrap_css.src,
+        ])
+        .pipe(gulp.dest(cfg.vendor_css.bld));
+});
+
+//place vendor js files in build area
+gulp.task("vendor_js", function(){
+  return gulp.src([
+          cfg.jquery.src,
+          cfg.bootstrap_js.src,
+          cfg.angular.src,
+          cfg.angular_ui_router.src,
+          cfg.angular_resource.src,
+        ])
+        .pipe(gulp.dest(cfg.vendor_js.bld));
+});
+
+//place vendor font files in build area
+gulp.task('vendor_fonts', function() {
+  //access the following font files
+  return gulp.src([
+          cfg.bootstrap_fonts.src,
+      ])
+      .pipe(gulp.dest(cfg.vendor_fonts.bld));
+});
+
+gulp.task('css', function() {
+  return gulp.src(cfg.css.src).pipe(debug())
+      .pipe(sourcemaps.init())
+      .pipe(sass({ includePaths: [cfg.bootstrap_sass.src] }))
+      .pipe(sourcemaps.write("./maps"))
+      .pipe(gulp.dest(cfg.css.bld)).pipe(debug());
+});
+
+//prepare the development area
+gulp.task("build", sync.sync(["clean:build", ["vendor_css", "vendor_js", "vendor_fonts", "css"]]));
+
+
+
