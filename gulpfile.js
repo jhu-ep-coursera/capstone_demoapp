@@ -169,7 +169,7 @@ gulp.task("dist:fonts", function(){
 
 //build/copy over HTML resources into dist tree
 gulp.task("dist:html", function(){
-  return gulp.src(cfg.html.src).pipe(debug())
+  return gulp.src(cfg.html.src, {base: srcPath+"/javascripts"}).pipe(debug())
     .pipe(htmlMin({collapseWhitespace: true})) //minify HTML
     .pipe(gulp.dest(distPath)).pipe(debug());
 });
