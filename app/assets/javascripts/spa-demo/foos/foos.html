@@ -2,4 +2,29 @@
   <h3>Foos</h3>
   <span>(from spa-demo/foos/foos.html)</span>
 
+  <form>
+    <div>
+      <label>Name:</label>
+      <input name="name"
+              ng-model="foosVM.foo.name"
+              required="required"/>
+    </div>
+
+    <button ng-if="!foosVM.foo.id" 
+             type="submit"
+             ng-click="foosVM.create()">Create Foo</button>  
+    <div ng-if="foosVM.foo.id">
+      <button type="submit"
+              ng-click="foosVM.update()">Update Foo</button>
+      <button type="submit"
+              ng-click="foosVM.remove()">Delete Foo</button>
+    </div>               
+    </form>
+
+  <ul>
+    <li ng-repeat="foo in foosVM.foos | orderBy:'name'">
+      <a ng-click="foosVM.edit(foo)">{{foo.name}}</a>
+    </li>
+  </ul>
+
 </div>
