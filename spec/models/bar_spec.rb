@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 require 'mongo'
-Mongo::Logger.logger.level = ::Logger::INFO
+Mongo::Logger.logger.level = ::Logger::DEBUG
 
 describe Bar, :type=>:model, :orm=>:mongoid do
   before(:all) do
-    Bar.delete_all
+    DatabaseCleaner[:mongoid].strategy = :truncation
+    DatabaseCleaner.clean_with(:truncation)
   end
 
   context Bar do
@@ -14,8 +15,11 @@ describe Bar, :type=>:model, :orm=>:mongoid do
 
   context "created Bar (let)" do
     let(:bar) { Bar.create(:name => "test") }
+    before(:each) do
+      DatabaseCleaner.start
+    end
     after(:each) do
-      bar.delete
+      DatabaseCleaner.clean
     end
 
     it { expect(bar).to be_persisted }
