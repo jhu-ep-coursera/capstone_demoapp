@@ -16,6 +16,7 @@
 # users commonly want.
 
 require 'mongoid-rspec'
+require_relative 'support/database_cleaners.rb'
 
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
