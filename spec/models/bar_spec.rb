@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 require 'mongo'
-Mongo::Logger.logger.level = ::Logger::DEBUG
+#Mongo::Logger.logger.level = ::Logger::DEBUG
 
 describe Bar, :type=>:model, :orm=>:mongoid do
   include_context "db_cleanup"
