@@ -3,7 +3,9 @@ require 'rails_helper'
 describe Foo, type: :model do
   include_context "db_cleanup", :transaction
   before(:all) do
-    @foo=Foo.create(:name => "test")
+    @foo=Foo.create()
+    @foo.name="test"
+    @foo.save
   end
   let(:foo) { Foo.find(@foo.id) }
 
