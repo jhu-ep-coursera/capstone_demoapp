@@ -19,3 +19,20 @@ shared_context "db_scope" do
     DatabaseCleaner.clean
   end
 end
+
+shared_context "db_cleanup_each" do |ar_strategy=:truncation|
+  before(:all) do
+    DatabaseCleaner[:mongoid].strategy = :truncation
+    DatabaseCleaner[:active_record].strategy = ar_strategy
+    DatabaseCleaner.clean_with(:truncation)
+  end
+  after(:all) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+  before(:each) do
+    DatabaseCleaner.start
+  end
+  after(:each) do
+    DatabaseCleaner.clean
+  end
+end
