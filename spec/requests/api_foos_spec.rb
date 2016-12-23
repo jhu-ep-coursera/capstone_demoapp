@@ -19,4 +19,18 @@ RSpec.describe "Foo API", type: :request do
       expect(payload.map{|f|f["name"]}).to eq(foos.map{|f|f[:name]})
     end
   end
+
+  context "a specific Foo exists" do
+    it "returns Foo when using correct ID"
+    it "returns not found when using incorrect ID"
+  end
+
+  context "create a new Foo" do
+    it "can create with provided name"
+  end
+
+  context "existing Foo" do
+    it "can update name"
+    it "can be deleted"
+  end
 end
