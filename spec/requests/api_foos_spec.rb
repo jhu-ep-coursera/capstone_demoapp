@@ -22,6 +22,7 @@ RSpec.describe "Foo API", type: :request do
 
   context "a specific Foo exists" do
     let(:foo) { FactoryGirl.create(:foo) }
+    let(:bad_id) { 1234567890 }
 
     it "returns Foo when using correct ID" do
       get foo_path(foo.id)
@@ -35,7 +36,17 @@ RSpec.describe "Foo API", type: :request do
       expect(payload["name"]).to eq(foo.name)
     end
 
-    it "returns not found when using incorrect ID"
+    it "returns not found when using incorrect ID" do
+      get foo_path(bad_id)
+      pp parsed_body
+      expect(response).to have_http_status(:not_found)
+      expect(response.content_type).to eq("application/json") 
+
+      payload=parsed_body
+      expect(payload).to have_key("errors")
+      expect(payload["errors"]).to have_key("full_messages")
+      expect(payload["errors"]["full_messages"][0]).to include("cannot","#{bad_id}")
+    end
   end
 
   context "create a new Foo" do
