@@ -21,7 +21,20 @@ RSpec.describe "Foo API", type: :request do
   end
 
   context "a specific Foo exists" do
-    it "returns Foo when using correct ID"
+    let(:foo) { FactoryGirl.create(:foo) }
+
+    it "returns Foo when using correct ID" do
+      get foo_path(foo.id)
+      expect(response).to have_http_status(:ok)
+      #pp parsed_body
+
+      payload=parsed_body
+      expect(payload).to have_key("id")
+      expect(payload).to have_key("name")
+      expect(payload["id"]).to eq(foo.id)
+      expect(payload["name"]).to eq(foo.name)
+    end
+
     it "returns not found when using incorrect ID"
   end
 
