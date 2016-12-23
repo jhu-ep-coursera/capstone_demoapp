@@ -36,4 +36,7 @@ FactoryGirl.define do
   factory :foo, :parent=>:foo_faker do
   end
 
+  factory :bar do
+    name { Faker::Team.name.titleize }
+  end
 end
