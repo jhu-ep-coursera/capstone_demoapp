@@ -11,11 +11,11 @@ describe Bar, :type=>:model, :orm=>:mongoid do
   end
 
   context "created Bar (let)" do
-    let(:bar) { Bar.create(:name => "test") }
+    let(:bar) { FactoryGirl.create(:bar) }
     include_context "db_scope"
 
     it { expect(bar).to be_persisted }
-    it { expect(bar.name).to eq("test") }
+    it { expect(bar.name).to eq(bar.name) }
     it { expect(Bar.find(bar.id)).to_not be_nil }
   end
 end
