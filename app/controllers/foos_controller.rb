@@ -1,5 +1,6 @@
 class FoosController < ApplicationController
   before_action :set_foo, only: [:show, :update, :destroy]
+  wrap_parameters :foo, include: ["name"]
 
   def index
     @foos = Foo.all
