@@ -86,6 +86,15 @@ RSpec.describe "Foo API", type: :request do
       expect(Foo.find(foo.id).name).to eq(new_name)
     end
 
-    it "can be deleted"
+    it "can be deleted" do
+      head foo_path(foo.id)
+      expect(response).to have_http_status(:ok)
+
+      delete foo_path(foo.id)
+      expect(response).to have_http_status(:no_content)
+
+      head foo_path(foo.id)
+      expect(response).to have_http_status(:not_found)
+    end
   end
 end
