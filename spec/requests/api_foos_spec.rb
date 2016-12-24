@@ -53,7 +53,7 @@ RSpec.describe "Foo API", type: :request do
     let(:foo_state) { FactoryGirl.attributes_for(:foo) }
 
     it "can create with provided name" do
-      post foos_path, foo_state.to_json, 'Content-Type' => 'application/json'
+      jpost foos_path, foo_state
       #pp parsed_body
       expect(response).to have_http_status(:created)
       expect(response.content_type).to eq("application/json") 
@@ -71,7 +71,21 @@ RSpec.describe "Foo API", type: :request do
   end
 
   context "existing Foo" do
-    it "can update name"
+    let(:foo) { FactoryGirl.create(:foo) }
+    let(:new_name) { "testing" }
+
+    it "can update name" do
+      #verify name is not yet the new name
+      expect(foo.name).to_not eq(new_name)
+
+      # change to the new name
+      jput foo_path(foo.id), {:name=>new_name}
+      expect(response).to have_http_status(:no_content)
+
+      # verify we can locate the created instance in DB
+      expect(Foo.find(foo.id).name).to eq(new_name)
+    end
+
     it "can be deleted"
   end
 end
