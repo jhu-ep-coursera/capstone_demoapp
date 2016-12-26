@@ -39,6 +39,21 @@ Capybara.register_driver :selenium do |app|
   end
 end
 
+require 'capybara/poltergeist'
+# Set the default driver 
+Capybara.configure do |config|
+  config.default_driver = :rack_test
+  #used when :js=>true
+  config.javascript_driver = :poltergeist
+end
+
+Capybara.register_driver :poltergeist do |app|
+  Capybara::Poltergeist::Driver.new( app,
+    phantomjs_logger: StringIO.new,
+#    logger: STDERR
+    )
+end
+
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
