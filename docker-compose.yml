@@ -42,8 +42,11 @@ services:
       depends_on:
         - postgres
         - mongo
+      ports:
+        - "5900:5900"
       environment:
         - POSTGRES_USER=postgres
         - POSTGRES_HOST=postgres
         - POSTGRES_PASSWORD
         - MONGO_HOST=mongo:27017
+        - VNC_PASSWORD=password

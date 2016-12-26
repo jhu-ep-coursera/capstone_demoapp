@@ -7,6 +7,7 @@ RSpec.feature "Mainpages", type: :feature, :js=>true do
       visit "/"
     end
     it "displays the index.html launch page" do
+      save_and_open_screenshot
       #expect(page).to have_content("Hello (from app/views/ui/index.html.erb)")
       expect(page).to have_content(/Hello \(from .+index.html.*\)/)
     end
