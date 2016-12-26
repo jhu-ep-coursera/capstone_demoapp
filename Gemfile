@@ -29,7 +29,7 @@ group :development, :test do
   gem 'capybara', '~> 2.10', '>=2.10.1'
 #  gem 'poltergeist', '~> 1.11', '>=1.11.0'
   gem 'selenium-webdriver', '~> 2.53', '>=2.53.4'
-#  gem 'chromedriver-helper', '~>1.0', '>=1.0.0'
+  gem 'chromedriver-helper', '~>1.0', '>=1.0.0'
 #  gem 'launchy', '~>2.4', '>=2.4.3'
 end
 
