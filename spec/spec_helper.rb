@@ -19,6 +19,12 @@ require 'mongoid-rspec'
 require_relative 'support/database_cleaners.rb'
 require_relative 'support/api_helper.rb'
 
+if ENV['FIREFOX_BINARY_PATH']
+  require 'selenium/webdriver'
+  #set FIREFOX_BINARY_PATH=c:\Program Files\Mozilla Firefox\firefox.exe
+  Selenium::WebDriver::Firefox::Binary.path=ENV['FIREFOX_BINARY_PATH']
+end
+
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
