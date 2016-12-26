@@ -29,7 +29,7 @@ RSpec.describe "Bar API", type: :request do
   context "create a new Bar" do
     it_should_behave_like "create resource", :bar do
       let(:response_check) {
-        pp payload
+        #pp payload
         expect(payload).to have_key("name")
         expect(payload["name"]).to eq(resource_state[:name])
 
