@@ -29,11 +29,18 @@ services:
       depends_on:
         - postgres
         - mongo
+      links:
+        - selenium
+      ports:
+        - "3010:3010"
       environment:
         - POSTGRES_USER=postgres
         - POSTGRES_HOST=postgres
         - POSTGRES_PASSWORD
         - MONGO_HOST=mongo:27017
+        - VNC_PASSWORD=password
+        - APP_PORT=3010
+        - SELENIUM_REMOTE_HOST=selenium
   test:
       build: .
       command: docker/docker-test-commands.sh
@@ -42,7 +49,10 @@ services:
       depends_on:
         - postgres
         - mongo
+      links:
+        - selenium
       ports:
+        - "3010:3010"
         - "5900:5900"
       environment:
         - POSTGRES_USER=postgres
@@ -50,3 +60,11 @@ services:
         - POSTGRES_PASSWORD
         - MONGO_HOST=mongo:27017
         - VNC_PASSWORD=password
+        - APP_PORT=3010
+        - SELENIUM_REMOTE_HOST=selenium
+  selenium:
+#    image: selenium/standalone-firefox-debug:2.47.1
+    image: selenium/standalone-chrome-debug:2.47.1
+    ports:
+      - "4444:4444"
+      - "5901:5900"
