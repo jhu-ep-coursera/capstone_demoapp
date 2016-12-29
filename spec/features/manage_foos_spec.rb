@@ -3,8 +3,10 @@ require 'support/foo_ui_helper.rb'
 
 RSpec.feature "ManageFoos", type: :feature, :js=>true do
   include_context "db_cleanup_each"
-  FOO_FORM_XPATH="//h3[text()='Foos']/../form"
-  FOO_LIST_XPATH="//h3[text()='Foos']/../ul"
+  include FooUiHelper
+  FOO_FORM_XPATH=FooUiHelper::FOO_FORM_XPATH
+  FOO_LIST_XPATH=FooUiHelper::FOO_LIST_XPATH
+  let(:foo_state) { FactoryGirl.attributes_for(:foo) }
 
   feature "view existing Foos" do
     let(:foos) { (1..5).map{ FactoryGirl.create(:foo) }.sort_by {|v| v["name"]} }
@@ -32,7 +34,6 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
   end
 
   feature "add new Foo" do
-    let(:foo_state) { FactoryGirl.attributes_for(:foo) }
     background(:each) do
       visit root_path
       expect(page).to have_css("h3", text:"Foos") #on the Foos page
@@ -68,10 +69,36 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
         expect(page).to have_content(foo_state[:name])
       end
     end
+
+    scenario "complete form with helper" do
+      create_foo foo_state
+
+      within(:xpath,FOO_LIST_XPATH) do
+        expect(page).to have_css("li", count:1)
+      end
+    end
   end
 
   feature "with existing Foo" do
-    scenario "can be updated"
+    background(:each) do
+      create_foo foo_state
+    end
+
+    scenario "can be updated" do
+      existing_name=foo_state[:name]
+      new_name=FactoryGirl.attributes_for(:foo)[:name]
+
+      expect(page).to have_css("li", :count=>1)
+      expect(page).to have_css("li", :text=>existing_name)
+      expect(page).to have_no_css("li", :text=>new_name)
+
+      update_foo(existing_name, new_name)
+
+      expect(page).to have_css("li", :count=>1)
+      expect(page).to have_no_css("li", :text=>existing_name)
+      expect(page).to have_css("li", :text=>new_name)
+    end
+
     scenario "can be deleted"
   end
 end
