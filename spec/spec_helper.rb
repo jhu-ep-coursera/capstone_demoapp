@@ -67,7 +67,7 @@ Capybara.register_driver :poltergeist do |app|
     )
 end
 
-if ENV["COVERAGE"]
+if ENV["COVERAGE"] == "true"
     require 'simplecov'
     SimpleCov.start do
       add_filter "/spec"
