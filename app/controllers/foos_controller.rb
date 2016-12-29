@@ -12,6 +12,7 @@ class FoosController < ApplicationController
   end
 
   def create
+    sleep 2.5
     @foo = Foo.new(foo_params)
 
     if @foo.save
