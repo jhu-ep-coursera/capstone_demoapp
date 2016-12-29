@@ -30,5 +30,13 @@ module FooUiHelper
   end
 
   def delete_foo name
+    visit root_path unless page.has_css?("h3", text:"Foos")
+    within(:xpath,FOO_LIST_XPATH) do
+      find("li a",:text=>name).click
+    end
+    find(:xpath, "//button[@ng-click='foosVM.remove()']").click
+    within(:xpath,FOO_LIST_XPATH) do
+      expect(page).to have_no_css("li a",:text=>name)
+    end
   end
 end

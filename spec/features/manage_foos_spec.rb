@@ -99,6 +99,17 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
       expect(page).to have_css("li", :text=>new_name)
     end
 
-    scenario "can be deleted"
+    scenario "can be deleted" do
+      within(:xpath,FOO_LIST_XPATH) do
+        expect(page).to have_css("a",text:foo_state[:name])
+      end
+
+      delete_foo foo_state[:name]
+
+      within(:xpath,FOO_LIST_XPATH) do
+        expect(page).to have_no_css("a",text:foo_state[:name])
+      end
+    end
+
   end
 end
