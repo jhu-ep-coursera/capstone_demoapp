@@ -67,6 +67,16 @@ Capybara.register_driver :poltergeist do |app|
     )
 end
 
+if ENV["COVERAGE"]
+    require 'simplecov'
+    SimpleCov.start do
+      add_filter "/spec"
+      add_filter "/config"
+      add_group "foos", ["foo"]
+      add_group "bars", ["bar"]
+    end
+end
+
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
