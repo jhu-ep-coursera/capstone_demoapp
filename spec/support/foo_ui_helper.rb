@@ -10,7 +10,9 @@ module FooUiHelper
       click_button("Create Foo")
     end
     within(:xpath,FOO_LIST_XPATH) do
-      expect(page).to have_css("li a",:text=>foo_state[:name])
+      using_wait_time 5 do
+        expect(page).to have_css("li a",:text=>foo_state[:name])
+      end
     end
   end
 

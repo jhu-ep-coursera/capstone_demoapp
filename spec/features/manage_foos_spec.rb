@@ -53,8 +53,10 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
         click_button("Create Foo")
       end
       within(:xpath,FOO_LIST_XPATH) do
-        expect(page).to have_css("li", count:1)
-        expect(page).to have_content(foo_state[:name])
+        using_wait_time 5 do
+          expect(page).to have_css("li", count:1)
+          expect(page).to have_content(foo_state[:name])
+        end
       end
     end
 
@@ -64,9 +66,11 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
       find(:xpath, "//input[contains(@ng-model,'foo.name')]").set(foo_state[:name])
       find(:xpath, "//button[contains(@ng-click,'create()')]").click
       within(:xpath,FOO_LIST_XPATH) do
-        expect(page).to have_xpath("//li", count:1)
-        #expect(page).to have_xpath("//*[text()='#{foo_state[:name]}']")
-        expect(page).to have_content(foo_state[:name])
+        using_wait_time 5 do
+          expect(page).to have_xpath("//li", count:1)
+          #expect(page).to have_xpath("//*[text()='#{foo_state[:name]}']")
+          expect(page).to have_content(foo_state[:name])
+        end
       end
     end
 
