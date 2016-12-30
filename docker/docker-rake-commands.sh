@@ -2,6 +2,6 @@
 
 /usr/local/bin/vnc.sh
 set -x 
-rake db:create
-rake db:migrate
+rake db:create RAILS_ENV=test
+rake db:migrate RAILS_ENV=test
 rake
