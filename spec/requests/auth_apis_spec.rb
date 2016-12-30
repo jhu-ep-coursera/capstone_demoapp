@@ -111,10 +111,18 @@ RSpec.describe "Authentication Api", type: :request do
         end
       end
 
-      it "logout"
+      pending "logout" do
+        logout :ok
+        expect(access_tokens?).to be false
+
+        jget authn_checkme_path#, access_tokens
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
     context "invalid password" do
-      it "rejects credentials"
+      xit "rejects credentials" do
+          #:unauthorized
+      end
     end
   end
 
