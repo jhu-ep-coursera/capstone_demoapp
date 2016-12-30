@@ -32,6 +32,11 @@ module ApiHelper
     expect(response).to have_http_status(status)
     return response.ok? ? parsed_body["data"] : parsed_body
   end
+  def logout status=:ok
+    jdelete destroy_user_session_path
+    @last_tokens={}
+    expect(response).to have_http_status(status)
+  end
 
   def access_tokens?
     !response.headers["access-token"].nil?  if response

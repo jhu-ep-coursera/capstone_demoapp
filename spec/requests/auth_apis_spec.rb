@@ -111,7 +111,7 @@ RSpec.describe "Authentication Api", type: :request do
         end
       end
 
-      pending "logout" do
+      it "logout" do
         logout :ok
         expect(access_tokens?).to be false
 
@@ -120,8 +120,8 @@ RSpec.describe "Authentication Api", type: :request do
       end
     end
     context "invalid password" do
-      xit "rejects credentials" do
-          #:unauthorized
+      it "rejects credentials" do
+        login account.merge(:password=>"badpassword"), :unauthorized
       end
     end
   end
