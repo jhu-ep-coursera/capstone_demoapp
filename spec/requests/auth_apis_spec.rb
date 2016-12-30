@@ -39,7 +39,17 @@ RSpec.describe "Authentication Api", type: :request do
       end
 
       context "non-unique information" do
-        it "reports non-unique e-mail"
+        it "reports non-unique e-mail" do
+          signup user_props, :ok
+          signup user_props, :unprocessable_entity
+          
+          payload=parsed_body
+          expect(payload).to include("status"=>"error")
+          expect(payload).to include("errors")
+          expect(payload["errors"]).to include("email")
+          expect(payload["errors"]).to include("full_messages")
+          expect(payload["errors"]["full_messages"]).to include(/Email/i)
+        end
       end
     end
   end
@@ -60,5 +70,6 @@ RSpec.describe "Authentication Api", type: :request do
       it "rejects credentials"
     end
   end
+
 
 end
