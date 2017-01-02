@@ -35,7 +35,7 @@ module ApiHelper
   def logout status=:ok
     jdelete destroy_user_session_path
     @last_tokens={}
-    expect(response).to have_http_status(status)
+    expect(response).to have_http_status(status) if status
   end
 
   def access_tokens?
