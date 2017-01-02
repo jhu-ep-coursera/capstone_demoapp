@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :foos, except: [:new, :edit]
     resources :bars, except: [:new, :edit]
     resources :images, except: [:new, :edit]
+    resources :things, except: [:new, :edit]
   end      
 
   get "/client-assets/:name.:format", :to => redirect("/client/client-assets/%{name}.%{format}")

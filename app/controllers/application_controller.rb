@@ -6,6 +6,7 @@ class ApplicationController < ActionController::API
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from Mongoid::Errors::DocumentNotFound, with: :record_not_found
+  rescue_from ActionController::ParameterMissing, with: :missing_parameter
 
   protected
     def record_not_found(exception) 
@@ -13,6 +14,14 @@ class ApplicationController < ActionController::API
         errors: { full_messages:["cannot find id[#{params[:id]}]"] }
       }
       render :json=>payload, :status=>:not_found
+      Rails.logger.debug exception.message
+    end
+
+    def missing_parameter(exception) 
+      payload = {
+        errors: { full_messages:["#{exception.message}"] }
+      }
+      render :json=>payload, :status=>:bad_request
       Rails.logger.debug exception.message
     end
 
