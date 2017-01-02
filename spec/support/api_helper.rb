@@ -54,7 +54,7 @@ RSpec.shared_examples "resource index" do |model|
   let(:payload) { parsed_body }
 
   it "returns all #{model} instances" do
-    get send("#{model}s_path"), {}, {"Accept"=>"application/json"}
+    jget send("#{model}s_path"), {}, {"Accept"=>"application/json"}
     expect(response).to have_http_status(:ok)
     expect(response.content_type).to eq("application/json")
 
@@ -69,14 +69,14 @@ RSpec.shared_examples "show resource" do |model|
   let(:bad_id) { 1234567890 }
 
   it "returns Foo when using correct ID" do
-    get send("#{model}_path", resource.id)
+    jget send("#{model}_path", resource.id)
     expect(response).to have_http_status(:ok)
     expect(response.content_type).to eq("application/json")
     response_check if respond_to?(:response_check)
   end
 
   it "returns not found when using incorrect ID" do
-    get send("#{model}_path", bad_id)
+    jget send("#{model}_path", bad_id)
     expect(response).to have_http_status(:not_found)
     expect(response.content_type).to eq("application/json") 
 
@@ -102,7 +102,7 @@ RSpec.shared_examples "create resource" do |model|
     response_check if respond_to?(:response_check)
 
     # verify we can locate the created instance in DB
-    get send("#{model}_path", resource_id)
+    jget send("#{model}_path", resource_id)
     expect(response).to have_http_status(:ok)
   end
 end
@@ -120,13 +120,13 @@ RSpec.shared_examples "modifiable resource" do |model|
     end
 
   it "can be deleted" do
-    head send("#{model}_path", resource.id)
+    jhead send("#{model}_path", resource.id)
     expect(response).to have_http_status(:ok)
 
-    delete send("#{model}_path", resource.id)
+    jdelete send("#{model}_path", resource.id)
     expect(response).to have_http_status(:no_content)
     
-    head send("#{model}_path", resource.id)
+    jhead send("#{model}_path", resource.id)
     expect(response).to have_http_status(:not_found)
   end
 end
