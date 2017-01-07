@@ -17,6 +17,10 @@
       // controller: ,
       // controllerAs: ,
     })
+    .state("accountSignup",{
+      url: "/signup",
+      templateUrl: APP_CONFIG.signup_page_html
+    }); 
 
     $urlRouterProvider.otherwise("/");
   }
