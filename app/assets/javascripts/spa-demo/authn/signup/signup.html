@@ -1,4 +1,6 @@
 <form id="signup-form" name="signup_form" ng-submit="$ctrl.signup()">
+  <span class="invalid"
+        ng-hide="signup_form.$dirty">{{$ctrl.signupForm.errors.full_messages}}</span>
 
   <div id="signup-email" class="row col-lg-12">
     <label class="col-xs-3">email</label>
@@ -7,14 +9,20 @@
            name="signup-email" 
            ng-model="$ctrl.signupForm.email" 
            required="required"/>
+    <span class="invalid"
+          ng-hide="signup_form.$dirty">{{$ctrl.signupForm.errors.email}}</span>
   </div>
+
   <div id="signup-name" class="row col-lg-12">
     <label class="col-xs-3">name</label>
     <input class="col-xs-9"
            name="signup-name" 
            ng-model="$ctrl.signupForm.name" 
            required="required"/>
+    <span class="invalid"
+          ng-hide="signup_form.$dirty">{{$ctrl.signupForm.errors.name}}</span>
   </div>
+
   <div id="signup-password" class="row col-lg-12">
     <label class="col-xs-3 pull-left">password</label>
     <input class="col-xs-9"
@@ -22,7 +30,10 @@
            name="signup-password" 
            ng-model="$ctrl.signupForm.password" 
            required="required"/>
+    <span class="invalid"
+          ng-hide="signup_form.$dirty">{{$ctrl.signupForm.errors.password}}</span>
   </div>
+
   <div id="signup-password_confirmation" class="row col-lg-12">
     <label class="col-xs-3 pull-left">password confirmation</label>
     <input class="col-xs-9"
@@ -30,6 +41,8 @@
            name="signup-password_confirmation" 
            ng-model="$ctrl.signupForm.password_confirmation" 
            required="required"/>
+    <span class="invalid"
+          ng-hide="signup_form.$dirty">{{$ctrl.signupForm.errors.password_confirmation}}</span>
   </div>
 
   <div id="signup-controls" class="row col-lg-12">

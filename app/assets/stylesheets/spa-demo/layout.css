@@ -5,3 +5,7 @@
  body {
   background-color: #d2b48c;
  }
+
+form .invalid {
+  color: red;
+}

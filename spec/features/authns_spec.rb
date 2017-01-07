@@ -36,7 +36,27 @@ RSpec.feature "Authns", type: :feature, :js=>true do
         expect(page).to have_css("#signup-form")
         expect(page).to have_button("Sign Up")
       end
-      scenario "displays error messages" 
+
+      scenario "displays error messages" do
+        bad_props=FactoryGirl.attributes_for(:user, 
+                                   :email=>user_props[:email],
+                                   :password=>"123")
+                            .merge(:password_confirmation=>"abc")
+        signup bad_props, false
+
+        #displays error information
+        expect(page).to have_css("#signup-form > span.invalid",
+                                 :text=>"Password confirmation doesn't match Password")
+        expect(page).to have_css("#signup-form > span.invalid",
+                                 :text=>"Password is too short")
+        expect(page).to have_css("#signup-form > span.invalid",
+                                 :text=>"Email already in use")
+        expect(page).to have_css("#signup-email span.invalid",:text=>"already in use")
+        expect(page).to have_css("#signup-password span.invalid",:text=>"too short")
+        within("#signup-password_confirmation") do
+          expect(page).to have_css("span.invalid",:text=>"doesn't match")
+        end
+      end
     end
 
     context "invalid field" do
