@@ -25,7 +25,17 @@ RSpec.feature "Authns", type: :feature, :js=>true do
         expect(page).to have_no_css("#signup-form")
       end
 
-      scenario "account not created and stays on page"
+      scenario "account not created and stays on page" do
+        dup_user=FactoryGirl.attributes_for(:user, :email=>user_props[:email])
+        signup dup_user, false #should get rejected by server
+
+        #account not created
+        expect(User.where(:email=>user_props[:email],:name=>user_props[:name])).to exist
+        expect(User.where(:email=>dup_user[:email],:name=>dup_user[:name])).to_not exist
+
+        expect(page).to have_css("#signup-form")
+        expect(page).to have_button("Sign Up")
+      end
       scenario "displays error messages" 
     end
 
