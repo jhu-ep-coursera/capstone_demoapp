@@ -16,7 +16,6 @@ RSpec.feature "Authns", type: :feature, :js=>true do
         fill_in("signup-name", :with=>user_props[:name])
         fill_in("signup-password", :with=>user_props[:password])
         fill_in("signup-password_confirmation", :with=>user_props[:password])
-        binding.pry
         click_on("Sign Up")  
         expect(page).to have_no_button("Sign Up")
 

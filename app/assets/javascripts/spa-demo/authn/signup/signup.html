@@ -1,0 +1,42 @@
+<form id="signup-form" name="signup_form" ng-submit="$ctrl.signup()">
+
+  <div id="signup-email" class="row col-lg-12">
+    <label class="col-xs-3">email</label>
+    <input class="col-xs-9"
+           type="email" 
+           name="signup-email" 
+           ng-model="$ctrl.signupForm.email" 
+           required="required"/>
+  </div>
+  <div id="signup-name" class="row col-lg-12">
+    <label class="col-xs-3">name</label>
+    <input class="col-xs-9"
+           name="signup-name" 
+           ng-model="$ctrl.signupForm.name" 
+           required="required"/>
+  </div>
+  <div id="signup-password" class="row col-lg-12">
+    <label class="col-xs-3 pull-left">password</label>
+    <input class="col-xs-9"
+           type="password" 
+           name="signup-password" 
+           ng-model="$ctrl.signupForm.password" 
+           required="required"/>
+  </div>
+  <div id="signup-password_confirmation" class="row col-lg-12">
+    <label class="col-xs-3 pull-left">password confirmation</label>
+    <input class="col-xs-9"
+           type="password" 
+           name="signup-password_confirmation" 
+           ng-model="$ctrl.signupForm.password_confirmation" 
+           required="required"/>
+  </div>
+
+  <div id="signup-controls" class="row col-lg-12">
+    <button ng-hide="$ctrl.id"
+            ng-disabled="signup_form.$invalid"
+            class="col-xs-3 btn btn-default"
+            type="submit"
+            name="signup-submit">Sign Up</button>
+  </div>
+</form>
