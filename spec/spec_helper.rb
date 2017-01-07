@@ -19,6 +19,7 @@ require 'mongoid-rspec'
 require 'capybara/rspec'
 require_relative 'support/database_cleaners.rb'
 require_relative 'support/api_helper.rb'
+require_relative 'support/ui_helper.rb'
 
 
 browser=:chrome
@@ -57,8 +58,8 @@ Capybara.configure do |config|
   config.default_driver = :rack_test
   #used when :js=>true
   config.javascript_driver = :poltergeist
-#  config.javascript_driver = :selenium
 end
+#Capybara.javascript_driver = :selenium
 
 Capybara.register_driver :poltergeist do |app|
   Capybara::Poltergeist::Driver.new( app,
@@ -82,6 +83,7 @@ end
 RSpec.configure do |config|
   config.include Mongoid::Matchers, :orm => :mongoid
   config.include ApiHelper, :type=>:request
+  config.include UiHelper, :type=>:feature
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
