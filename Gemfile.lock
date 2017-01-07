@@ -170,6 +170,8 @@ GEM
       actionpack (>= 3.2.11)
       railties (>= 3.2.11)
     rails-assets-angular (1.5.9)
+    rails-assets-angular-cookie (4.1.0)
+      rails-assets-angular
     rails-assets-angular-resource (1.5.9)
       rails-assets-angular (= 1.5.9)
     rails-assets-angular-ui-router (0.3.2)
@@ -177,6 +179,9 @@ GEM
     rails-assets-bootstrap (3.3.7)
       rails-assets-jquery (>= 1.9.1, < 4)
     rails-assets-jquery (3.1.1)
+    rails-assets-ng-token-auth (0.0.27)
+      rails-assets-angular (>= 1.2.0)
+      rails-assets-angular-cookie (>= 4.0.6)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
     rails-dom-testing (1.0.7)
@@ -295,9 +300,11 @@ DEPENDENCIES
   rails (= 4.2.6)
   rails-api (~> 0.4, >= 0.4.0)
   rails-assets-angular (~> 1.5, >= 1.5.8)!
+  rails-assets-angular-cookie!
   rails-assets-angular-resource (~> 1.5, >= 1.5.8)!
   rails-assets-angular-ui-router (~> 0.3, >= 0.3.1)!
   rails-assets-bootstrap (~> 3.3, >= 3.3.7)!
+  rails-assets-ng-token-auth (~> 0.0, >= 0.0.27)!
   rails_12factor (~> 0.0, >= 0.0.3)
   rspec-rails (~> 3.5, >= 3.5.2)
   sass-rails (~> 5.0, >= 3.4.22)

@@ -7,7 +7,7 @@
 
   RouterFunction.$inject = ["$stateProvider",
                             "$urlRouterProvider", 
-                            "spa-demo.APP_CONFIG"];
+                            "spa-demo.config.APP_CONFIG"];
 
   function RouterFunction($stateProvider, $urlRouterProvider, APP_CONFIG) {
     $stateProvider

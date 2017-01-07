@@ -5,7 +5,7 @@
     .module("spa-demo.foos")
     .factory("spa-demo.foos.Foo", FooFactory);
 
-  FooFactory.$inject = ["$resource", "spa-demo.APP_CONFIG"];
+  FooFactory.$inject = ["$resource", "spa-demo.config.APP_CONFIG"];
   function FooFactory($resource, APP_CONFIG) {
     return $resource(APP_CONFIG.server_url + "/api/foos/:id",
       { id: '@id'},
