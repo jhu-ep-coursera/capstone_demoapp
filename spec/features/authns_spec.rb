@@ -57,6 +57,23 @@ RSpec.feature "Authns", type: :feature, :js=>true do
           expect(page).to have_css("span.invalid",:text=>"doesn't match")
         end
       end
+
+      scenario "clears error messages on page update" do
+        bad_props=FactoryGirl.attributes_for(:user, 
+                                   :email=>user_props[:email],
+                                   :password=>"123")
+                            .merge(:password_confirmation=>"abc")
+        signup bad_props, false
+        expect(page).to have_css("#signup-email span.invalid")
+        expect(page).to have_css("#signup-password > span.invalid")
+        expect(page).to have_css("#signup-password_confirmation > span.invalid")
+
+        fill_in("signup-email", :with=>"anylegal@email.com")
+
+        expect(page).to have_no_css("#signup-email span.invalid")
+        expect(page).to have_no_css("#signup-password > span.invalid")
+        expect(page).to have_no_css("#signup-password-confirm > span.invalid")
+      end
     end
 
     context "invalid field" do
