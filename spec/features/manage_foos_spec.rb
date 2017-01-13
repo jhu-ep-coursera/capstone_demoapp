@@ -37,7 +37,9 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
     background(:each) do
       visit root_path
       expect(page).to have_css("h3", text:"Foos") #on the Foos page
-      expect(page).to have_css("li", count:0)      #nothing listed
+      within(:xpath,FOO_LIST_XPATH) do
+        expect(page).to have_css("li", count:0)      #nothing listed
+      end
     end
 
     scenario "has input form" do
@@ -67,7 +69,7 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
       find(:xpath, "//button[contains(@ng-click,'create()')]").click
       within(:xpath,FOO_LIST_XPATH) do
         using_wait_time 5 do
-          expect(page).to have_xpath("//li", count:1)
+          expect(page).to have_xpath(".//li", count:1)
           #expect(page).to have_xpath("//*[text()='#{foo_state[:name]}']")
           expect(page).to have_content(foo_state[:name])
         end
@@ -92,15 +94,19 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
       existing_name=foo_state[:name]
       new_name=FactoryGirl.attributes_for(:foo)[:name]
 
-      expect(page).to have_css("li", :count=>1)
-      expect(page).to have_css("li", :text=>existing_name)
-      expect(page).to have_no_css("li", :text=>new_name)
+      within(:xpath,FOO_LIST_XPATH) do
+        expect(page).to have_css("li", :count=>1)
+        expect(page).to have_css("li", :text=>existing_name)
+        expect(page).to have_no_css("li", :text=>new_name)
+      end
 
       update_foo(existing_name, new_name)
 
-      expect(page).to have_css("li", :count=>1)
-      expect(page).to have_no_css("li", :text=>existing_name)
-      expect(page).to have_css("li", :text=>new_name)
+      within(:xpath,FOO_LIST_XPATH) do
+        expect(page).to have_css("li", :count=>1)
+        expect(page).to have_no_css("li", :text=>existing_name)
+        expect(page).to have_css("li", :text=>new_name)
+      end
     end
 
     scenario "can be deleted" do
