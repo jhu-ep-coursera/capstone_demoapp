@@ -3,6 +3,24 @@
         name="login_form"
         ng-submit="$ctrl.login()">
 
+    <div class="form-group">
+      <div id="login-email">
+        <label>email</label>
+        <input type="email" 
+               name="login_email" 
+               ng-model="$ctrl.loginForm.email" 
+               required="required"/>
+      </div>
+
+      <div id="login-password">
+        <label>password</label>
+        <input type="password" 
+               name="login_password" 
+               ng-model="$ctrl.loginForm.password" 
+               required="required"/>
+      </div>
+    </div>
+
     <div id="login-submit">
       <button class="btn btn-default"
               ng-disabled="login_form.$invalid"
