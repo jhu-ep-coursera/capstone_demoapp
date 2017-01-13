@@ -1,0 +1,25 @@
+<div ng-hide="$ctrl.getCurrentUser()">
+  <form id="login-form"
+        name="login_form"
+        ng-submit="$ctrl.login()">
+
+    <div id="login-submit">
+      <button class="btn btn-default"
+              ng-disabled="login_form.$invalid"
+              name="login_submit"
+              type="submit" >Login</button>
+    </div>
+  </form>
+</div>
+
+<div ng-show="$ctrl.getCurrentUser()">
+  <form id="logout-form" 
+        ng-submit="$ctrl.logout()">
+
+    <div id="logout-identity">
+      <button type="submit" 
+              name="logout_submit"
+              class="btn btn-default">Logout</button>
+    </div>
+  </form>
+</div>
