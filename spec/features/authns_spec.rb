@@ -77,8 +77,21 @@ RSpec.feature "Authns", type: :feature, :js=>true do
     end
 
     context "invalid field" do
-      scenario "bad email"
-      scenario "missing password"
+      after(:each) do
+        within("#signup-form") do
+          expect(page).to have_button("Sign Up", :disabled=>true)
+        end
+      end
+
+      scenario "bad email" do
+        fillin_signup FactoryGirl.attributes_for(:user, :email=>"yadayadayada")
+        expect(page).to have_css("input[name='signup-email'].ng-invalid-email")          
+      end
+      scenario "missing password" do
+        fillin_signup FactoryGirl.attributes_for(:user, :password=>nil)
+        expect(page).to have_css("input[name='signup-password'].ng-invalid-required")
+        expect(page).to have_css("input[name='signup-password_confirmation'].ng-invalid-required")          
+      end
     end
   end
 
