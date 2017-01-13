@@ -96,7 +96,12 @@ RSpec.feature "Authns", type: :feature, :js=>true do
   end
 
   feature "anonymous user" do
-    scenario "shown login form"
+    scenario "shown login form" do
+      visit root_path
+      click_on("Login")
+      expect(page).to have_no_css("#logout-form")
+      expect(page).to have_css("#login-form")
+    end
   end
 
   feature "login" do
