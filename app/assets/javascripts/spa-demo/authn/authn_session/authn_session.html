@@ -33,6 +33,9 @@
 <div ng-show="$ctrl.getCurrentUser()">
   <form id="logout-form" 
         ng-submit="$ctrl.logout()">
+    <span id="user_id" 
+          class="id"
+          ng-if="$ctrl.getCurrentUser()">{{$ctrl.getCurrentUser().id}}</span>
 
     <div id="logout-identity">
       <button type="submit" 

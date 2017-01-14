@@ -116,7 +116,16 @@ RSpec.feature "Authns", type: :feature, :js=>true do
         expect(page).to have_no_css("#login-form")
         expect(page).to have_no_css("#logout-form") #dropdown goes away
       end
-      scenario "menu shows logout option"
+
+      scenario "menu shows logout option with identity" do
+        find("#navbar-loginlabel").click
+        expect(page).to have_css("#user_id",:text=>/.+/, :visible=>false)
+        expect(page).to have_css("#logout-identity label",:text=>user_props[:name])
+        within ("#logout-form") do
+          expect(page).to have_button("Logout")
+        end
+      end
+
       scenario "can access authenticated resources"
     end
 
