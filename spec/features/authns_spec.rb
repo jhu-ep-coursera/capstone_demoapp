@@ -107,21 +107,13 @@ RSpec.feature "Authns", type: :feature, :js=>true do
   feature "login" do
     background(:each) do
       signup user_props
+      login user_props
     end
 
     context "valid user login" do
       scenario "closes form and displays current user name" do
-        find("#navbar-loginlabel",:text=>"Login").click
-        within("#login-form") do
-          fill_in("login_email", :with=>user_props[:email])
-          fill_in("login_password", :with=>user_props[:password])
-          click_button("Login")
-        end
-
-        using_wait_time 5 do
-          expect(page).to have_no_css("#login-form")
-        end
         expect(page).to have_css("#navbar-loginlabel",:text=>/#{user_props[:name]}/)
+        expect(page).to have_no_css("#login-form")
         expect(page).to have_no_css("#logout-form") #dropdown goes away
       end
       scenario "menu shows logout option"
