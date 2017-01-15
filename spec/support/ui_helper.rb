@@ -22,6 +22,12 @@ module UiHelper
     end
   end
 
+  def logged_in? account=nil
+    account ?
+      page.has_css?("#navbar-loginlabel",:text=>/#{account[:name]}/) :
+      page.has_css?("#user_id",:visible=>false)
+  end
+
   def login credentials
     visit root_path unless page.has_css?("#navbar-loginlabel")
     find("#navbar-loginlabel",:text=>"Login").click
@@ -36,5 +42,13 @@ module UiHelper
     end
     expect(page).to have_css("#logout-form", :visible=>false)
     expect(page).to have_css("#navbar-loginlabel",:text=>/#{credentials[:name]}/)
+  end
+
+  def logout
+    if logged_in?
+      find("#navbar-loginlabel").click
+      find_button("Logout").click
+      expect(page).to have_no_css("#user_id",:visible=>false)
+    end
   end
 end
