@@ -16,8 +16,16 @@
     service.login = login;
     service.logout = logout;
 
+    activate();
     return;
     ////////////////
+    function activate() {
+      $auth.validateUser().then(
+        function(user){
+          service.user = user;
+          console.log("validated user", user);
+        });
+    }
     function signup(registration) {
       return $auth.submitRegistration(registration);
     }
