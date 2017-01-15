@@ -19,6 +19,7 @@
     var vm=this;
     vm.loginForm = {}
     vm.login = login;
+    vm.logout = logout;
     vm.getCurrentUser = Authn.getCurrentUser;
     vm.getCurrentUserName = Authn.getCurrentUserName;    
 
@@ -33,6 +34,12 @@
     function login() {
       console.log("login");
       Authn.login(vm.loginForm).then(
+        function(){
+          vm.dropdown.removeClass("open");
+        });
+    }
+    function logout() {
+      Authn.logout().then(
         function(){
           vm.dropdown.removeClass("open");
         });
