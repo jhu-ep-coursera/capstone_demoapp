@@ -1,0 +1,17 @@
+<div id="authn-check" sd-authn-check>
+  <h3>Identity Check</h3>
+
+  <div class="client-user">
+    <button ng-click="idVM.getClientUser()">$auth says...</button>
+    <label>{{idVM.client}}</label>
+  </div>
+  <div class="whoami-user">
+    <button ng-click="idVM.whoAmI()">whoAmI() says...</button>
+    <label>{{idVM.server.whoAmI}}</label>
+  </div>
+  <div class="checkme-user">
+    <button ng-click="idVM.checkMe()">checkMe() says...</button>
+    <label>{{idVM.server.checkMe}}</label>
+  </div>
+
+</div>
