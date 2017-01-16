@@ -22,6 +22,9 @@
     </div>
 
     <div id="login-submit">
+      <span class="invalid"
+            ng-hide="login_form.$dirty">{{$ctrl.loginForm.errors.full_messages}}</span>
+
       <button class="btn btn-default"
               ng-disabled="login_form.$invalid"
               name="login_submit"
