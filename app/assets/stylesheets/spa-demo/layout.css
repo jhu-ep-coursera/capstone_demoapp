@@ -14,3 +14,10 @@ form .invalid {
   padding-right: 0px;
   padding-left: 0px;
 }
+
+/*********** navbar *************/
+
+.nav li form {
+  padding-left: 10px; /* adds spacing along left of dropdown menu form */
+  padding-right: 10px;
+}

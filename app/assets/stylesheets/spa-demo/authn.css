@@ -2,3 +2,13 @@
 span#user_id {
   display: none;
 }
+
+#login-form #new-account label {
+  width: auto; /* flatten the New here? label */
+  margin-top: 5px; /* separate from the Login button */
+  margin-right: 10px; /* separate "New here?" label and "Sing Up" link */
+}
+
+div#logout-identity {
+  text-align: center; /* keep organized as name in label gets long */
+}
