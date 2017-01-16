@@ -12,7 +12,7 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
     let(:foos) { (1..5).map{ FactoryGirl.create(:foo) }.sort_by {|v| v["name"]} }
 
     scenario "when no instances exist" do
-      visit root_path
+      visit "#{root_path}/#/"
       within(:xpath,FOO_LIST_XPATH) do     #<== waits for ul tag
         expect(page).to have_no_css("li")  #<== waits for ul li tag
         expect(page).to have_css("li", count:0) #<== waits for ul li tag
@@ -21,7 +21,7 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
     end
 
     scenario "when instances exist" do
-      visit root_path  if foos   #need to touch collection before hitting page
+      visit "#{root_path}/#/" if foos   #need to touch collection before hitting page
       within(:xpath,FOO_LIST_XPATH) do
         expect(page).to have_css("li:nth-child(#{foos.count})") #<== waits for li(5)
         expect(page).to have_css("li", count:foos.count)        #<== waits for ul li tag
@@ -35,7 +35,7 @@ RSpec.feature "ManageFoos", type: :feature, :js=>true do
 
   feature "add new Foo" do
     background(:each) do
-      visit root_path
+      visit "#{root_path}/#/"
       expect(page).to have_css("h3", text:"Foos") #on the Foos page
       within(:xpath,FOO_LIST_XPATH) do
         expect(page).to have_css("li", count:0)      #nothing listed

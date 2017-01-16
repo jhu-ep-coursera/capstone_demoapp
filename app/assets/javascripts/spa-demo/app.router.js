@@ -26,6 +26,6 @@
       templateUrl: APP_CONFIG.authn_page_html
     }); 
 
-    $urlRouterProvider.otherwise("/");
+    //$urlRouterProvider.otherwise("/"); eliminate default route
   }
 })();
