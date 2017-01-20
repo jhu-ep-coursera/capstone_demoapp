@@ -7,6 +7,7 @@
       "spa-demo.config",
       "spa-demo.authn",
       "spa-demo.layout",
-      "spa-demo.foos"
+      "spa-demo.foos",
+      "spa-demo.subjects"      
     ]);
 })();

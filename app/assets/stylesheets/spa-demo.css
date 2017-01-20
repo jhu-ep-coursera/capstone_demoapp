@@ -4,4 +4,5 @@
  *= require bootstrap
  *= require spa-demo/layout
  *= require spa-demo/authn
+ *= require spa-demo/subjects
  */

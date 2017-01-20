@@ -28,3 +28,7 @@
 //= require spa-demo/foos/foos.service
 //= require spa-demo/foos/foos.controller
 //= require spa-demo/foos/foos.directive
+
+//= require spa-demo/subjects/subjects.module
+//= require spa-demo/subjects/images/images.service
+//= require spa-demo/subjects/images/images.component

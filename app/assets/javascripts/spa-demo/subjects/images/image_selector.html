@@ -1,0 +1,10 @@
+<div class="image-list">
+  <ul>
+    <li ng-repeat="item in $ctrl.items | orderBy:'caption'">
+      <a ui-sref="images({id:item.id})">
+          <span class="image_id id">{{item.id}}</span>
+          {{item.caption}}
+      </a>
+    </li>
+  </ul>
+</div>

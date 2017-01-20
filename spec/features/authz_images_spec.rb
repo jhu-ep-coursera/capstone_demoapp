@@ -76,6 +76,8 @@ RSpec.feature "AuthzImages", type: :feature, js:true do
     it "field filled in with clicked image caption" do
       within("sd-image-editor .image-form") do
         expect(page).to have_field("image-caption", :with=>image.caption)
+        expect(page).to have_css(".image_id",:text=>image.id,:visible=>false)
+        expect(page).to have_no_css(".image_id")
       end
     end
   end
