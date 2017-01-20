@@ -1,4 +1,10 @@
 module UiHelper
+  def create_user
+    user_props=FactoryGirl.attributes_for(:user);
+    user = FactoryGirl.create(:user, user_props)
+    user_props.merge(:id=>user.id, :uid=>user.uid)
+  end
+
   def fillin_signup registration
     visit "#{ui_path}/#/signup" unless page.has_css?("#signup-form")
     using_wait_time 5 do
@@ -16,7 +22,7 @@ module UiHelper
     fillin_signup registration
     click_on("Sign Up")  
     if success
-      expect(page).to have_no_button("Sign Up")
+      expect(page).to have_no_button("Sign Up", :wait=>5)
     else
       expect(page).to have_button("Sign Up")
     end
@@ -25,7 +31,7 @@ module UiHelper
   def logged_in? account=nil
     account ?
       page.has_css?("#navbar-loginlabel",:text=>/#{account[:name]}/) :
-      page.has_css?("#user_id",:visible=>false)
+      page.has_css?("#user_id",:text=>/.+/, :visible=>false)
   end
 
   def fillin_login credentials
@@ -52,9 +58,9 @@ module UiHelper
 
   def logout
     if logged_in?
-      find("#navbar-loginlabel").click
-      find_button("Logout").click
-      expect(page).to have_no_css("#user_id",:visible=>false)
+      find("#navbar-loginlabel").click unless page.has_button?("Logout")
+      find_button("Logout",:wait=>5).click
+      expect(page).to have_no_css("#user_id",:visible=>false,:wait=>5)
     end
   end
 end
