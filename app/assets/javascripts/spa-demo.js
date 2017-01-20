@@ -32,3 +32,4 @@
 //= require spa-demo/subjects/subjects.module
 //= require spa-demo/subjects/images/images.service
 //= require spa-demo/subjects/images/images.component
+//= require spa-demo/subjects/images/images_authz.directive

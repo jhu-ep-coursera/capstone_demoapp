@@ -6,12 +6,16 @@
     .component("sdImageSelector", {
       templateUrl: imageSelectorTemplateUrl,
       controller: ImageSelectorController,
-      bindings: {},
+      bindings: {
+        authz: "<"
+      },
     })
     .component("sdImageEditor", {
       templateUrl: imageEditorTemplateUrl,
       controller: ImageEditorController,
-      bindings: {},
+      bindings: {
+        authz: "<"
+      },
     });
 
 
@@ -42,10 +46,15 @@
 
 
   ImageEditorController.$inject = ["$scope",
+                                   "$state",
                                    "$stateParams",
                                    "spa-demo.subjects.Image"];
-  function ImageEditorController($scope, $stateParams, Image) {
+  function ImageEditorController($scope, $state, $stateParams, Image) {
     var vm=this;
+    vm.create = create;
+    vm.clear  = clear;
+    vm.update  = update;
+    vm.remove  = remove;
 
     vm.$onInit = function() {
       console.log("ImageEditorController",$scope);
@@ -61,6 +70,54 @@
       vm.item = new Image();
       return vm.item;
     }
+
+    function clear() {
+      newResource();
+      $state.go(".", {id:null});
+    }
+
+    function create() {
+      $scope.imageform.$setPristine();
+      vm.item.errors = null;
+      vm.item.$save().then(
+        function(){
+           $state.go(".", {id: vm.item.id}); 
+        },
+        handleError);
+    }
+
+    function update() {
+      $scope.imageform.$setPristine();
+      vm.item.errors = null;
+      vm.item.$update().then(
+        function(){ 
+          console.log("update complete", vm.item);
+          $state.reload(); 
+        },
+        handleError);      
+    }
+
+    function remove() {
+      vm.item.errors = null;
+      vm.item.$delete().then(
+        function(){ 
+          console.log("remove complete", vm.item);          
+          clear();
+        },
+        handleError);      
+    }
+
+
+    function handleError(response) {
+      //console.log("error", response);
+      if (response.data) {
+        vm.item["errors"]=response.data.errors;          
+      } 
+      if (!vm.item.errors) {
+        vm.item["errors"]={}
+        vm.item["errors"]["full_messages"]=[response]; 
+      }      
+    }    
   }
 
 })();
