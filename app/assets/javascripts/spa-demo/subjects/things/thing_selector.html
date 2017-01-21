@@ -1,0 +1,11 @@
+<div class="thing-list" ng-show="$ctrl.authz.canQuery">
+  <ul>
+    <li ng-repeat="item in $ctrl.items | orderBy:'name'">
+      <a ui-sref="things({id:item.id})">
+         <span class="thing_id id">{{item.id}}</span>
+         {{item.name}}
+      <span ng-show="$ctrl.authz.canUpdateItem(item)"> *</span>
+      </a>
+    </li>
+  </ul>
+</div>

@@ -1,4 +1,6 @@
 
+form.thing-form .id,
+div.thing-list .id,
 form.image-form .id,
 div.image-list .id {
   display: none;

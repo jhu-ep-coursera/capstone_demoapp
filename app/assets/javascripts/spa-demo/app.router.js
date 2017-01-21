@@ -28,7 +28,12 @@
     .state("images",{
       url: "/images/:id",
       templateUrl: APP_CONFIG.images_page_html
-    }); 
+    })
+    .state("things",{
+      url: "/things/:id",
+      templateUrl: APP_CONFIG.things_page_html
+    })
+    ; 
 
     //$urlRouterProvider.otherwise("/"); eliminate default route
   }
