@@ -89,13 +89,32 @@
     function update() {      
       $scope.thingform.$setPristine();
       vm.item.errors = null;
-      vm.item.$update().then(
-        function(){
-          console.log("thing updated", vm.item);
-          $state.reload();
-        },
-        handleError);
+      var update=vm.item.$update();
+      updateImageLinks(update);
     }
+    function updateImageLinks(promise) {
+      console.log("updating links to images");
+      var promises = [];
+      if (promise) { promises.push(promise); }
+      angular.forEach(vm.images, function(ti){
+        if (ti.toRemove) {
+          promises.push(ti.$remove());
+        } else if (ti.originalPriority != ti.priority) {          
+          promises.push(ti.$update());
+        }
+      });
+
+      console.log("waiting for promises", promises);
+      $q.all(promises).then(
+        function(response){
+          console.log("promise.all response", response); 
+          //update button will be disabled when not $dirty
+          $scope.thingform.$setPristine();
+          reload(); 
+        }, 
+        handleError);    
+    }
+
 
     function remove() {      
       vm.item.$remove().then(
