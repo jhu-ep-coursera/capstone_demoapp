@@ -56,15 +56,7 @@ RSpec.feature "AuthzThingImages", type: :feature, :js=>true do
           expect(page).to have_no_css("sd-image-editor")
 
           #wait for page navigated to arrive, displaying expected
-          expect(page).to have_css("sd-thing-editor")
-          within("sd-thing-editor .thing-form") do
-            expect(page).to have_css("span.thing_id",:text=>linked_thing.id,
-                                                     :visible=>false)
-            expect(page).to have_css("ul.thing-images li span.image_id",
-                                    :visible=>false,
-                                    :count=>ThingImage.where(:thing=>linked_thing).count,
-                                    :wait=>5)
-          end
+          thing_editor_loaded! linked_thing
         end
       end
     end
