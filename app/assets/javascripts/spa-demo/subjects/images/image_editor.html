@@ -27,6 +27,22 @@
     <span class="invalid">{{$ctrl.item.errors.thing_images}}</span>
   </div>
 
+  <div class="linkable-things row col-lg-12"
+       ng-show="$ctrl.linkable_things.length>0 &&
+                $ctrl.authz.authenticated">
+    <label class="col-xs-3">Linkable Things:</label>
+    <div class="link-things" class="col-xs-9">
+      <select name="linkable-things" 
+              ng-model="$ctrl.selected_linkables"               
+              multiple>
+        <option ng-repeat="thing in $ctrl.linkable_things | orderBy:'name'"
+                value="{{thing.id}}">{{thing.name}}</option>
+      </select>
+    </div>
+    <span class="invalid">{{$ctrl.item.errors.linkable_things}}</span>
+  </div>
+
+
   <div class="image-controls">
     <span ng-show="$ctrl.authz.authenticated">
       <button name="image-create"

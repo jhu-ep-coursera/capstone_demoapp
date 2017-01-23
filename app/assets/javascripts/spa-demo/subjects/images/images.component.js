@@ -79,6 +79,7 @@
       console.log("re/loading image", itemId);
       vm.item = Image.get({id:itemId});
       vm.things = ImageThing.query({image_id:itemId});
+      vm.linkable_things = ImageLinkableThing.query({image_id:itemId});
       $q.all([vm.item.$promise,
               vm.things.$promise]).catch(handleError);
     }
