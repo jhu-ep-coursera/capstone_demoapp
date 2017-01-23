@@ -6,6 +6,9 @@ shared_context "db_cleanup" do |ar_strategy=:truncation|
     DatabaseCleaner[:active_record].strategy = ar_strategy
     DatabaseCleaner.clean_with(:truncation)
   end
+  after(:each, :type=>feature) do
+    Capybara.reset_sessions!  #cleared up some random failures
+  end
   after(:all) do
     DatabaseCleaner.clean_with(:truncation)
   end
@@ -33,6 +36,8 @@ shared_context "db_cleanup_each" do |ar_strategy=:truncation|
     DatabaseCleaner.start
   end
   after(:each) do
+    Capybara.reset_sessions!  if self.class.metadata[:js] 
+    #page.driver.clear_memory_cache
     DatabaseCleaner.clean
   end
 end

@@ -1,7 +1,9 @@
 require 'rails_helper'
+require_relative '../support/subjects_ui_helper.rb'
 
 RSpec.feature "AuthzThings", type: :feature, js:true do
   include_context "db_cleanup_each"
+  include SubjectsUiHelper
 
   let(:originator)    { create_user }
   let(:organizer)     { originator }
@@ -11,39 +13,15 @@ RSpec.feature "AuthzThings", type: :feature, js:true do
   let(:things)        { FactoryGirl.create_list(:thing, 3) }
   let(:thing)         { things[0] }
 
-  def visit_thing thing
-    things
-    visit "#{ui_path}/#/things/#{thing.id}"
-    expect(page).to have_css("sd-thing-editor")
-    within("sd-thing-editor") do
-      expect(page).to have_css(".thing-form span.thing_id", 
-                               text:thing.id, visible:false)
-    end
-  end
-
-  def visit_things
-    things
-    visit "#{ui_path}/#/things/"
-    within("sd-thing-selector", :wait=>5) do
-      if logged_in? 
-        expect(page).to have_css(".thing-list")
-        expect(page).to have_css(".thing-list li",:count=>things.count)
-        expect(page).to have_css(".thing-form span.thing_id", 
-                                 text:thing.id, visible:false)
-      end
-    end
-  end
-
-
   shared_examples "cannot list things" do
     it "does not list things" do
-      visit_things
+      visit_things things
       expect(page).to have_css(".thing-list",:visible=>false)
     end
   end
   shared_examples "can list things" do
     it "lists things" do
-      visit_things
+      visit_things things
       within("sd-thing-selector .thing-list") do
         things.each do |t|
           expect(page).to have_css("li a",:text=>t.name)
@@ -96,7 +74,7 @@ RSpec.feature "AuthzThings", type: :feature, js:true do
       end
 
       #new thing shows up in list
-      visit_things
+      visit_things things
       expect(page).to have_css(".thing-list ul li a",:text=>thing_props[:name])
     end
   end
@@ -196,7 +174,7 @@ RSpec.feature "AuthzThings", type: :feature, js:true do
 
   shared_examples "can delete thing" do
     it "deletes thing" do
-      visit_things
+      visit_things things
       within("sd-thing-selector .thing-list") do
         expect(page).to have_css(".thing_id", :text=>thing.id, :visible=>false)
         expect(page).to have_css("li a",:text=>thing.name)
@@ -219,14 +197,14 @@ RSpec.feature "AuthzThings", type: :feature, js:true do
     after(:each) { logout }
 
     context "unauthenticated user" do
-      before(:each) { visit_things }
+      before(:each) { visit_things things }
       it_behaves_like "cannot list things"
       it_behaves_like "displays correct buttons for role", 
           [], 
           ["Create Thing", "Clear Thing", "Update Thing", "Delete Thing"]
     end
     context "authenticated user" do
-      before(:each) { login authenticated; visit_things }
+      before(:each) { login authenticated; visit_things things}
 
       it_behaves_like "can list things"
       it_behaves_like "displays correct buttons for role", 

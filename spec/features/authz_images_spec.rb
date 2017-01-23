@@ -1,7 +1,9 @@
 require 'rails_helper'
+require_relative '../support/subjects_ui_helper.rb'
 
 RSpec.feature "AuthzImages", type: :feature, js:true do
   include_context "db_cleanup_each"
+  include SubjectsUiHelper
 
   let(:authenticated) { create_user }
   let(:originator)    { authenticated }
@@ -11,18 +13,9 @@ RSpec.feature "AuthzImages", type: :feature, js:true do
                                              :creator_id=>originator[:id]) }
   let(:image)      { images[0] }
 
-  def visit_images
-    images
-    visit "#{ui_path}/#/images/"
-    within("sd-image-selector") do
-      expect(page).to have_css(".image-list")
-      expect(page).to have_css(".image-list li",:count=>images.count)
-    end
-  end
-
   shared_examples "can list images" do
     it "lists images" do
-      visit_images
+      visit_images images
       within("sd-image-selector .image-list") do
         images.each do |img|
           expect(page).to have_css("li a",:text=>img.caption)
@@ -41,7 +34,7 @@ RSpec.feature "AuthzImages", type: :feature, js:true do
           expect(page).to have_button(button,:disabled=>disabled_value)
         end
         not_displayed.each do |button|
-          expect(page).to_not have_button(button)
+          expect(page).to have_no_button(button)
         end
       end
     end
@@ -51,11 +44,9 @@ RSpec.feature "AuthzImages", type: :feature, js:true do
       within("sd-image-editor .image-form") do
         expect(page).to have_button("Create Image",:wait=>5)
         expect(page).to have_field("image-caption",:readonly=>false)
-        5.times do #Create button is not always showing up
-          fill_in("image-caption", :with=>image_props[:caption])
-          break unless page.has_no_button?("Create Image")
-        end
-        click_button("Create Image",:wait=>5)
+        fill_in("image-caption", :with=>image_props[:caption])
+        expect(page).to have_field("image-caption",:with=>image_props[:caption])
+        click_button("Create Image",:disabled=>false,:wait=>5)
         expect(page).to have_button("Clear Image",:wait=>5)
         expect(page).to have_button("Delete Image")
         expect(page).to have_button("Update Image", :disabled=>true)
@@ -143,13 +134,14 @@ RSpec.feature "AuthzImages", type: :feature, js:true do
         click_button("Delete Image")
 
         #wait for delete to initiate before navigating to new page
-        expect(page).to_not have_button("Delete Image")
+        expect(page).to have_no_button("Delete Image")
         expect(page).to have_button("Create Image")
       end
 
       #item should now be gone
       within("sd-image-selector .image-list") do
-        expect(page).to_not have_css("li a", :text=>image.caption, wait:5)
+        expect(page).to have_css("span.image_id",:count=>2,:visible=>false,:wait=>5)
+        expect(page).to have_no_css("span.image_id",:text=>image.id,:visible=>false)
       end
     end
   end
@@ -158,14 +150,14 @@ RSpec.feature "AuthzImages", type: :feature, js:true do
     after(:each) { logout }
 
     context "unauthenticated user" do
-      before(:each) { logout; visit_images }
+      before(:each) { logout; visit_images images }
       it_behaves_like "can list images" 
       it_behaves_like "displays correct buttons for role", 
             [], 
             ["Create Image", "Clear Image", "Update Image", "Delete Image"]
     end
     context "authenticated user" do
-      before(:each) { login authenticated; visit_images }
+      before(:each) { login authenticated; visit_images images }
       it_behaves_like "can list images" 
       it_behaves_like "displays correct buttons for role", 
             ["Create Image"], 
@@ -176,7 +168,7 @@ RSpec.feature "AuthzImages", type: :feature, js:true do
 
   context "images posted" do
     before(:each) do
-      visit_images
+      visit_images images
     end
     after(:each) { logout }
 

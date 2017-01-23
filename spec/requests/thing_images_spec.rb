@@ -144,7 +144,7 @@ RSpec.describe "ThingImages", type: :request do
     context "anonymous user" do
       before(:each) { logout }
       it_should_behave_like "can get links"
-      it_should_behave_like "get linkables", 2
+      it_should_behave_like "get linkables", 0
       it_should_behave_like "cannot create link", :unauthorized
       it_should_behave_like "cannot update link", :unauthorized
       it_should_behave_like "cannot delete link", :unauthorized
