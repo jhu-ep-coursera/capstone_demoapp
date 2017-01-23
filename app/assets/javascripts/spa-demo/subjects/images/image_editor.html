@@ -13,6 +13,20 @@
     <span class="invalid">{{$ctrl.item.errors.name}}</span>
   </div>
 
+
+  <div class="image-things row col-lg-12"
+       ng-show="$ctrl.item.id">
+    <label class="col-xs-3">Related Things:</label>
+    <ul class="image-things col-xs-9">
+      <li ng-repeat="ti in $ctrl.things | orderBy:'priority'">
+        <a data-ui-sref="things({id:ti.thing_id})">
+          <span class="id thing_id">{{ti.thing_id}}</span>
+          {{ti.thing_name}}</a>
+      </li>
+    </ul>
+    <span class="invalid">{{$ctrl.item.errors.thing_images}}</span>
+  </div>
+
   <div class="image-controls">
     <span ng-show="$ctrl.authz.authenticated">
       <button name="image-create"

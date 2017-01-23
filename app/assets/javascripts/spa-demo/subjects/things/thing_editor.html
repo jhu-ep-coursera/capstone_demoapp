@@ -39,7 +39,7 @@
            maxlength="4000"/>
     <span class="invalid">{{$ctrl.item.errors.notes}}</span>
   </div>
-
+  
   <div class="thing-controls"
        ng-show="$ctrl.authz.authenticated">
     <button ng-show="!$ctrl.item.id && $ctrl.authz.canCreate"
