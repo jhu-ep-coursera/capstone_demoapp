@@ -63,7 +63,9 @@
     vm.$onInit = function() {
       console.log("ImageEditorController",$scope);
       if ($stateParams.id) {
-        reload($stateParams.id);
+        //reload($stateParams.id);
+        $scope.$watch(function(){ return vm.authz.authenticated }, 
+                      function(){ reload($stateParams.id); });
       } else {
         newResource();
       }
