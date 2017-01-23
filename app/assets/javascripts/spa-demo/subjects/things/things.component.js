@@ -40,6 +40,8 @@
     vm.clear  = clear;
     vm.update  = update;
     vm.remove  = remove;
+    vm.haveDirtyLinks = haveDirtyLinks;
+    vm.updateImageLinks = updateImageLinks;
 
     vm.$onInit = function() {
       console.log("ThingEditorController",$scope);
@@ -70,7 +72,17 @@
         });
       $q.all([vm.item.$promise,vm.images.$promise]).catch(handleError);
     }
+    function haveDirtyLinks() {
+      for (var i=0; vm.images && i<vm.images.length; i++) {
+        var ti=vm.images[i];
+        if (ti.toRemove || ti.originalPriority != ti.priority) {
+          return true;
+        }        
+      }
+      return false;
+    }    
 
+    
     function create() {      
       $scope.thingform.$setPristine();
       vm.item.errors = null;
