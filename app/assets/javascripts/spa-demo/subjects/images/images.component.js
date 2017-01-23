@@ -45,11 +45,14 @@
   }
 
 
-  ImageEditorController.$inject = ["$scope",
-                                   "$state",
-                                   "$stateParams",
-                                   "spa-demo.subjects.Image"];
-  function ImageEditorController($scope, $state, $stateParams, Image) {
+  ImageEditorController.$inject = ["$scope","$q",
+                                   "$state", "$stateParams",
+                                   "spa-demo.subjects.Image",
+                                   "spa-demo.subjects.ImageThing",
+                                   "spa-demo.subjects.ImageLinkableThing",
+                                   ];
+  function ImageEditorController($scope, $q, $state, $stateParams, 
+                                 Image, ImageThing,ImageLinkableThing) {
     var vm=this;
     vm.create = create;
     vm.clear  = clear;

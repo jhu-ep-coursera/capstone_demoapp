@@ -29,11 +29,12 @@
     return APP_CONFIG.thing_selector_html;
   }    
 
-  ThingEditorController.$inject = ["$scope",
-                                   "$state",
-                                   "$stateParams",
-                                   "spa-demo.subjects.Thing"];
-  function ThingEditorController($scope, $state, $stateParams, Thing) {
+  ThingEditorController.$inject = ["$scope","$q",
+                                   "$state","$stateParams",
+                                   "spa-demo.subjects.Thing",
+                                   "spa-demo.subjects.ThingImage"];
+  function ThingEditorController($scope, $q, $state, $stateParams, 
+                                 Thing, ThingImage) {
     var vm=this;
     vm.create = create;
     vm.clear  = clear;
