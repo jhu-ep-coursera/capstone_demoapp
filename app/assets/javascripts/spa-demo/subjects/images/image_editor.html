@@ -8,11 +8,10 @@
            name="image-caption" 
            ng-model="$ctrl.item.caption" 
            ng-readonly="!$ctrl.authz.canUpdate"
-           maxlength="60"
+           maxlength="80"
            pattern=".{3,}" title="3 character minimum for Caption"/>
     <span class="invalid">{{$ctrl.item.errors.name}}</span>
   </div>
-
 
   <div class="image-things row col-lg-12"
        ng-show="$ctrl.item.id">
@@ -41,7 +40,6 @@
     </div>
     <span class="invalid">{{$ctrl.item.errors.linkable_things}}</span>
   </div>
-
 
   <div class="image-controls">
     <span ng-show="$ctrl.authz.authenticated">

@@ -58,6 +58,7 @@
     vm.clear  = clear;
     vm.update  = update;
     vm.remove  = remove;
+    vm.linkThings = linkThings;
 
     vm.$onInit = function() {
       console.log("ImageEditorController",$scope);
@@ -90,7 +91,6 @@
     }
 
     function create() {
-      vm.item.errors = null;
       vm.item.$save().then(
         function(){
            $state.go(".", {id: vm.item.id}); 
@@ -135,7 +135,7 @@
 
 
     function handleError(response) {
-      //console.log("error", response);
+      console.log("error", response);
       if (response.data) {
         vm.item["errors"]=response.data.errors;          
       } 

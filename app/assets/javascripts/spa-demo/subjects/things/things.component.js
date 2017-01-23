@@ -82,9 +82,7 @@
       return false;
     }    
 
-    
     function create() {      
-      $scope.thingform.$setPristine();
       vm.item.errors = null;
       vm.item.$save().then(
         function(){
@@ -98,8 +96,8 @@
       newResource();
       $state.go(".",{id: null});    
     }
+
     function update() {      
-      $scope.thingform.$setPristine();
       vm.item.errors = null;
       var update=vm.item.$update();
       updateImageLinks(update);
@@ -127,7 +125,6 @@
         handleError);    
     }
 
-
     function remove() {      
       vm.item.$remove().then(
         function(){
@@ -138,7 +135,7 @@
     }
 
     function handleError(response) {
-      //console.log("error", response);
+      console.log("error", response);
       if (response.data) {
         vm.item["errors"]=response.data.errors;          
       } 
@@ -146,6 +143,7 @@
         vm.item["errors"]={}
         vm.item["errors"]["full_messages"]=[response]; 
       }      
+      $scope.thingform.$setPristine();
     }    
   }
 

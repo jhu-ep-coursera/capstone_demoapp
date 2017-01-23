@@ -44,13 +44,11 @@
     <label class="col-xs-3">Related Images:</label>
     <ul class="thing-images col-xs-9">
       <li ng-repeat="ti in $ctrl.images | orderBy:'priority'">
-
         <input type="checkbox"               
                name="image-delete"
                ng-model="ti.toRemove"
                ng-show="$ctrl.authz.canRemoveImage"
                value="{{ti.id}}">
-
         <div class="image-delete glyphicon glyphicon-remove"
              ng-show="ti.toRemove"></div>
         <input type="number"
