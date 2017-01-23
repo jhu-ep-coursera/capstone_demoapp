@@ -16,7 +16,7 @@ module SubjectsUiHelper
                               :count=>ThingImage.where(:image=>image).count,
                               :wait=>5)
     end
-    if expected_linkables && logged_in? && false #ADD ME!!
+    if expected_linkables && logged_in?
       expect(page).to have_css(".link-things select option",
           :count=>expected_linkables)
     end
@@ -52,12 +52,10 @@ module SubjectsUiHelper
     within("sd-thing-editor .thing-form") do
       expect(page).to have_css("span.thing_id",:text=>thing.id,
                                                :visible=>false)
-=begin
       expect(page).to have_css("ul.thing-images li span.image_id",
                               :visible=>false,
                               :count=>ThingImage.where(:thing=>thing).count,
                               :wait=>5)
-=end
     end
   end
 
