@@ -107,7 +107,7 @@
     }
 
     function linkThings(parentPromise) {
-      var promises=[]
+      var promises=[];
       if (parentPromise) { promises.push(parentPromise); }
       angular.forEach(vm.selected_linkables, function(linkable){
         var resource=ImageThing.save({image_id:vm.item.id}, {thing_id:linkable});
