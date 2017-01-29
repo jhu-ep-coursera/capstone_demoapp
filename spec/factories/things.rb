@@ -13,6 +13,11 @@ FactoryGirl.define do
         thing.thing_images << build_list(:thing_image, props.image_count, :thing=>thing)
       end
     end
+
+    trait :with_fields do
+      description { Faker::Lorem.paragraphs.join }
+      notes       { Faker::Lorem.paragraphs.join }
+    end
   end
 
 end
