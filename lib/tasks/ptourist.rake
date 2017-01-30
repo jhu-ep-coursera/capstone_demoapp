@@ -1,5 +1,7 @@
 namespace :ptourist do
   MEMBERS=["mike","carol","alice","greg","marsha","peter","jan","bobby","cindy"]
+  ADMINS=["mike","carol"]
+  ORIGINATORS=["carol","alice"]
 
   def user_name first_name
     last_name = (first_name=="alice") ? "nelson" : "brady"
@@ -12,15 +14,28 @@ namespace :ptourist do
     User.find_by(:email=>user_email(first_name))
   end
 
+  def users first_names
+    first_names.map {|fn| user(fn) }
+  end
+  def admin_users
+     @admin_users ||= users(ADMINS)
+  end
+  def originator_users
+     @originator_users ||= users(ORIGINATORS)
+  end
+
   def create_image organizer, img
     puts "building image for #{img[:caption]}, by #{organizer.name}"
     image=Image.create(:creator_id=>organizer.id,:caption=>img[:caption])
+    organizer.add_role(Role::ORGANIZER, image).save
   end
   def create_thing thing, organizer, images
     thing=Thing.create!(thing)
+    organizer.add_role(Role::ORGANIZER, thing).save
     images.each do |img|
       puts "building image for #{thing.name}, #{img[:caption]}, by #{organizer.name}"
       image=Image.create(:creator_id=>organizer.id,:caption=>img[:caption])
+      organizer.add_role(Role::ORGANIZER, image).save
       ThingImage.new(:thing=>thing, :image=>image, 
                      :creator_id=>organizer.id)
                 .tap {|ti| ti.priority=img[:priority] if img[:priority]}.save!
@@ -53,6 +68,14 @@ namespace :ptourist do
      User.create(:name  => user_name(fn),
                  :email => user_email(fn),
                  :password => "password#{idx}")
+    end
+
+    admin_users.each do |user|
+      user.roles.create(:role_name=>Role::ADMIN)
+    end
+
+    originator_users.each do |user|
+      user.add_role(Role::ORIGINATOR, Thing).save
     end
 
     puts "users:#{User.pluck(:name)}"
