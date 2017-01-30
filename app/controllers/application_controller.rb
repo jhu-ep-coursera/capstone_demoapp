@@ -2,6 +2,8 @@ class ApplicationController < ActionController::API
   include DeviseTokenAuth::Concerns::SetUserByToken
   #make the connection between controller action and associated view
   include ActionController::ImplicitRender
+  include Pundit
+
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
