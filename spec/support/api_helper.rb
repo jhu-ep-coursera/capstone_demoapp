@@ -50,12 +50,12 @@ module ApiHelper
 
   def create_resource path, factory, status=:created
     jpost path, FactoryGirl.attributes_for(factory)
-#    expect(response).to have_http_status(status) if status
+    expect(response).to have_http_status(status) if status
     parsed_body
   end
 
   def apply_admin account
-#    User.find(account[:id]).roles.create(:role_name=>Role::ADMIN)
+    User.find(account[:id]).roles.create(:role_name=>Role::ADMIN)
     return account
   end
   def apply_originator account, model_class

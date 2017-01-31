@@ -37,14 +37,14 @@ RSpec.describe "Images", type: :request do
   shared_examples "can create" do
     it "is created" do
       jpost images_path, image_props
-      pp parsed_body
+      #pp parsed_body
       expect(response).to have_http_status(:created)
       payload=parsed_body
       expect(payload).to include("id")
       expect(payload).to include("caption"=>image_props[:caption])
-#      expect(payload).to include("user_roles")
-#      expect(payload["user_roles"]).to include(Role::ORGANIZER)
-#      expect(Role.where(:user_id=>user["id"],:role_name=>Role::ORGANIZER)).to exist
+      expect(payload).to include("user_roles")
+      expect(payload["user_roles"]).to include(Role::ORGANIZER)
+      expect(Role.where(:user_id=>user["id"],:role_name=>Role::ORGANIZER)).to exist
     end
   end
   shared_examples "can update" do
@@ -66,7 +66,6 @@ RSpec.describe "Images", type: :request do
       #pp parsed_body
       payload=parsed_body
       expect(payload.size).to_not eq(0)
-=begin
       payload.each do |r|
         expect(r).to include("id")
         expect(r).to include("caption")
@@ -77,7 +76,6 @@ RSpec.describe "Images", type: :request do
           expect(r["user_roles"].to_a).to include(*user_roles)
         end
       end
-=end
     end
     it "get has all fields with user_roles #{user_roles}" do
       jget image_path(image_id)
