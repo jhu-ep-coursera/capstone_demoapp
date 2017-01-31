@@ -8,9 +8,13 @@ class ImagesController < ApplicationController
   def index
     authorize Image
     @images = policy_scope(Image.all)
+    @images = ImagePolicy.merge(@images)
   end
 
   def show
+    authorize @image
+    images = policy_scope(Image.where(:id=>@image.id))
+    @image = ImagePolicy.merge(images).first
   end
 
   def create
@@ -18,15 +22,20 @@ class ImagesController < ApplicationController
     @image = Image.new(image_params)
     @image.creator_id=current_user.id
 
-    if @image.save
-      render :show, status: :created, location: @image
-    else
-      render json: {errors:@image.errors.messages}, status: :unprocessable_entity
+    User.transaction do
+      if @image.save
+        role=current_user.add_role(Role::ORGANIZER, @image)
+        @image.user_roles << role.role_name
+        role.save!
+        render :show, status: :created, location: @image
+      else
+        render json: {errors:@image.errors.messages}, status: :unprocessable_entity
+      end
     end
   end
 
   def update
-    @image = Image.find(params[:id])
+    authorize @image
 
     if @image.update(image_params)
       head :no_content
@@ -36,6 +45,7 @@ class ImagesController < ApplicationController
   end
 
   def destroy
+    authorize @image
     @image.destroy
 
     head :no_content
