@@ -1,4 +1,6 @@
 class ThingsController < ApplicationController
+  include ActionController::Helpers
+  helper ThingsHelper
   before_action :set_thing, only: [:show, :update, :destroy]
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   wrap_parameters :thing, include: ["name", "description", "notes"]
