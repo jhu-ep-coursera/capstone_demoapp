@@ -4,6 +4,8 @@ class ThingsController < ApplicationController
   before_action :set_thing, only: [:show, :update, :destroy]
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   wrap_parameters :thing, include: ["name", "description", "notes"]
+  after_action :verify_authorized
+  after_action :verify_policy_scoped, only: [:index]
 
   def index
     @things = Thing.all
