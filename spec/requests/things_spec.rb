@@ -75,19 +75,12 @@ RSpec.describe "Things", type: :request do
     end
   end
   shared_examples "field(s) redacted" do
-    it "list does not include notes" do
+    it "list does not show non-members" do
       jget things_path
       expect(response).to have_http_status(:ok)
       #pp parsed_body
       payload=parsed_body
-      expect(payload.size).to_not eq(0)
-      payload.each do |r|
-        expect(r).to include("id")
-        expect(r).to include("name")
-        expect(r).to include("description")
-        expect(r).to_not include("notes")
-        expect(r).to_not include("user_roles")
-      end
+      expect(payload.size).to eq(0)
     end
     it "get does not include notes" do
       jget thing_path(thing)
