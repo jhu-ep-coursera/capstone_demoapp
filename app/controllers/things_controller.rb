@@ -15,6 +15,10 @@ class ThingsController < ApplicationController
 
   def show
     authorize @thing
+    things = ThingPolicy::Scope.new(current_user,
+                                    Thing.where(:id=>@thing.id))
+                                    .user_roles(false)
+    @thing = ThingPolicy.merge(things).first
   end
 
   def create
