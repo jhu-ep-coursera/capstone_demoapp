@@ -8,13 +8,16 @@ class ThingsController < ApplicationController
   after_action :verify_policy_scoped, only: [:index]
 
   def index
+    authorize Thing
     @things = Thing.all
   end
 
   def show
+    authorize @thing
   end
 
   def create
+    authorize Thing
     @thing = Thing.new(thing_params)
 
     if @thing.save
@@ -25,7 +28,7 @@ class ThingsController < ApplicationController
   end
 
   def update
-    @thing = Thing.find(params[:id])
+    authorize @thing
 
     if @thing.update(thing_params)
       head :no_content
@@ -35,6 +38,7 @@ class ThingsController < ApplicationController
   end
 
   def destroy
+    authorize @thing
     @thing.destroy
 
     head :no_content
