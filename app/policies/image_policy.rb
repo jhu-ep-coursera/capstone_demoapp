@@ -15,6 +15,10 @@ class ImagePolicy < ApplicationPolicy
     organizer_or_admin?
   end
 
+  def get_things?
+    true
+  end
+
   class Scope < Scope
     def user_roles
       joins_clause=["left join Roles r on r.mname='Image'",
