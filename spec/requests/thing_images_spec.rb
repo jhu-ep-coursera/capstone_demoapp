@@ -89,6 +89,16 @@ RSpec.describe "ThingImages", type: :request do
       jget thing_thing_images_path(linked_thing_id)
       expect(parsed_body.size).to eq(linked_image_ids.count+1)
     end
+    it "bad request when link to unknown Image" do
+      jpost thing_thing_images_path(linked_thing_id), 
+                                    thing_image_props.merge(:image_id=>99999)
+      expect(response).to have_http_status(:bad_request)
+    end
+    it "bad request when link to unknown Thing" do
+      jpost image_thing_images_path(thing_image_props[:image_id]), 
+                                    thing_image_props.merge(:thing_id=>99999)
+      expect(response).to have_http_status(:bad_request)
+    end
   end
   shared_examples "can update link" do
     it do
