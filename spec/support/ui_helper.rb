@@ -53,6 +53,7 @@ module UiHelper
     end
     expect(page).to have_css("#logout-form", :visible=>false)
     expect(page).to have_css("#navbar-loginlabel",:text=>/#{credentials[:name]}/)
+    return credentials
   end
 
   def logout
