@@ -36,8 +36,10 @@ class ThingImagesController < ApplicationController
     thing=Thing.where(id:thing_image.thing_id).first
     if !thing
       full_message_error "cannot find thing[#{params[:thing_id]}]", :bad_request
+      skip_authorization
     elsif !Image.where(id:thing_image.image_id).exists?
       full_message_error "cannot find image[#{params[:image_id]}]", :bad_request
+      skip_authorization
     else
       authorize thing, :add_image?
       thing_image.creator_id=current_user.id
