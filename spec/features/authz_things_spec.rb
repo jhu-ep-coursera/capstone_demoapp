@@ -5,12 +5,16 @@ RSpec.feature "AuthzThings", type: :feature, js:true do
   include_context "db_cleanup_each"
   include SubjectsUiHelper
 
-  let(:originator)    { create_user }
+  let(:admin)         { apply_admin(create_user) }
+  let(:originator)    { apply_originator(create_user, Thing) }
   let(:organizer)     { originator }
   let(:member)        { create_user }
   let(:authenticated) { create_user }
   let(:thing_props)   { FactoryGirl.attributes_for(:thing) }
-  let(:things)        { FactoryGirl.create_list(:thing, 3) }
+  let(:things)        { FactoryGirl.create_list(:thing, 3, 
+                                                :with_roles, 
+                                                :originator_id=>originator[:id],
+                                                :member_id=>member[:id]) }
   let(:thing)         { things[0] }
 
   shared_examples "cannot list things" do
@@ -47,12 +51,12 @@ RSpec.feature "AuthzThings", type: :feature, js:true do
     end
   end
 
-  shared_examples "originator has invalid thing" do
+  shared_examples "organizer has invalid thing" do
     it "cannot edit description for invalid thing" do
       within("sd-thing-editor .thing-form") do
         expect(page).to have_field("thing-name", :visible=>true)
-        expect(page).to have_field("thing-desc", :visible=>false)
-        expect(page).to have_field("thing-notes", :visible=>false)
+        expect(page).to have_no_field("thing-desc")
+        expect(page).to have_no_field("thing-notes")
       end
     end
     it "cannot create invalid thing" do
@@ -119,6 +123,18 @@ RSpec.feature "AuthzThings", type: :feature, js:true do
         expect(page).to have_field("thing-name", :with=>thing.name)
         expect(page).to have_field("thing-desc", :with=>thing.description)
         expect(page).to have_field("thing-notes", :visible=>true, :readonly=>readonly)
+      end
+    end
+  end
+
+  shared_examples "cannot update thing" do
+    it "fields read-only" do
+      within("sd-thing-editor .thing-form") do 
+        expect(page).to have_field("thing-name", :with=>thing.name, :readonly=>true)
+        expect(page).to have_field("thing-desc", :with=>thing.description, :readonly=>true)
+        if page.has_field?("thing-notes")
+          expect(page).to have_field("thing-notes", :with=>thing.notes, :readonly=>true)
+        end
       end
     end
   end
@@ -205,13 +221,26 @@ RSpec.feature "AuthzThings", type: :feature, js:true do
     end
     context "authenticated user" do
       before(:each) { login authenticated; visit_things things}
-
-      it_behaves_like "can list things"
+      it_behaves_like "cannot list things"
       it_behaves_like "displays correct buttons for role", 
-          ["Create Thing"], ["Clear Thing", "Update Thing", "Delete Thing"],
-          []
-      it_behaves_like "originator has invalid thing"
+          [],
+          ["Create Thing"], ["Clear Thing", "Update Thing", "Delete Thing"]
+    end
+    context "originator user" do
+      before(:each) { login originator; visit_things things }
+      it_behaves_like "displays correct buttons for role", 
+          ["Create Thing"], 
+          ["Clear Thing", "Update Thing", "Delete Thing"]
+      it_behaves_like "can list things"
+      it_behaves_like "organizer has invalid thing"
       it_behaves_like "can create valid thing"
+    end
+    context "admin user" do
+      before(:each) { login admin; visit_things things }
+      it_behaves_like "displays correct buttons for role", 
+          [], 
+          ["Create Thing", "Clear Thing", "Update Thing", "Delete Thing"]
+      it_behaves_like "can list things"
     end
   end
 
@@ -245,15 +274,46 @@ RSpec.feature "AuthzThings", type: :feature, js:true do
       end
 
       context "authenticated user" do
-        before(:each) { login authenticated; select_thing }
+        before(:each) { visit "#{ui_path}/#/things/#{thing.id}" }
         it_behaves_like "displays correct buttons for role", 
-            ["Clear Thing", "Delete Thing"],
-            ["Create Thing", "Update Thing"]
+            [],
+            ["Clear Thing", "Create Thing", "Update Thing", "Delete Thing"]
+        it_behaves_like "cannot see details"
+      end
+
+      context "member user" do
+        before(:each) { login member; select_thing }
+        it_behaves_like "displays correct buttons for role", 
+            ["Clear Thing"], 
+            ["Create Thing", "Update Thing", "Delete Thing"]
+        it_behaves_like "displays thing"
+        it_behaves_like "can see details", true
+        it_behaves_like "can clear thing"
+        it_behaves_like "cannot update thing"
+      end
+
+      context "organizer user" do
+        before(:each) { login organizer; select_thing }
+        it_behaves_like "displays correct buttons for role", 
+            ["Clear Thing", "Update Thing", "Delete Thing"], 
+            ["Create Thing"]
         it_behaves_like "displays thing"
         it_behaves_like "can see details", false
+        it_behaves_like "can clear thing"
         it_behaves_like "can update thing"
         it_behaves_like "cannot update to invalid thing"
+        it_behaves_like "can delete thing"
+      end
+
+      context "admin user" do
+        before(:each) { login admin; select_thing }
+        it_behaves_like "displays correct buttons for role", 
+            ["Clear Thing", "Delete Thing"], 
+            ["Create Thing", "Update Thing"]
+        it_behaves_like "displays thing"
+        it_behaves_like "can see details", true
         it_behaves_like "can clear thing"
+        it_behaves_like "cannot update thing"
         it_behaves_like "can delete thing"
       end
     end

@@ -64,10 +64,49 @@ module UiHelper
     end
   end
 
+  def current_user
+    user=nil
+    if logged_in?
+      name=page.find("#navbar-loginlabel",:text=>/.+/).text
+      User.where(:name=>name).each do |u|
+        if page.has_css?("#user_id",:text=>u.id,:visible=>false,:wait=>5) 
+          user=u
+          break
+        end
+      end
+    end
+    return user
+  end
+
   def wait_until
     Timeout.timeout(Capybara.default_max_wait_time) do 
       sleep(0.1) until value = yield
       value
     end
   end
+
+
+  def apply_admin account
+    User.find(account.symbolize_keys[:id]).roles.create(:role_name=>Role::ADMIN)
+    return account
+  end
+  def apply_originator account, model_class
+    User.find(account.symbolize_keys[:id]).add_role(Role::ORIGINATOR, model_class).save
+    return account
+  end
+  def apply_role account, role, object
+    user=User.find(account.symbolize_keys[:id])
+    arr=object.kind_of?(Array) ? object : [object]
+    arr.each do |m|
+      user.add_role(role, m).save
+    end
+    return account
+  end
+  def apply_organizer account, object
+    apply_role(account,Role::ORGANIZER, object)
+  end
+  def apply_member account, object
+    apply_role(account, Role::MEMBER, object)
+  end
+
 end
