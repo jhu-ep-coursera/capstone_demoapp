@@ -1,5 +1,5 @@
 namespace :ptourist do
-  MEMBERS=["mike","carol","alice","greg","marsha","peter","jan","bobby","cindy"]
+  MEMBERS=["mike","carol","alice","greg","marsha","peter","jan","bobby","cindy", "sam"]
   ADMINS=["mike","carol"]
   ORIGINATORS=["carol","alice"]
   BOYS=["greg","peter","bobby"]
@@ -7,17 +7,25 @@ namespace :ptourist do
 
   def user_name first_name
     last_name = (first_name=="alice") ? "nelson" : "brady"
+    case first_name
+    when "alice"
+      last_name = "nelson"
+    when "sam"
+      last_name = "franklin"
+    else
+      last_name = "brady"
+    end
     "#{first_name} #{last_name}".titleize
   end
   def user_email first_name
     "#{first_name}@bbunch.org"
   end
-  def user first_name
+  def get_user first_name
     User.find_by(:email=>user_email(first_name))
   end
 
   def users first_names
-    first_names.map {|fn| user(fn) }
+    first_names.map {|fn| get_user(fn) }
   end
   def first_names users
     users.map {|user| user.email.chomp("@bbunch.org") }
@@ -38,7 +46,7 @@ namespace :ptourist do
     @girl_users ||= users(GIRLS)
   end
   def mike_user
-    @mike_user ||= user("mike")
+    @mike_user ||= get_user("mike")
   end
 
   def create_image organizer, img
@@ -113,8 +121,8 @@ namespace :ptourist do
     thing={:name=>"B&O Railroad Museum",
     :description=>"Discover your adventure at the B&O Railroad Museum in Baltimore, Maryland. Explore 40 acres of railroad history at the birthplace of American railroading. See, touch, and hear the most important American railroad collection in the world! Seasonal train rides for all ages.",
     :notes=>"Trains rule, boats and cars drool"}
-    organizer=user("alice")
-    members=member_users
+    organizer=get_user("alice")
+    members=boy_users
     images=[
     {:path=>"db/bta/image001_original.jpg",
      :caption=>"Front of Museum Restored: 1884 B&O Railroad Museum Roundhouse",
@@ -135,8 +143,8 @@ namespace :ptourist do
     thing={:name=>"Baltimore Water Taxi",
     :description=>"The Water Taxi is more than a jaunt across the harbor; it’s a Baltimore institution and a way of life. Every day, thousands of residents and visitors not only rely on us to take them safely to their destinations, they appreciate our knowledge of the area and our courteous service. And every day, hundreds of local businesses rely on us to deliver customers to their locations.  We know the city. We love the city. We keep the city moving. We help keep businesses thriving. And most importantly, we offer the most unique way to see Baltimore and provide an unforgettable experience that keeps our passengers coming back again and again.",
     :notes=>"No on-duty pirates, please"}
-    organizer=user("carol")
-    members=member_users
+    organizer=get_user("alice")
+    members=boy_users
     images=[
     {:path=>"db/bta/DSC_5358.jpg",
      :caption=>"Boat at Fort McHenry",
@@ -161,7 +169,7 @@ namespace :ptourist do
     thing={:name=>"Rent-A-Tour",
     :description=>"Professional guide services and itinerary planner in Baltimore, Washington DC, Annapolis and the surronding region",
     :notes=>"Bus is clean and ready to roll"}
-    organizer=user("greg")
+    organizer=get_user("greg")
     members=boy_users
     images=[
     {:path=>"db/bta/image004_original.jpg",
@@ -181,8 +189,8 @@ namespace :ptourist do
     thing={:name=>"Holiday Inn Timonium",
     :description=>"Group friendly located just a few miles north of Baltimore's Inner Harbor. Great neighborhood in Baltimore County",
     :notes=>"Early to bed, early to rise"}
-    organizer=user("alice")
-    members=member_users
+    organizer=get_user("carol")
+    members=girl_users
     images=[
     {:path=>"db/bta/hitim-001.jpg",
      :caption=>"Hotel Front Entrance",
@@ -196,8 +204,8 @@ namespace :ptourist do
     thing={:name=>"National Aquarium",
     :description=>"Since first opening in 1981, the National Aquarium has become a world-class attraction in the heart of Baltimore. Recently celebrating our 35th Anniversary, we continue to be a symbol of urban renewal and a source of pride for Marylanders. With a mission to inspire the world’s aquatic treasures, the Aquarium is consistently ranked as one of the nation’s top aquariums and has hosted over 51 million guests since opening. A study by the Maryland Department of Economic and Employment Development determined that the Aquarium annually generates nearly $220 million in revenues, 2,000 jobs, and $6.8 million in State and local taxes. It was also recently named one of Baltimore’s Best Places to Work! In addition to housing nearly 20,000 animals, we have countless science-based education programs and hands-on conservation projects spanning from right here in the Chesapeake Bay to abroad in Costa Rica. Once you head inside, The National Aquarium has the ability to transport you all over the world in a matter of hours to discover hundreds of incredible species. From the Freshwater Crocodile in our Australia: Wild Extremes exhibit all the way to a Largetooth Sawfish in the depths of Shark Alley. Recently winning top honors from the Association of Zoos and Aquariums for outstanding design, exhibit innovation and guest engagement, we can’t forget about Living Seashore; an exhibit where guests can touch Atlantic stingrays, Horseshoe crabs, and even Moon jellies if they wish! It is a place for friends, family, and people from all walks of life to come and learn about the extraordinary creatures we share our planet with. Through education, research, conservation action and advocacy, the National Aquarium is truly pursuing a vision to change the way humanity cares for our ocean planet.",
     :notes=>"Remember to water the fish"}
-    organizer=user("carol")
-    members=member_users
+    organizer=get_user("carol")
+    members=girl_users
     images=[
     {:path=>"db/bta/naqua-001.jpg",
      :caption=>"National Aquarium buildings",
@@ -230,7 +238,7 @@ Whether you’re hungry, thirsty or bored, Hyatt Place Baltimore/Inner Harbor ha
  
 Work up a sweat in our 24-hour StayFit Gym, which features Life Fitness® cardio equipment and free weights. Then, float and splash around in our indoor pool, open year-round for your relaxation. There’s plenty of other spaces throughout our Inner Harbor hotel for you to chill and socialize with other guests. For your comfort and convenience, all Hyatt Place hotels are smoke-free.
 "}
-    organizer=user("marsha")
+    organizer=get_user("marsha")
     members=girl_users
     images=[
     {:path=>"db/bta/hpm-001.jpg",
@@ -283,7 +291,7 @@ Work up a sweat in our 24-hour StayFit Gym, which features Life Fitness® cardio
     ]
     create_thing thing, organizer, members, images
 
-    organizer=user("peter")
+    organizer=get_user("peter")
     image= {:path=>"db/bta/aquarium.jpg",
      :caption=>"Aquarium",
      :lng=>-76.6083, 
@@ -291,7 +299,7 @@ Work up a sweat in our 24-hour StayFit Gym, which features Life Fitness® cardio
      }
     create_image organizer, image
 
-    organizer=user("jan")
+    organizer=get_user("jan")
     image= {:path=>"db/bta/bromo_tower.jpg",
      :caption=>"Bromo Tower",
      :lng=>-76.6228645, 
@@ -299,7 +307,7 @@ Work up a sweat in our 24-hour StayFit Gym, which features Life Fitness® cardio
      }
     create_image organizer, image
 
-    organizer=user("bobby")
+    organizer=get_user("bobby")
     image= {:path=>"db/bta/federal_hill.jpg",
      :caption=>"Federal Hill",
      :lng=>-76.6152507,
@@ -307,7 +315,7 @@ Work up a sweat in our 24-hour StayFit Gym, which features Life Fitness® cardio
      }
     create_image organizer, image
 
-    organizer=user("alice")
+    organizer=get_user("alice")
     image= {:path=>"db/bta/row_homes.jpg",
      :caption=>"Row Homes",
      :lng=>-76.6152153,
@@ -315,7 +323,7 @@ Work up a sweat in our 24-hour StayFit Gym, which features Life Fitness® cardio
      }
     create_image organizer, image
 
-    organizer=user("alice")
+    organizer=get_user("alice")
     image= {:path=>"db/bta/skyline_water_level.jpg",
      :caption=>"Skyline Water Level",
      :lng=>-76.6284366, 
@@ -323,7 +331,7 @@ Work up a sweat in our 24-hour StayFit Gym, which features Life Fitness® cardio
      }
     create_image organizer, image
 
-    organizer=user("bobby")
+    organizer=get_user("bobby")
     image= {:path=>"db/bta/skyline.jpg",
      :caption=>"Skyline",
      :lng=>-76.6138132,
@@ -331,7 +339,7 @@ Work up a sweat in our 24-hour StayFit Gym, which features Life Fitness® cardio
      }
     create_image organizer, image
 
-    organizer=user("marsha")
+    organizer=get_user("marsha")
     image= {:path=>"db/bta/visitor_center.jpg",
      :caption=>"Visitor Center",
      :lng=>-76.6155792, 
@@ -339,7 +347,7 @@ Work up a sweat in our 24-hour StayFit Gym, which features Life Fitness® cardio
      }
     create_image organizer, image
 
-    organizer=user("greg")
+    organizer=get_user("greg")
     image= {:path=>"db/bta/world_trade_center.jpg",
      :caption=>"World Trade Center",
      :lng=>-76.6117195,
