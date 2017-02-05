@@ -55,6 +55,11 @@
                 ng-show="$ctrl.authz.canUpdate" 
                 ng-disabled="!imageform.$dirty"
                 ng-click="$ctrl.update()">Update Image</button>
+        <button name="image-update"
+                type="submit"
+                ng-show="!$ctrl.authz.canUpdate" 
+                ng-disabled="$ctrl.selected_linkables.length==0"
+                ng-click="$ctrl.linkThings()">Link to Things</button>
         <button name="image-delete"
                 type="submit"
                 ng-show="$ctrl.authz.canDelete" 

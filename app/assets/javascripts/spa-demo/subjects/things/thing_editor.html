@@ -83,7 +83,9 @@
 
     <div ng-show="$ctrl.item.id">
       <span class="thing-modify"
-            data-ng-hide="!$ctrl.authz.canUpdate">
+            data-ng-hide="!$ctrl.authz.canUpdate &&
+                          !$ctrl.authz.canUpdateImage &&
+                          !$ctrl.authz.canRemoveImage">
         <button name="thing-update"
                 type="submit"          
                 ng-disabled="thingform.$invalid || !thingform.$dirty"
