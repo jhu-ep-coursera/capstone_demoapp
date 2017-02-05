@@ -129,5 +129,26 @@ RSpec.describe "Images", type: :request do
       it_should_behave_like "can delete"
       it_should_behave_like "all fields present", []
     end
+
+  end
+
+  describe "role merge" do
+    it "returns one image with flattened roles" do
+      roles=["foo","bar","baz"]
+      originator=FactoryGirl.create(:user)
+      image=FactoryGirl.create(:image,
+                               :creator_id=>originator.id);
+      roles.each do |role|
+        originator.add_role(role,image).save
+      end
+      login originator
+      jget images_path
+      #pp parsed_body
+      expect(response).to have_http_status(:ok)
+      payload=parsed_body
+      expect(payload.size).to eq(1)
+      expect(payload[0]).to include("user_roles")
+      expect(payload[0]["user_roles"]).to include(*roles)
+    end
   end
 end
