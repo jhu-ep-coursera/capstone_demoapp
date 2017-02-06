@@ -31,10 +31,11 @@
 
   ThingEditorController.$inject = ["$scope","$q",
                                    "$state","$stateParams",
+                                   "spa-demo.authz.Authz",
                                    "spa-demo.subjects.Thing",
                                    "spa-demo.subjects.ThingImage"];
   function ThingEditorController($scope, $q, $state, $stateParams, 
-                                 Thing, ThingImage) {
+                                 Authz, Thing, ThingImage) {
     var vm=this;
     vm.create = create;
     vm.clear  = clear;
@@ -45,13 +46,14 @@
 
     vm.$onInit = function() {
       console.log("ThingEditorController",$scope);
-      if ($stateParams.id) {
-        //reload($stateParams.id);
-        $scope.$watch(function(){ return vm.authz.authenticated }, 
-                      function(){ reload($stateParams.id); });
-      } else {
-        newResource();
-      }
+      $scope.$watch(function(){ return Authz.getAuthorizedUserId(); }, 
+                    function(){ 
+                      if ($stateParams.id) {
+                        reload($stateParams.id); 
+                      } else {
+                        newResource();
+                      }
+                    });
     }
 
     return;
@@ -151,15 +153,19 @@
 
   ThingSelectorController.$inject = ["$scope",
                                      "$stateParams",
+                                     "spa-demo.authz.Authz",
                                      "spa-demo.subjects.Thing"];
-  function ThingSelectorController($scope, $stateParams, Thing) {
+  function ThingSelectorController($scope, $stateParams, Authz, Thing) {
     var vm=this;
 
     vm.$onInit = function() {
       console.log("ThingSelectorController",$scope);
-      if (!$stateParams.id) {
-        vm.items = Thing.query();        
-      }
+      $scope.$watch(function(){ return Authz.getAuthorizedUserId(); }, 
+                    function(){ 
+                      if (!$stateParams.id) {
+                        vm.items = Thing.query();        
+                      }
+                    });
     }
     return;
     //////////////

@@ -42,7 +42,7 @@
 
       service.admin=false;
       service.originator=[];
-      whoAmi.get().$promise.then(
+      whoAmI.get().$promise.then(
         function(response){processUserRoles(response, deferred);},
         function(response){processUserRoles(response, deferred);});      
     }
