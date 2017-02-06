@@ -31,44 +31,50 @@
     var vm = this;
     vm.authz={};
     vm.authz.canUpdateItem = canUpdateItem;
-
-    ThingAuthzController.prototype.resetAccess = function() {
-      this.authz.canCreate     = false;
-      this.authz.canQuery      = false;
-      this.authz.canUpdate     = false;
-      this.authz.canDelete     = false;
-      this.authz.canGetDetails = false;
-      this.authz.canUpdateImage = false;
-      this.authz.canRemoveImage = false;
-    }
+    vm.newItem=newItem;
 
     activate();
     return;
     ////////////
     function activate() {
-      vm.resetAccess();
-      newUser();
+      vm.newItem(null);
     }
 
-    function newUser(user, prevUser) {
-      console.log("newUser=",user,", prev=",prevUser);
+    function newItem(item) {
+      ThingsAuthz.getAuthorizedUser().then(
+        function(user){ authzUserItem(item, user); },
+        function(user){ authzUserItem(item, user); });
+    }
+
+    function authzUserItem(item, user) {
+      console.log("new Item/Authz", item, user);
+
       vm.authz.authenticated = ThingsAuthz.isAuthenticated();
-      if (vm.authz.authenticated) {
-        vm.authz.canQuery      = true;
-        vm.authz.canCreate     = true;
-        vm.authz.canUpdate     = true,
-        vm.authz.canDelete     = true,
-        vm.authz.canGetDetails = true;
-        vm.authz.canUpdateImage = true;
-        vm.authz.canRemoveImage = true;
+      vm.authz.canQuery      = ThingsAuthz.canQuery();
+      vm.authz.canCreate     = ThingsAuthz.canCreate();
+      if (item && item.$promise) {
+        vm.authz.canUpdate      = false;
+        vm.authz.canDelete      = false;
+        vm.authz.canGetDetails  = false;
+        vm.authz.canUpdateImage = false;
+        vm.authz.canRemoveImage = false;      
+        item.$promise.then(function(){ checkAccess(item); });
       } else {
-        vm.resetAccess();
-      }
-      console.log(vm.authz);
+        checkAccess(item);
+      }      
+    }
+
+    function checkAccess(item) {
+      vm.authz.canUpdate     = ThingsAuthz.canUpdate(item);
+      vm.authz.canDelete     = ThingsAuthz.canDelete(item);
+      vm.authz.canGetDetails = ThingsAuthz.canGetDetails(item);
+      vm.authz.canUpdateImage = ThingsAuthz.canUpdateImage(item);
+      vm.authz.canRemoveImage = ThingsAuthz.canRemoveImage(item);      
+      console.log("checkAccess", item, vm.authz);
     }
 
     function canUpdateItem(item) {
-      return ThingsAuthz.isAuthenticated();
+      return ThingsAuthz.canUpdate(item);
     }    
   }
 })();
