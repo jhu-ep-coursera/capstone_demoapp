@@ -21,3 +21,11 @@ form .invalid {
   padding-left: 10px; /* adds spacing along left of dropdown menu form */
   padding-right: 10px;
 }
+
+[readonly='readonly'] {
+  background-color: inherit;
+}
+
+button:disabled {
+    color:#717782;
+}
