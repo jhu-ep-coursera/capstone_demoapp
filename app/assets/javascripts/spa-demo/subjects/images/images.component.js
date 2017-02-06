@@ -16,6 +16,9 @@
       bindings: {
         authz: "<"
       },
+      require: {
+        imagesAuthz: "^sdImagesAuthz"
+      }
     });
 
 
@@ -37,7 +40,7 @@
 
     vm.$onInit = function() {
       console.log("ImageSelectorController",$scope);
-      $scope.$watch(function(){ return Authz.getAuthorizedUserId; }, 
+      $scope.$watch(function(){ return Authz.getAuthorizedUserId(); }, 
                     function(){ 
                       if (!$stateParams.id) { 
                         vm.items = Image.query(); 
@@ -59,6 +62,7 @@
   function ImageEditorController($scope, $q, $state, $stateParams, 
                                  Authz, Image, ImageThing,ImageLinkableThing) {
     var vm=this;
+    vm.selected_linkables=[];
     vm.create = create;
     vm.clear  = clear;
     vm.update  = update;
@@ -81,6 +85,7 @@
     function newResource() {
       console.log("newResource()");
       vm.item = new Image();
+      vm.imagesAuthz.newItem(vm.item);
       return vm.item;
     }
 
@@ -90,6 +95,7 @@
       vm.item = Image.get({id:itemId});
       vm.things = ImageThing.query({image_id:itemId});
       vm.linkable_things = ImageLinkableThing.query({image_id:itemId});
+      vm.imagesAuthz.newItem(vm.item);
       $q.all([vm.item.$promise,
               vm.things.$promise]).catch(handleError);
     }
