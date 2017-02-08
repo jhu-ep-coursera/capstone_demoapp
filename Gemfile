@@ -47,7 +47,8 @@ gem 'database_cleaner', '~>1.5', '>=1.5.3'
 gem 'factory_girl_rails', '~>4.7', '>=4.7.0'
 gem 'faker', '~>1.6', '>=1.6.6'
 
-source 'https://rails-assets.org' do
+#source 'https://rails-assets.org' do
+source 'http://insecure.rails-assets.org' do
   gem 'rails-assets-bootstrap', '~>3.3', '>= 3.3.7'
   gem 'rails-assets-angular', '~>1.5', '>= 1.5.8'
   gem 'rails-assets-angular-ui-router', '~>0.3', '>= 0.3.1'
