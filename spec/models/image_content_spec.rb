@@ -6,9 +6,13 @@ require_relative '../support/image_content_helper.rb'
 RSpec.describe "ImageContent", type: :model do
   include_context "db_cleanup"
   include ImageContentHelper
+  let(:fin) { image_file }
 
   context "BSON::Binary" do
-    it "demonstrates BSON::Binary"
+    it "demonstrates BSON::Binary" do
+      fin
+    end
+
     context "using helper" do
       it "derives BSON::Binary from file"
       it "derives BSON::Binary from StringIO"

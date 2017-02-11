@@ -13,6 +13,8 @@
 /tmp
 *.swp
 
+/db/images
+
 /client/build
 /bower_components
 /node_modules
