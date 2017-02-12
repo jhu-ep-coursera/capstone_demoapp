@@ -1,5 +1,7 @@
 class ImageContent
   include Mongoid::Document
+  CONTENT_TYPES=["image/jpeg","image/jpg"]
+
   field :image_id, type: Integer
   field :width, type: Integer
   field :height, type: Integer
@@ -8,7 +10,15 @@ class ImageContent
   field :original, type: Mongoid::Boolean
 
   def content=(value)
+    if self[:content]
+      self.width = nil
+      self.height = nil
+    end
     self[:content]=self.class.to_binary(value)
+    exif.tap do |xf|
+      self.width = xf.width   if xf
+      self.height = xf.height if xf
+    end
   end
 
   def self.to_binary(value)
@@ -21,6 +31,15 @@ class ImageContent
     when value.is_a?(String)
       decoded=Base64.decode64(value)
       BSON::Binary.new(decoded)
+    end
+  end
+
+  def exif
+    if content
+      case
+      when (CONTENT_TYPES.include? content_type)
+        EXIFR::JPEG.new(StringIO.new(content.data))
+      end
     end
   end
 end
