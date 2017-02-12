@@ -88,13 +88,58 @@ RSpec.describe "ImageContent", type: :model do
   end
 
   context "valid image content" do
-    it "requires image"
-    it "requires content_type"
-    it "requires content"
-    it "requires width"
-    it "requires height"
-    it "requires supported content_type"
-    it "checks content size maximium"
+    let(:ic) {ImageContent.new(:image_id=>1,:content_type=>"image/jpg",:content=>fin)}
+    before(:each) do
+      expect(ic.validate).to be true
+      expect(ic.errors.messages).to be_empty
+    end
+
+    it "requires image" do
+      ic.image_id=nil
+      expect(ic.validate).to be false
+      expect(ic.errors.messages).to include(:image_id)
+      #pp ic.errors.messages
+    end
+    it "requires content_type" do
+      ic.content_type=nil
+      expect(ic.validate).to be false
+      expect(ic.errors.messages).to include(:content_type)
+    end
+    it "requires content" do
+      ic.content=nil
+      expect(ic.validate).to be false
+      expect(ic.errors.messages).to include(:content)
+    end
+    it "requires width" do
+      ic.width=nil
+      expect(ic.validate).to be false
+      expect(ic.errors.messages).to include(:width)
+    end
+    it "requires height" do
+      ic.height=nil
+      expect(ic.validate).to be false
+      expect(ic.errors.messages).to include(:height)
+    end
+    it "requires supported content_type" do
+      ic.content_type="image/png"
+      ic.content=ic.content
+      expect(ic.validate).to be false
+      expect(ic.errors.messages).to include(:content_type)
+      expect(ic.errors.messages[:content_type]).to include(/png/)
+      #pp ic.errors.messages
+    end
+    it "checks content size maximium" do
+      content=""
+      decoded_pad = ic.content.data
+      begin
+        content += decoded_pad
+      end while content.size < ImageContent::MAX_CONTENT_SIZE
+      ic.content=Base64.encode64(content)
+
+      expect(ic.validate).to be false
+      expect(ic.errors.messages).to include(:content)
+      #pp ic.errors.messages
+    end
   end
 
   context "image content factory" do
