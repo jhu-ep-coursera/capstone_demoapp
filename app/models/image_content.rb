@@ -1,5 +1,10 @@
 class ImageContent
   include Mongoid::Document
+  #3:2 ratios
+  THUMBNAIL="100x67"
+  SMALL="320x213"
+  MEDIUM="800x533"
+  LARGE="1200x800"
   CONTENT_TYPES=["image/jpeg","image/jpg"]
   MAX_CONTENT_SIZE=10*1000*1024
 
@@ -25,6 +30,8 @@ class ImageContent
       errors.add(:content,"#{content.data.size} too large, greater than max #{MAX_CONTENT_SIZE}")
     end
   end
+
+  scope :image, ->(image) { where(:image_id=>image.id) if image }
 
   def content=(value)
     if self[:content]
