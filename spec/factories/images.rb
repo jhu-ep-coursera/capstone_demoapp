@@ -8,6 +8,9 @@ FactoryGirl.define do
     after(:build) do |image|
       image.image_content = FactoryGirl.build(:image_content, image.image_content) if image.image_content
     end
+    after(:create) do |image|
+      ImageContentCreator.new(image).build_contents.save! if image.image_content
+    end
 
     trait :with_caption do
       caption { Faker::Lorem.sentence(1).chomp(".") }

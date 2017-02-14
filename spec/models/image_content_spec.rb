@@ -221,11 +221,44 @@ RSpec.describe "ImageContent", type: :model do
     end
   end
 
-  
   context "content for image" do
-    it "find for image"
-    it "find by size"
-    it "find largest"
-    it "delete for image"
+    include_context "db_scope"
+    let(:image) { FactoryGirl.create(:image) }
+
+    it "find for image" do
+      expect(ImageContent.image(image).count).to eq(5)
+    end
+    it "find by size" do
+      ic=ImageContent.image(image).smallest(150)
+      expect(ic.to_a.size).to eq(1)
+      expect(ic.first.width).to be >= 150
+      ic=ImageContent.image(image).smallest(800).first
+      expect(ic.width).to be >= 800
+      ic=ImageContent.image(image).smallest(nil, 600).first
+      expect(ic.height).to be >= 600
+      ic=ImageContent.image(image).smallest(150, 600).first
+      expect(ic.height).to be >= 600
+      ic=ImageContent.image(image).smallest(1200, 600).first
+      expect(ic.width).to be >= 1200
+      expect(ImageContent.image(image).smallest(2000, 2000).to_a.count).to eq(0)
+    end
+    it "find largest" do
+      ic=ImageContent.image(image).smallest
+      expect(ic.to_a.count).to eq(1)
+      ic=ic.first
+      widest=ImageContent.image(image).order(:width.desc).limit(1).first
+      expect(ic.id).to eq(widest.id)
+      tallest=ImageContent.image(image).order(:height.desc).limit(1).first
+      expect(ic.id).to eq(tallest.id)
+    end
+    it "delete for image" do
+      image  #touch to insert into DB
+      image2=FactoryGirl.create(:image)
+      expect(ImageContent.count).to eq(10)
+      expect(ImageContent.image(image).count).to eq(5)
+      ImageContent.image(image).delete_all
+      expect(ImageContent.image(image).count).to eq(0)
+      expect(ImageContent.count).to eq(5)
+    end
   end
 end
