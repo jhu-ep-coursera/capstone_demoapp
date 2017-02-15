@@ -57,6 +57,10 @@ class ImageContent
     end
   end
 
+  def suffix
+    "jpg" if CONTENT_TYPES.include? content_type
+  end
+
   def self.to_binary(value)
     case
     when value.is_a?(IO) || value.is_a?(StringIO)
