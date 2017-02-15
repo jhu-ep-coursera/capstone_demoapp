@@ -1,8 +1,8 @@
 class ImagesController < ApplicationController
-  before_action :set_image, only: [:show, :update, :destroy]
+  before_action :set_image, only: [:show, :update, :destroy, :content]
   wrap_parameters :image, include: ["caption"]
   before_action :authenticate_user!, only: [:create, :update, :destroy]
-  after_action :verify_authorized
+  after_action :verify_authorized, except: [:content]
   after_action :verify_policy_scoped, only: [:index]
 
   def index
@@ -15,6 +15,18 @@ class ImagesController < ApplicationController
     authorize @image
     images = policy_scope(Image.where(:id=>@image.id))
     @image = ImagePolicy.merge(images).first
+  end
+
+  def content
+    result=ImageContent.image(@image).smallest.first
+    if result
+      options = { type: result.content_type,
+                  disposition: "inline",
+                  filename: "#{@image.basename}.#{result.suffix}" }
+      send_data result.content.data, options
+    else
+      render nothing: true, status: :not_found
+    end
   end
 
   def create
