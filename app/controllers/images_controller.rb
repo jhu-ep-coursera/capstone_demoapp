@@ -62,6 +62,7 @@ class ImagesController < ApplicationController
 
   def destroy
     authorize @image
+    ImageContent.image(@image).delete_all
     @image.destroy
 
     head :no_content
