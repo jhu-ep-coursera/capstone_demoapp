@@ -1,10 +1,15 @@
 module SubjectsUiHelper
-  def visit_images images
+  def visit_images images=nil
+    images ||= Image.all
     visit "#{ui_path}/#/images/"
     within("sd-image-selector") do
       expect(page).to have_css(".image-list")
       expect(page).to have_css(".image-list li",:count=>images.count,:wait=>5)
     end
+  end
+
+  def image_caption image
+    image.caption || "(no caption #{image.id})" 
   end
 
   def get_linkables image
@@ -20,6 +25,7 @@ module SubjectsUiHelper
                               :visible=>false,
                               :count=>ThingImage.where(:image=>image).count,
                               :wait=>5)
+      expect(page).to have_css("div.image-existing img",:count=>1,:wait=>5)
     end
     expected_linkables ||= get_linkables(image).size
     if expected_linkables && logged_in?
@@ -33,8 +39,10 @@ module SubjectsUiHelper
       visit "#{ui_path}/#/images/#{image.id}"
     end
     within("sd-image-editor .image-form") do
-      expect(page).to have_css("span.image_id",:text=>image.id,:visible=>false)
+      expect(page).to have_css("span.image_id",
+                               :text=>image.id,:visible=>false,:wait=>5)
       expect(page).to have_css(".image-controls")
+      expect(page).to have_css("div.image-existing img",:count=>1,:wait=>5)
     end
   end
 
@@ -48,7 +56,10 @@ module SubjectsUiHelper
       visit "#{ui_path}/#/things/#{thing.id}"
     end
     within("sd-thing-editor .thing-form") do
-      expect(page).to have_css("span.thing_id",:text=>thing.id,:visible=>false)
+      expect(page).to have_css("span.thing_id",
+                               :text=>thing.id,
+                               :visible=>false,
+                               :wait=>5)
     end
   end
 
