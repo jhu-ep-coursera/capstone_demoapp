@@ -2,7 +2,9 @@
   <ul>
     <li ng-repeat="item in $ctrl.items | orderBy:'caption'">
       <a ui-sref="images({id:item.id})">
-          <span class="image_id id">{{item.id}}</span>
+          <span class="image_id id">{{item.id}}</span>                    
+          <img style="width: 50px; height: 33px" 
+                 ng-src="{{item.content_url}}?width=50"/>
           {{item.caption}}
       <span ng-show="$ctrl.authz.canUpdateItem(item)"> *</span>
       </a>
