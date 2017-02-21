@@ -69,7 +69,7 @@
       <button name="image-create"
               ng-show="!$ctrl.item.id && $ctrl.authz.canCreate"
               type="submit"
-              ng-disabled="imageform.$invalid"
+              ng-disabled="imageform.$invalid || !$ctrl.item.image_content.content"
               ng-click="$ctrl.create()">Create Image</button>
 
       <span ng-show="$ctrl.item.id">
