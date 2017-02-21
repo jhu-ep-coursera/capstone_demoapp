@@ -2,6 +2,7 @@
  * SPA Demo Stylesheet Manifest File
  *
  *= require bootstrap
+ *= require ui-cropper
  *= require spa-demo/layout
  *= require spa-demo/authn
  *= require spa-demo/subjects

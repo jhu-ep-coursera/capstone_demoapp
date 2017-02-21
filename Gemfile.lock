@@ -192,6 +192,8 @@ GEM
     rails-assets-ng-token-auth (0.0.27)
       rails-assets-angular (>= 1.2.0)
       rails-assets-angular-cookie (>= 4.0.6)
+    rails-assets-ui-cropper (1.0.4)
+      rails-assets-angular (>= 1.4.0)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
     rails-dom-testing (1.0.7)
@@ -320,6 +322,7 @@ DEPENDENCIES
   rails-assets-ng-file-upload (~> 12.2, >= 12.2.11)!
   rails-assets-ng-file-upload-shim!
   rails-assets-ng-token-auth (~> 0.0, >= 0.0.27)!
+  rails-assets-ui-cropper (~> 1.0, >= 1.0.4)!
   rails_12factor (~> 0.0, >= 0.0.3)
   rspec-rails (~> 3.5, >= 3.5.2)
   sass-rails (~> 5.0, >= 3.4.22)

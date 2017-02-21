@@ -1,3 +1,13 @@
+<div class="crop-area" ng-show="$ctrl.file">
+ <ui-cropper image="$ctrl.file"
+             result-image="$ctrl.dataUri"
+             url-blob="$ctrl.objectUrl"
+             result-image-format="'image/jpeg'"
+             area-type="rectangle"
+             aspect-ratio="3/2"
+             result-image-size="{w:1200,h:800}">
+ </ui-cropper>
+</div>
 <input name="image-file"
        type="file"
        accept=".jpeg"

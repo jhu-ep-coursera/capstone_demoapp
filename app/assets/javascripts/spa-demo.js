@@ -8,6 +8,7 @@
 //= require ng-token-auth
 //= require ng-file-upload-shim
 //= require ng-file-upload
+//= require ui-cropper
 
 //= require spa-demo/app.module
 //= require spa-demo/app.router

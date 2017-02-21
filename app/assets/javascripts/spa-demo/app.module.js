@@ -5,6 +5,7 @@
     .module("spa-demo", [
       "ui.router",
       "ngFileUpload",
+      "uiCropper",      
       "spa-demo.config",
       "spa-demo.authn",
       "spa-demo.authz",
