@@ -11,6 +11,17 @@
              ng-src="{{$ctrl.item.content_url}}?width=250"
              ng-if="$ctrl.item.content_url" />
       </div>  
+
+      <sd-image-loader
+            class="image-select"
+            result-data-uri="$ctrl.setImageContent(dataUri)"
+            ng-if="!$ctrl.item.id && $ctrl.authz.canCreate">
+          <span class="invalid"
+                ng-show="imageform['image-file'].$error.maxSize"
+                >image size is too large (max=10MB)</span>          
+      </sd-image-loader>      
+      <span class="invalid">{{$ctrl.item.errors.content_type}}</span>
+      <span class="invalid">{{$ctrl.item.errors.content}}</span>      
     </div>
   </div>
 

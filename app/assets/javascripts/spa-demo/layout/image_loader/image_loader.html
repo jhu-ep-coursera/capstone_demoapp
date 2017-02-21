@@ -1,0 +1,21 @@
+<input name="image-file"
+       type="file"
+       accept=".jpeg"
+       ng-hide="$ctrl.file" 
+       required="true"
+       ngf-select
+       ng-model="$ctrl.file"
+       ngf-fix-orientation="true"
+       ngf-max-size="10MB"
+       ngf-model-options="{allowInvalid: true}"       
+       >
+<img class="img-responsive image-preview"
+     ng-src="{{$ctrl.objectUrl}}"
+     ng-show="$ctrl.file && $ctrl.objectUrl">         
+
+<div ng-transclude></div>
+
+<!--
+<button ng-click="$ctrl.debug()">Debug</button>
+-->         
+
