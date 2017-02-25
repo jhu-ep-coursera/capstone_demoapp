@@ -50,7 +50,52 @@ img.image-preview {
 sd-image-viewer img {
     width: 100%;  
 }
+sd-image-viewer .overlay {
+  color: white;
+  opacity: 0.0;
+  z-index: 1002;  
+  cursor: pointer;
+}
+sd-image-viewer .overlay:hover {
+  opacity: 1;
+}
 
+sd-image-viewer .image-area  {
+  position: relative;
+}
+
+sd-image-viewer .caption {
+  text-align: center;
+  font-size: 1.2em;
+  background: rgba(204, 204, 204, 0.5);
+
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 5px;
+  height: 35px;
+}
+
+sd-image-viewer .glyphicon {
+  font-size: 5em;
+}
+sd-image-viewer span.image-browse {
+  position: absolute;
+  top: 10px;
+  right: 10px;  
+  background-color: grey;
+}
+
+sd-image-viewer .glyphicon-chevron-left {
+  position: absolute;
+  top: 40%;
+  left: 20px;
+}
+sd-image-viewer .glyphicon-chevron-right {
+  position: absolute;
+  top: 40%;
+  right: 20px;
+}
 
 /*** media queries ****/
 

@@ -6,6 +6,19 @@
     <span class="id image_id">{{$ctrl.imageId(image)}}</span>    
     <img class="responsive"
          ng-src="{{$ctrl.imageUrl(image)}}">
+         
+    <span class="caption overlay">{{$ctrl.imageCaption(image)}}</span>
+
+    <span class="image-browse overlay"
+          ui-sref="images({id:$ctrl.imageId(image)})">
+      <span class="overlay glyphicon glyphicon-share-alt"></span>
+    </span>
 
   </div>
+
+  <span class="overlay glyphicon glyphicon-chevron-left"
+        ng-click="$ctrl.previousImage()"></span>
+
+  <span class="overlay glyphicon glyphicon-chevron-right"
+        ng-click="$ctrl.nextImage()"></span>  
 </div>
