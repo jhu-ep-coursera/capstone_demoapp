@@ -45,6 +45,12 @@ img.image-preview {
   overflow: visible;
 }
 
+/*** image viewer ***/
+
+sd-image-viewer img {
+    width: 100%;  
+}
+
 
 /*** media queries ****/
 
