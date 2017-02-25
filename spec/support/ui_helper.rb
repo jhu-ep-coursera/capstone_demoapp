@@ -1,6 +1,6 @@
 module UiHelper
-  def create_user
-    user_props=FactoryGirl.attributes_for(:user);
+  def create_user props={}
+    user_props=FactoryGirl.attributes_for(:user, props);
     user = FactoryGirl.create(:user, user_props)
     user_props.merge(:id=>user.id, :uid=>user.uid)
   end

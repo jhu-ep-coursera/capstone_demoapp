@@ -37,7 +37,7 @@ RSpec.feature "AuthzImages", type: :feature, js:true do
       within("sd-image-editor .image-form") do
         displayed.each do |button|
           disabled_value = ["Update Image","Create Image"].include? button
-          expect(page).to have_button(button,:disabled=>disabled_value)
+          expect(page).to have_button(button,:disabled=>disabled_value, :wait=>5)
         end
         not_displayed.each do |button|
           expect(page).to have_no_button(button)
@@ -57,10 +57,11 @@ RSpec.feature "AuthzImages", type: :feature, js:true do
           fail(page.find("span.invalid",:text=>/.+/).text)
         end
         click_button("Create Image",:disabled=>false,:wait=>5)
-        expect(page).to have_button("Clear Image",:wait=>5)
-        expect(page).to have_button("Delete Image",:wait=>5)
+        expect(page).to have_no_css("sd-image-loader",:wait=>10)
+        expect(page).to have_button("Delete Image",:wait=>10)
         expect(page).to have_button("Update Image", :disabled=>true)
         expect(page).to have_no_button("Create Image")
+        expect(page).to have_css("label", :text=>"Related Things",:wait=>10)
         click_button("Clear Image")
         expect(page).to have_no_button("Clear Image",:wait=>5)
         expect(page).to have_field("image-caption", :with=>"")
@@ -106,7 +107,7 @@ RSpec.feature "AuthzImages", type: :feature, js:true do
     it "caption is not updatable" do
       within("sd-image-editor .image-form") do
         #wait for controls to load
-        expect(page).to have_button("Clear Image")
+        expect(page).to have_button("Clear Image",:wait=>10)
         expect(page).to have_field("image-caption", :with=>image.caption, :readonly=>true)
       end
     end
@@ -121,9 +122,11 @@ RSpec.feature "AuthzImages", type: :feature, js:true do
         #we start out with caption filled in and button(s) displayed
         expect(page).to have_field("image-caption", :with=>image.caption)
         expect(page).to have_css("div.image-existing img",:count=>1,:wait=>5)
+        expect(page).to have_button("Update Image", :disabled=>true)
         
         #update the input field
         fill_in("image-caption", :with=>new_caption)
+        expect(page).to have_field("image-caption", :with=>new_caption)
         click_button("Update Image")
 
         #wait for update to initiate before navigating to new page
