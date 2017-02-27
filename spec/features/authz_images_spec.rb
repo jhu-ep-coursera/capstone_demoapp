@@ -56,16 +56,34 @@ RSpec.feature "AuthzImages", type: :feature, js:true do
         if (page.has_css?("span.invalid",:text=>/.+/)) 
           fail(page.find("span.invalid",:text=>/.+/).text)
         end
-        click_button("Create Image",:disabled=>false,:wait=>5)
-        expect(page).to have_no_css("sd-image-loader",:wait=>10)
-        expect(page).to have_button("Delete Image",:wait=>10)
-        expect(page).to have_button("Update Image", :disabled=>true)
-        expect(page).to have_no_button("Create Image")
-        expect(page).to have_css("label", :text=>"Related Things",:wait=>10)
-        click_button("Clear Image")
-        expect(page).to have_no_button("Clear Image",:wait=>5)
-        expect(page).to have_field("image-caption", :with=>"")
-        expect(page).to have_button("Create Image", :disabled=>true)
+        expect(page).to have_no_css("span.invalid",:text=>/.+/)
+        using_wait_time 20 do
+          expect(page).to have_css("sd-image-loader img.image-preview")
+          expect(page).to have_button("Create Image",:disabled=>false)
+          click_button("Create Image")
+          expect(page).to have_no_css("sd-image-loader img.image-preview")
+          expect(page).to have_no_css("sd-image-loader")
+          expect(page).to have_no_button("Create Image")
+          expect(page).to have_css("div.image-existing img")
+          expect(page).to have_button("Delete Image")
+          expect(page).to have_button("Update Image", :disabled=>true)
+          expect(page).to have_css("label", :text=>"Related Things")
+          expect(page).to have_button("Clear Image",:disabled=>false)
+          click_button("Clear Image")
+        end
+      end
+      5.times { #getting to Clear Image above too fast -- image still loading
+        if (page.has_button?("Clear Image")) 
+          click_button("Clear Image")
+          sleep 0.25
+        else
+          break
+        end
+      }
+      within("sd-image-editor .image-form") do
+          expect(page).to have_no_button("Clear Image")
+          expect(page).to have_field("image-caption", :with=>"")
+          expect(page).to have_button("Create Image", :disabled=>true)
       end
 
       #list should now have new value
@@ -85,12 +103,11 @@ RSpec.feature "AuthzImages", type: :feature, js:true do
   end
   shared_examples "can clear image" do
     it "image caption cleared from input field" do
+      image_editor_loaded! image
       within("sd-image-editor .image-form") do
         #we start out with caption filled in and button(s) displayed
-        expect(page).to have_css(".id", :text=>image.id, :visible=>false)
         expect(page).to have_field("image-caption", :with=>image.caption)
         expect(page).to have_no_field("image-caption", :with=>"")
-        expect(page).to have_css("div.image-existing img",:count=>1,:wait=>5)
         
         #clear the selected image
         click_button("Clear Image")

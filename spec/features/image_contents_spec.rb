@@ -54,7 +54,7 @@ RSpec.feature "ImageContents", type: :feature, js:true do
         find(".image_id",:text=>image.id, :visible=>false).find(:xpath,"..").click
       end
       #wait for list to be removed
-      expect(page).to have_no_css("sd-image-selector .image-list li")
+      expect(page).to have_no_css("sd-image-selector .image-list li", :wait=>5)
 
       #existing image is displayed with caption
       within("sd-image-editor .image-form") do
