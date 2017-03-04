@@ -26,6 +26,7 @@ module SubjectsUiHelper
                               :count=>ThingImage.where(:image=>image).count,
                               :wait=>5)
       expect(page).to have_css("div.image-existing img",:count=>1,:wait=>5)
+      wait_until {find("div.image-existing img")[:complete]==true}
     end
     expected_linkables ||= get_linkables(image).size
     if expected_linkables && logged_in?
@@ -72,6 +73,7 @@ module SubjectsUiHelper
                               :visible=>false,
                               :count=>ThingImage.where(:thing=>thing).count,
                               :wait=>5)
+      wait_until {find("sd-image-viewer .image-area img")[:complete]==true}
       if (page.has_css?("ul.thing-images"))
         expect(page).to have_css("ul.thing-images li span.image_id",
                                 :visible=>false,
