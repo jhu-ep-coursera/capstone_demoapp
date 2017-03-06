@@ -10,7 +10,18 @@ class Image < ActiveRecord::Base
               allow_nil: true,
               mapping: [%w(lng lng), %w(lat lat)]
 
+  acts_as_mappable
+  def to_lat_lng
+    Geokit::LatLng.new(lat,lng)
+  end
+
   def basename
     caption || "image-#{id}"
+  end
+end
+
+Point.class_eval do
+  def to_lat_lng
+    Geokit::LatLng.new(*latlng)
   end
 end
