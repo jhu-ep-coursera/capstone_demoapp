@@ -18,5 +18,16 @@ class GeocoderCache
   end
 
   def reverse_geocode point
+    cache=CachedLocation.by_position(point).first
+    if !cache
+      geoloc = @geocoder.reverse_geocode point
+      if geoloc
+        cache=CachedLocation.create(:lng=>point.lng,
+                                    :lat=>point.lat,
+                                    :address=>geoloc.formatted_address,
+                                    :location=>geoloc.to_hash)
+      end
+    end
+    return cache && cache.valid? ? [cache.location, cache] : nil
   end
 end
