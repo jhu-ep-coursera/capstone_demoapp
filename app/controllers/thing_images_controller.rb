@@ -112,7 +112,7 @@ class ThingImagesController < ApplicationController
         @origin=Point.new(params[:lng].to_f, params[:lat].to_f)
       else
         raise ActionController::ParameterMissing.new(
-          "an origin [lng/lat or address required")
+          "an origin [lng/lat] required")
       end
     end
 end
