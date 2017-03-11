@@ -6,8 +6,9 @@ class ThingImagesController < ApplicationController
   before_action :get_image, only: [:image_things]
   before_action :get_thing_image, only: [:update, :destroy]
   before_action :authenticate_user!, only: [:create, :update, :destroy]
-  after_action :verify_authorized
+  after_action :verify_authorized, except: [:subjects]
   #after_action :verify_policy_scoped, only: [:linkable_things]
+  before_action :origin, only: [:subjects]
 
   def index
     authorize @thing, :get_images?
@@ -29,6 +30,20 @@ class ThingImagesController < ApplicationController
     @things=ThingPolicy::Scope.new(current_user,@things).user_roles(true,false)
     @things=ThingPolicy.merge(@things)
     render "things/index"
+  end
+
+  def subjects
+    miles=params[:miles] ? params[:miles].to_f : nil
+    subject=params[:subject]
+    distance=params[:distance] ||= "false"
+    reverse=params[:order] && params[:order].downcase=="desc"  #default to ASC
+    @thing_images=ThingImage.within_range(@origin, miles, reverse)
+      .with_name
+      .with_caption
+      .with_position
+    @thing_images=@thing_images.things    if subject && subject.downcase=="thing"
+    @thing_images=ThingImage.with_distance(@origin, @thing_images) if distance.downcase=="true"
+    render "thing_images/index"
   end
 
   def create
@@ -89,5 +104,15 @@ class ThingImagesController < ApplicationController
     end
     def thing_image_update_params
       params.require(:thing_image).permit(:priority)
+    end
+
+    def origin
+      case
+      when params[:lng] && params[:lat]
+        @origin=Point.new(params[:lng].to_f, params[:lat].to_f)
+      else
+        raise ActionController::ParameterMissing.new(
+          "an origin [lng/lat or address required")
+      end
     end
 end
