@@ -10,8 +10,8 @@ class GeocoderController < ApplicationController
   def positions
     lng=position_params[:lng].to_f
     lat=position_params[:lat].to_f
-    geoloc=@geocoder.reverse_geocode(Point.new(lng,lat))
-    geocode_response geoloc
+    geoloc, cache=@geocoder.reverse_geocode(Point.new(lng,lat))
+    geocode_response geoloc, cache
   end
 
   private
