@@ -3,8 +3,8 @@ class GeocoderController < ApplicationController
 
   def addresses
     address=address_params[:address]
-    geoloc=@geocoder.geocode(address)
-    geocode_response geoloc
+    geoloc, cache=@geocoder.geocode(address)
+    geocode_response geoloc, cache
   end
 
   def positions
@@ -16,7 +16,7 @@ class GeocoderController < ApplicationController
 
   private
     def set_geocoder
-      @geocoder=Geocoder.new
+      @geocoder=GeocoderCache.new(Geocoder.new)
     end
     def address_params
       params.tap { |p| p.require(:address) }
@@ -27,12 +27,14 @@ class GeocoderController < ApplicationController
         p.require(:lat)
       }
     end
-    def geocode_response geoloc
+    def geocode_response geoloc, cache
       if !geoloc
         full_message_error "failed to geocode position", :internal_server_error
       else
         expires_in 1.day, :public=>true
-        render json: geoloc.to_hash, status: :ok
+        if stale? cache
+          render json: geoloc.to_hash, status: :ok
+        end
       end
     end
 end
