@@ -310,9 +310,10 @@ RSpec.describe "Geocoders", type: :request do
 
     describe "result caching" do
       before(:each) do
-        jget subjects_path, {order: :ASC}.merge(@origin.to_hash)
+        jget subjects_path, {miles:@distance,distance:true}.merge(@origin.to_hash)
         expect(response).to have_http_status(:ok)
         @starting_eTag=response.headers["ETag"]
+        @starting_last_modified=response.headers["Last-Modified"]
       end
 
       it "provides cache control" do
@@ -327,7 +328,7 @@ RSpec.describe "Geocoders", type: :request do
       end
 
       it "provides cache re-validation unmodified" do
-        jget subjects_path, {miles:@distance}.merge(@origin.to_hash),
+        jget subjects_path, {miles:@distance,distance:true}.merge(@origin.to_hash),
                             {"IF-NONE-MATCH"=>@starting_eTag}
         expect(response).to have_http_status(:not_modified)
         expect(response.headers["ETag"]).to eq(@starting_eTag)
@@ -339,7 +340,7 @@ RSpec.describe "Geocoders", type: :request do
         t.name="we have changed you"
         t.save
 
-        jget subjects_path, {order: :ASC}.merge(@origin.to_hash)
+        jget subjects_path, {miles:@distance,distance:true}.merge(@origin.to_hash)
         expect(response).to have_http_status(:ok)
         expect(response.headers["ETag"]).to_not eq(@starting_eTag)
       end
@@ -354,7 +355,7 @@ RSpec.describe "Geocoders", type: :request do
           ti.priority += 1
           ti.save
 
-          jget subjects_path, {miles:@distance}.merge(@origin.to_hash)
+          jget subjects_path, {miles:@distance,distance:true}.merge(@origin.to_hash)
           expect(response).to have_http_status(:ok)
           expect(response.headers["ETag"]).to_not eq(@starting_eTag)
         end
@@ -364,7 +365,7 @@ RSpec.describe "Geocoders", type: :request do
           jdelete thing_thing_image_path(ti.thing, ti)
           expect(response).to have_http_status(:no_content)
 
-          jget subjects_path, {miles:@distance}.merge(@origin.to_hash)
+          jget subjects_path, {miles:@distance,distance:true}.merge(@origin.to_hash)
           expect(response).to have_http_status(:ok)
           expect(response.headers["ETag"]).to_not eq(@starting_eTag)
         end
@@ -376,7 +377,7 @@ RSpec.describe "Geocoders", type: :request do
         img.caption="we changed you"
         img.save
 
-        jget subjects_path, {miles:@distance}.merge(@origin.to_hash)
+        jget subjects_path, {miles:@distance,distance:true}.merge(@origin.to_hash)
         expect(response).to have_http_status(:ok)
         expect(response.headers["ETag"]).to_not eq(@starting_eTag)
       end
