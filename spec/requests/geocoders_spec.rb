@@ -256,7 +256,7 @@ RSpec.describe "Geocoders", type: :request do
     end
 
     shared_examples "ordered" do |direction|
-      it "ordered" do
+      it "ordered #{direction}" do
         results=ThingImage.within_range(@origin, @distance)
         jget subjects_path, {miles:@distance,distance:true,order:direction}.merge(@origin.to_hash)
         #pp parsed_body
@@ -293,6 +293,7 @@ RSpec.describe "Geocoders", type: :request do
       it "has distance from origin" do
         results=ThingImage.within_range(@origin, @distance)
         jget subjects_path, {miles:@distance,distance:true}.merge(@origin.to_hash)
+        #pp parsed_body
         expect(response).to have_http_status(:ok)
 
         payload=parsed_body
@@ -332,7 +333,7 @@ RSpec.describe "Geocoders", type: :request do
         expect(response.headers["ETag"]).to eq(@starting_eTag)
       end
 
-      it "updates eTag-modified for a Thing" do
+      it "updates eTag for a Thing" do
         sleep 1 #get beyond 1sec
         t=ThingImage.first.thing
         t.name="we have changed you"
@@ -343,13 +344,13 @@ RSpec.describe "Geocoders", type: :request do
         expect(response.headers["ETag"]).to_not eq(@starting_eTag)
       end
 
-      context "updates eTag-modified for ThingImage" do
+      context "updates eTag for ThingImage" do
         let(:ti) { ThingImage.first }
         before(:each) do
           sleep 1 #get beyond 1sec
         end
 
-        it "updates last-modified for ThingImage update" do
+        it "updates eTag for ThingImage update" do
           ti.priority += 1
           ti.save
 
@@ -358,7 +359,7 @@ RSpec.describe "Geocoders", type: :request do
           expect(response.headers["ETag"]).to_not eq(@starting_eTag)
         end
 
-        it "updates last-modified for ThingImage delete" do
+        it "updates eTag for ThingImage delete" do
           login apply_admin(user)
           jdelete thing_thing_image_path(ti.thing, ti)
           expect(response).to have_http_status(:no_content)
@@ -369,7 +370,7 @@ RSpec.describe "Geocoders", type: :request do
         end
       end
 
-      it "updates last-modified for Image" do
+      it "updates eTag for Image" do
         sleep 1 #get beyond 1sec
         img=Image.first
         img.caption="we changed you"
