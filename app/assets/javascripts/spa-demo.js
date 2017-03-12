@@ -28,6 +28,9 @@
 //= require spa-demo/authz/authz.service
 //= require spa-demo/authz/base_policy.service
 
+//= require spa-demo/geoloc/geoloc.module
+//= require spa-demo/geoloc/geocoder.service
+
 //= require spa-demo/layout/layout.module
 //= require spa-demo/layout/image_query_size.service
 //= require spa-demo/layout/navbar/navbar.component
