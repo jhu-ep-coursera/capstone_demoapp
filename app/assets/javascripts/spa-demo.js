@@ -30,6 +30,7 @@
 
 //= require spa-demo/geoloc/geoloc.module
 //= require spa-demo/geoloc/geocoder.service
+//= require spa-demo/geoloc/my_location.service
 //= require spa-demo/geoloc/current_origin/current_origin.service
 //= require spa-demo/geoloc/current_origin/current_origin_selector.component
 
