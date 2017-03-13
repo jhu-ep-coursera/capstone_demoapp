@@ -1,0 +1,26 @@
+<form name="select_origin"
+      class="navbar-form"      
+      ng-hide="$ctrl.getOriginAddress()">
+      <input name="address-search"
+             type="text" 
+             placeholder="Address Search"
+             ng-model="$ctrl.address"
+             ng-required="true">
+      <button title="lookup-address"
+              class="btn btn-default"
+              ng-disabled="select_origin.$invalid"
+              ng-click="$ctrl.lookupAddress()">Lookup</button>
+</form>
+
+<span class="search-criteria"
+    ng-show="$ctrl.getOriginAddress()">
+  <form name="show_origin"
+        class="navbar-form">
+    <label>Origin: </label>
+    <span class="current-origin">{{$ctrl.getOriginAddress()}}</span>
+    <button title="change-origin"
+            type="submit" 
+            class="btn btn-default"
+            ng-click="$ctrl.clearOrigin()">Change</button>
+  </form>
+</span>  

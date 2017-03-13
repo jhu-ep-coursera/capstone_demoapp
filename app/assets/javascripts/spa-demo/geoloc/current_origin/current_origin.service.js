@@ -23,6 +23,7 @@
     this.version += 1;
   }  
   CurrentOrigin.prototype.setLocation = function(location) {
+    console.log("setLocation", location);
     this.location = angular.copy(location);
     this.version += 1;
   }
