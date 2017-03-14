@@ -48,7 +48,11 @@ Capybara.register_driver :selenium do |app|
       #set FIREFOX_BINARY_PATH=c:\Program Files\Mozilla Firefox\firefox.exe
       Selenium::WebDriver::Firefox::Binary.path=ENV['FIREFOX_BINARY_PATH']
     end
-    Capybara::Selenium::Driver.new(app, :browser=>:firefox)
+    #http://stackoverflow.com/questions/20009266/selenium-testing-with-geolocate-firefox-keeps-turning-it-off
+    profile = Selenium::WebDriver::Firefox::Profile.new
+    profile["geo.prompt.testing"]=true
+    profile["geo.prompt.testing.allow"]=true
+    Capybara::Selenium::Driver.new(app, :browser=>:firefox, :profile=>profile)
   end
 end
 
@@ -59,7 +63,7 @@ Capybara.configure do |config|
   #used when :js=>true
   config.javascript_driver = :poltergeist
 end
-#Capybara.javascript_driver = :selenium
+Capybara.javascript_driver = :selenium
 
 Capybara.register_driver :poltergeist do |app|
   Capybara::Poltergeist::Driver.new( app,
