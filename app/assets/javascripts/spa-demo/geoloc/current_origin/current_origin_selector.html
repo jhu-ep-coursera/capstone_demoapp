@@ -10,6 +10,10 @@
               class="btn btn-default"
               ng-disabled="select_origin.$invalid"
               ng-click="$ctrl.lookupAddress()">Lookup</button>
+      <label title="my-position"
+              class="btn btn-default"
+              ng-show="$ctrl.isCurrentLocationSupported()"
+              ng-click="$ctrl.useCurrentLocation()">My Position</label>
 </form>
 
 <span class="search-criteria"

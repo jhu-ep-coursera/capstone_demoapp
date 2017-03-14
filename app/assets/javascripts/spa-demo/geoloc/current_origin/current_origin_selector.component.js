@@ -17,12 +17,15 @@
 
   CurrentOriginSelectorController.$inject = ["$scope",
                                              "spa-demo.geoloc.geocoder",
-                                             "spa-demo.geoloc.currentOrigin"];
-  function CurrentOriginSelectorController($scope, geocoder, currentOrigin) {
+                                             "spa-demo.geoloc.currentOrigin",
+                                             "spa-demo.geoloc.myLocation"];
+  function CurrentOriginSelectorController($scope, geocoder, currentOrigin, myLocation) {
     var vm=this;
     vm.lookupAddress=lookupAddress;
     vm.getOriginAddress=getOriginAddress;
     vm.clearOrigin=clearOrigin;
+    vm.isCurrentLocationSupported = myLocation.isCurrentLocationSupported;
+    vm.useCurrentLocation=useCurrentLocation;
 
     vm.$onInit = function() {
       console.log("CurrentOriginSelectorController",$scope);
@@ -44,5 +47,20 @@
     function clearOrigin() {
       return currentOrigin.clearLocation();
     }
+    function useCurrentLocation() {
+      myLocation.getCurrentLocation().then(
+        function(location){
+          console.log("useCurrentLocation", location);
+          currentOrigin.setLocation(location);
+        });
+    }    
+
+
+
+
+
+
+
+
   }
 })();
