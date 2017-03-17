@@ -12,6 +12,7 @@
               ng-click="$ctrl.lookupAddress()">Lookup</button>
       <label title="my-position"
               class="btn btn-default"
+              ng-class="{'invalid' : $ctrl.myPositionError!=null }"
               ng-show="$ctrl.isCurrentLocationSupported()"
               ng-click="$ctrl.useCurrentLocation()">My Position</label>
 </form>
