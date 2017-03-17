@@ -37,7 +37,8 @@
         } else {
           $window.navigator.geolocation.getCurrentPosition(
             function(position){ service.geocodeGeoposition(deferred, position); },
-            function(err){ deferred.reject(err); }
+            function(err){ deferred.reject(err); },
+            {timeout:10000}
             );
         }
 

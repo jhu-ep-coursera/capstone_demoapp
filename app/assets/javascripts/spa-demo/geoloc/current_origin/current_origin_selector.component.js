@@ -52,6 +52,9 @@
         function(location){
           console.log("useCurrentLocation", location);
           currentOrigin.setLocation(location);
+        },
+        function(err){
+          console.log(err);
         });
     }    
 
