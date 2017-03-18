@@ -88,6 +88,7 @@ class ThingImagesController < ApplicationController
 
   def destroy
     authorize @thing, :remove_image?
+    @thing_image.image.touch #image will be only thing left
     @thing_image.destroy
     head :no_content
   end
