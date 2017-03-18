@@ -30,4 +30,15 @@
             class="btn btn-default"
             ng-click="$ctrl.clearOrigin()">Change</button>
   </form>
+  <form name="distance_limit"
+        class="navbar-form">
+    <label>Miles:</label>
+    <input type="number"
+         name="distance-limit"
+         min="0"
+         step="1"
+         ng-model="$ctrl.distanceLimit"
+         ng-change="$ctrl.changeDistance()">
+  </form>          
+  
 </span>  

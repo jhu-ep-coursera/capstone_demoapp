@@ -27,6 +27,7 @@
     vm.isCurrentLocationSupported = myLocation.isCurrentLocationSupported;
     vm.useCurrentLocation=useCurrentLocation;
     vm.myPositionError=null;
+    vm.changeDistance=changeDistance;
 
     vm.$onInit = function() {
       console.log("CurrentOriginSelectorController",$scope);
@@ -48,6 +49,10 @@
     function clearOrigin() {
       return currentOrigin.clearLocation();
     }
+    function changeDistance() {
+      currentOrigin.setDistance(vm.distanceLimit);      
+    }
+    
     function useCurrentLocation() {
       myLocation.getCurrentLocation().then(
         function(location){
