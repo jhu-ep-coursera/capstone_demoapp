@@ -22,6 +22,26 @@ form .invalid {
   padding-right: 10px;
 }
 
+/* get the two origin forms to be side-by-side */
+span.search-criteria form {
+  display: inline;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* re-position the fields after we applied the display inline */
+span.search-criteria form input {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+/* right-size the distance field */
+span.search-criteria form input[name='distance-limit'] {
+  width: 75px;
+}
+
+/********************************/
+
 [readonly='readonly'] {
   background-color: inherit;
 }
@@ -109,6 +129,42 @@ sd-image-viewer .glyphicon-chevron-right {
 
 /* Small */
 @media (min-width: 768px) and (max-width: 991px) {
+    /* make navbar collapse at larger size */
+    /* https://coderwall.com/p/wpjw4w/change-the-bootstrap-navbar-breakpoint */
+    #main-menubar .navbar-header {
+        float: none;
+    }
+    #main-menubar .navbar-left,.navbar-right {
+        float: none !important;
+    }
+    #main-menubar .navbar-toggle {
+        display: block;
+    }
+    #main-menubar .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    #main-menubar .navbar-fixed-top {
+        top: 0;
+        border-width: 0 0 1px;
+    }
+    #main-menubar .navbar-collapse.collapse {
+        display: none!important;
+    }
+    #main-menubar .navbar-nav {
+        float: none!important;
+        margin-top: 7.5px;
+    }
+    #main-menubar .navbar-nav>li {
+        float: none;
+    }
+    #main-menubar .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    #main-menubar .collapse.in{
+        display:block !important;
+    }  
 }
 
 /* Extra small */
