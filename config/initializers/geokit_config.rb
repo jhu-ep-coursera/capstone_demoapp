@@ -95,6 +95,8 @@ Geokit::Geocoders::GoogleGeocoder.api_key = ENV['GMAPS_GEOCODE_KEY']
 
 # Control verification of the server certificate for geocoders using HTTPS
 # Geokit::Geocoders::ssl_verify_mode = OpenSSL::SSL::VERIFY_(PEER/NONE)
+Geokit::Geocoders::ssl_verify_mode = Gem.win_platform? ?
+  OpenSSL::SSL::VERIFY_NONE : OpenSSL::SSL::VERIFY_PEER
 # Setting this to VERIFY_NONE may be needed on systems that don't have
 # a complete or up to date root certificate store. Only applies to
 # the Net::HTTP adapter.
