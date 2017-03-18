@@ -22,7 +22,7 @@ require_relative 'support/api_helper.rb'
 require_relative 'support/ui_helper.rb'
 
 
-browser=:chrome
+browser=:firefox
 Capybara.register_driver :selenium do |app|
   if ENV['SELENIUM_REMOTE_HOST']
     # https://medium.com/@georgediaz/docker-container-for-running-browser-tests-9b234e68f83c#.l7i6yay23
@@ -63,7 +63,7 @@ Capybara.configure do |config|
   #used when :js=>true
   config.javascript_driver = :poltergeist
 end
-Capybara.javascript_driver = :selenium
+#Capybara.javascript_driver = :selenium
 
 Capybara.register_driver :poltergeist do |app|
   Capybara::Poltergeist::Driver.new( app,
@@ -90,6 +90,13 @@ RSpec.configure do |config|
   config.include ApiHelper, :type=>:request
   config.include UiHelper, :type=>:feature
 
+  config.before(:each, js: true) do
+    #Capybara.page.driver.browser.manage.window.maximize
+    if !ENV['SELENIUM_REMOTE_HOST'] || Capybara.javascript_driver = :poltergeist
+      Capybara.page.current_window.resize_to(1050, 800)
+    end
+  end
+  
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
