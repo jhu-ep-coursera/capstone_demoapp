@@ -22,7 +22,7 @@ require_relative 'support/api_helper.rb'
 require_relative 'support/ui_helper.rb'
 
 
-browser=:firefox
+browser=:chrome
 Capybara.register_driver :selenium do |app|
   if ENV['SELENIUM_REMOTE_HOST']
     # https://medium.com/@georgediaz/docker-container-for-running-browser-tests-9b234e68f83c#.l7i6yay23
