@@ -7,10 +7,11 @@
       templateUrl: tabsTemplateUrl,
       controller: TabsController,
       transclude: true,
-      //bindings: {},
     })
     .component("sdTab", {
+      templateUrl: tabTemplateUrl,
       controller: TabController,
+      transclude: true,
       bindings: {
         label: "@"
       },
@@ -23,6 +24,10 @@
   tabsTemplateUrl.$inject = ["spa-demo.config.APP_CONFIG"];
   function tabsTemplateUrl(APP_CONFIG) {
     return APP_CONFIG.tabs_html;
+  }    
+  tabTemplateUrl.$inject = ["spa-demo.config.APP_CONFIG"];
+  function tabTemplateUrl(APP_CONFIG) {
+    return APP_CONFIG.tab_html;
   }    
 
   TabsController.$inject = ["$scope"];
