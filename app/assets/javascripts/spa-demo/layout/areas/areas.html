@@ -1,3 +1,11 @@
 <div class="areas-pane">
+  <ul class="area tab-label nav nav-pills" role="tablist">
+    <li ng-repeat="area in $ctrl.areas"
+        ng-hide="area.show">
+      <a role="tab"
+         ng-click="area.show=true">{{area.label}}</a>
+    </li>
+  </ul>
+
   <div class="area-content" ng-transclude></div>
 </div>

@@ -13,7 +13,12 @@
       templateUrl: areaTemplateUrl,
       controller: AreaController,
       transclude: true,
-      //bindings: {},
+      bindings: {
+        label: "@"
+      },
+      require: {
+        areasController: "^^sdAreas"
+      }
     })
     ;
 
@@ -29,6 +34,7 @@
   AreasController.$inject = ["$scope"];
   function AreasController($scope) {
     var vm=this;
+    vm.areas=[];
 
     vm.$onInit = function() {
       console.log("AreasController",$scope);
@@ -36,6 +42,9 @@
     return;
     //////////////
   }
+  AreasController.prototype.addArea = function(area) {
+    this.areas.push(area);
+  }  
 
 
   AreaController.$inject = ["$scope"];
@@ -45,6 +54,7 @@
 
     vm.$onInit = function() {
       console.log("AreaController",$scope);
+      vm.areasController.addArea(vm);
     }
     return;
     //////////////
