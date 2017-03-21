@@ -10,6 +10,11 @@ form .invalid {
   color: red;
 }
 
+.outlined {
+  border: 1px solid black;
+}
+
+
 .fullsize {
   padding-right: 0px;
   padding-left: 0px;
