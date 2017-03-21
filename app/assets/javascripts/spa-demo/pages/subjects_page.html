@@ -1,6 +1,8 @@
 <div class="subjects-page col-xs-12">
-  <sd-areas>
-
+  <sd-areas sd-areas-side>
+    <div class="areas-left"
+         ng-hide="sideVM.isHidden('left')"
+         ng-class="sideVM.isHidden('right') ?'col-sm-12':'col-sm-6 col-md-5 col-lg-4'">
       <sd-area label="Subjects"
                position="left">
 
@@ -30,7 +32,10 @@
         </sd-tabs>
 
       </sd-area>
-
+    </div>
+    <div class="areas-right"
+         ng-hide="sideVM.isHidden('right')"
+         ng-class="sideVM.isHidden('left') ? 'col-sm-12':'col-sm-6 col-md-7 col-lg-8'">
       <sd-area label="Map"
                position="right">
 
@@ -53,6 +58,6 @@
         </sd-tabs>
 
       </sd-area>
-      
+    </div> 
   </sd-areas>
 </div>
