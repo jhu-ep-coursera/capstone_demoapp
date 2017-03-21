@@ -92,4 +92,11 @@ module SubjectsUiHelper
       end
     end
   end
+
+  def visit_subjects
+    unless page.has_css?("div.subjects-page")
+      visit "#{ui_path}/#/subjects"
+    end
+    expect(page).to have_css("div.subjects-page")
+  end
 end
