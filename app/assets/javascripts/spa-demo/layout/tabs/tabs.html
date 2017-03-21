@@ -1,4 +1,9 @@
 <div class="tabs-pane">
+  <ul class="tab-label nav nav-pills" role="tablist">
+    <li ng-repeat="tab in $ctrl.tabs">
+      <a role="tab">{{tab.label}}</a>
+    </li>
+  </ul>
 
   <div class="tab-content" ng-transclude></div>
 </div>
