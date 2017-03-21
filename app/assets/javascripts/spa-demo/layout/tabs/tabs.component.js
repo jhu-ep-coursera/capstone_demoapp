@@ -29,14 +29,25 @@
   function TabsController($scope) {
     var vm=this;
     vm.tabs=[];
+    vm.selectTab = selectTab;
 
     vm.$onInit = function() {
       console.log("TabsController",$scope);
     }
     return;
     //////////////
+    function selectTab(tab) {
+      angular.forEach(vm.tabs, function(tab){
+        tab.selected=false;
+      });
+      tab.selected=true;
+    }
   }
+
   TabsController.prototype.addTab = function(tab) {
+    if (this.tabs.length===0) {
+      tab.selected = true;
+    }
     this.tabs.push(tab);
   }
 
