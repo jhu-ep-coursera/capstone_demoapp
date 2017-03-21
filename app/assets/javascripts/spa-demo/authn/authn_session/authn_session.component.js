@@ -24,7 +24,7 @@
     vm.getCurrentUserName = Authn.getCurrentUserName;    
 
     vm.$onInit = function() {
-      console.log("AuthnSessionController",$scope);
+      //console.log("AuthnSessionController",$scope);
     }
     vm.$postLink = function() {
       vm.dropdown = $("#login-dropdown")
@@ -32,7 +32,7 @@
     return;
     //////////////
     function login() {
-      console.log("login");
+      //console.log("login");
       $scope.login_form.$setPristine();
       vm.loginForm["errors"] = null;
       Authn.login(vm.loginForm).then(

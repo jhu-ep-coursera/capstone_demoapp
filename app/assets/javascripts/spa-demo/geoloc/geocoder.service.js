@@ -24,15 +24,15 @@
     //returns location information for a provided address
     function getLocationByAddress(address) {    
       var result = addresses.get({address: address});          
-      console.log("locateByAddress=", result);
+      //console.log("locateByAddress=", result);
       return result;
     }
 
     //returns location information for a specific {lng,lat} position
     function getLocationByPosition(position) {
-      console.log("locationByPosition", this, position);
+      //console.log("locationByPosition", this, position);
       var result=positions.get({lng: position.lng, lat: position.lat});
-      console.log("locateByPosition=", result);
+      //console.log("locateByPosition=", result);
       return result;
     }    
   }

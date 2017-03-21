@@ -49,7 +49,7 @@
 
     //process application-level roles returned from server
     function processUserRoles(response, deferred) {
-      console.log("processing roles", service.state, response);
+      //console.log("processing roles", service.state, response);
       angular.forEach(response.user_roles, function(value){
         if (value.role_name=="admin") {
           service.admin=true;
@@ -61,7 +61,7 @@
       service.user=response;
       service.userPromise=null;
       deferred.resolve(response);
-      console.log("processed roles", service.user);
+      //console.log("processed roles", service.user);
     }    
 
     function getAuthorizedUser() {

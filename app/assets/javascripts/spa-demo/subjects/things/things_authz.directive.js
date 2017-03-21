@@ -18,7 +18,7 @@
     return directive;
 
     function link(scope, element, attrs) {
-      console.log("ThingsAuthzDirective", scope);
+      //console.log("ThingsAuthzDirective", scope);
     }
   }
 
@@ -44,7 +44,7 @@
     }
 
     function authzUserItem(item, user) {
-      console.log("new Item/Authz", item, user);
+      //console.log("new Item/Authz", item, user);
 
       vm.authz.authenticated = ThingsAuthz.isAuthenticated();
       vm.authz.canQuery      = ThingsAuthz.canQuery();
@@ -67,7 +67,7 @@
       vm.authz.canGetDetails = ThingsAuthz.canGetDetails(item);
       vm.authz.canUpdateImage = ThingsAuthz.canUpdateImage(item);
       vm.authz.canRemoveImage = ThingsAuthz.canRemoveImage(item);      
-      console.log("checkAccess", item, vm.authz);
+      //console.log("checkAccess", item, vm.authz);
     }
 
     function canUpdateItem(item) {
