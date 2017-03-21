@@ -43,7 +43,7 @@
 //= require spa-demo/layout/image_viewer/image_viewer.component
 
 //= require spa-demo/layout/tabs/tabs.component
-
+//= require spa-demo/layout/areas/areas.component
 
 //= require spa-demo/foos/foos.module
 //= require spa-demo/foos/foos.service
