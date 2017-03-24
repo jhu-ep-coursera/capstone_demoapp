@@ -22,6 +22,10 @@ form .invalid {
 
 /*********** navbar *************/
 
+#main-menubar nav.navbar {
+  margin-bottom: 0px;
+}
+
 .nav li form {
   padding-left: 10px; /* adds spacing along left of dropdown menu form */
   padding-right: 10px;
@@ -45,6 +49,39 @@ span.search-criteria form input[name='distance-limit'] {
   width: 75px;
 }
 
+/*********** main display-area ********/
+#display-area {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/*********** areas ********/
+div.areas-left, div.areas-right {
+  padding-left: 0;
+  padding-right: 0;
+}
+div.area-pane {
+  position: relative;
+  border: 1px solid black;
+}
+div.area-pane input[type='checkbox'] {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+div.area-pane div.tab-content {
+  height: 44vh;
+  overflow-y: auto; 
+}
+div.area-pane.expanded div.tab-content {
+  height: 93vh;
+}
+
+div.areas-pane > ul.tab-label li a {
+  line-height: 7px;
+  font-size: 0.8em;
+} 
 /********************************/
 
 [readonly='readonly'] {
