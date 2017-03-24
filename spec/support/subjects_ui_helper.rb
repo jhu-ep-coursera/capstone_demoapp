@@ -26,7 +26,7 @@ module SubjectsUiHelper
                               :count=>ThingImage.where(:image=>image).count,
                               :wait=>5)
       expect(page).to have_css("div.image-existing img",:count=>1,:wait=>5)
-      wait_until {find("div.image-existing img")[:complete]==true}
+      wait_until {find("div.image-existing img")[:complete].to_s=="true"}
     end
     expected_linkables ||= get_linkables(image).size
     if expected_linkables && logged_in?
