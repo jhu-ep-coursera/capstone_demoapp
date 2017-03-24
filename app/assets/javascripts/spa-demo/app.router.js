@@ -33,6 +33,6 @@
     })
     ; 
 
-    $urlRouterProvider.otherwise("/subjects");
+    //$urlRouterProvider.otherwise("/subjects");
   }
 })();
