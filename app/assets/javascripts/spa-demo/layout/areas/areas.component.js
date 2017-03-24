@@ -89,6 +89,7 @@
   function AreaController($scope) {
     var vm=this;
     vm.show=true;
+    vm.isExpanded = isExpanded;
 
     vm.$onInit = function() {
       console.log("AreaController",$scope);
@@ -96,6 +97,11 @@
     }
     return;
     //////////////
+    function isExpanded() {
+      var result = vm.show && vm.areasController.countActive(vm.position)===1;
+      console.log("isExpanded", vm.position, result);
+      return result;
+    }
   }
 
 
