@@ -5,5 +5,6 @@
       <span class="caption">{{ti.image_caption}}</span>
       <span class="id thing_id" ng-if="ti.thing_id">{{ti.thing_id}}</span>
       <span class="thing_name" ng-if="ti.thing_id">({{ti.thing_name}})</span>
+      <span class="distance" ng-if="ti.distance!=null">({{ti.distance | number:1}} miles)</span>
   </li>
 </ul>
