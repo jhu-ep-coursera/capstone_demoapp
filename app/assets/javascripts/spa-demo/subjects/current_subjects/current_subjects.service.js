@@ -5,12 +5,12 @@
     .module("spa-demo.subjects")
     .service("spa-demo.subjects.currentSubjects", CurrentSubjects);
 
-  CurrentSubjects.$inject = ["$rootScope",
+  CurrentSubjects.$inject = ["$rootScope","$q",
                              "$resource",
                              "spa-demo.geoloc.currentOrigin",
                              "spa-demo.config.APP_CONFIG"];
 
-  function CurrentSubjects($rootScope, $resource, currentOrigin, APP_CONFIG) {
+  function CurrentSubjects($rootScope, $q, $resource, currentOrigin, APP_CONFIG) {
     var subjectsResource = $resource(APP_CONFIG.server_url + "/api/subjects",{},{});
     var service = this;
     service.version = 0;
@@ -40,13 +40,18 @@
       params["order"]="ASC";
       console.log("refresh",params);
 
-      refreshImages(params);
+      var p1=refreshImages(params);
       params["subject"]="thing";      
-      refreshThings(params);
+      var p2=refreshThings(params);
+      $q.all([p1,p2]).then(
+        function(){
+          service.setCurrentImageForCurrentThing();
+        });      
     }
 
     function refreshImages(params) {
-      subjectsResource.query(params).$promise.then(
+      var result=subjectsResource.query(params);
+      result.$promise.then(
         function(images){
           service.images=images;
           service.version += 1;
@@ -55,9 +60,11 @@
           }
           console.log("refreshImages", service);
         });
+      return result.$promise;
     }
     function refreshThings(params) {
-      subjectsResource.query(params).$promise.then(
+      var result=subjectsResource.query(params);
+      result.$promise.then(
         function(things){
           service.things=things;
           service.version += 1;
@@ -66,6 +73,7 @@
           }
           console.log("refreshThings", service);
         });
+      return result.$promise;
     }
 
     function isCurrentImageIndex(index) {
@@ -95,7 +103,7 @@
   }
 
 
-  CurrentSubjects.prototype.setCurrentImage = function(index) {
+  CurrentSubjects.prototype.setCurrentImage = function(index, skipThing) {
     if (index >= 0 && this.images.length > 0) {
       this.imageIdx = (index < this.images.length) ? index : 0;
     } else if (index < 0 && this.images.length > 0) {
@@ -104,11 +112,15 @@
       this.imageIdx = null;
     }
 
+    if (!skipThing) {
+      this.setCurrentThingForCurrentImage();
+    }
+
     console.log("setCurrentImage", this.imageIdx, this.getCurrentImage());
     return this.getCurrentImage();
   }
 
-  CurrentSubjects.prototype.setCurrentThing = function(index) {
+  CurrentSubjects.prototype.setCurrentThing = function(index, skipImage) {
     if (index >= 0 && this.things.length > 0) {
       this.thingIdx = (index < this.things.length) ? index : 0;
     } else if (index < 0 && this.things.length > 0) {
@@ -117,8 +129,60 @@
       this.thingIdx=null;
     }
 
+    if (!skipImage) {
+      this.setCurrentImageForCurrentThing();
+    }
+
     console.log("setCurrentThing", this.thingIdx, this.getCurrentThing());
     return this.getCurrentThing();
   }
 
-})();
+  CurrentSubjects.prototype.setCurrentThingForCurrentImage = function() {
+    var image=this.getCurrentImage();
+    if (!image.thing_id) {
+      this.thingIdx = null;
+    } else {
+      var thing=this.getCurrentThing();
+      if (!thing || thing.thing_id !== image.thing_id) {
+        this.thingIdx=null;
+        for (var i=0; i<this.things.length; i++) {
+          thing=this.things[i];
+          if (image.thing_id === thing.thing_id) {
+            this.setCurrentThing(i, true);
+            break;
+          }
+        }
+      }      
+    }
+  }
+
+  CurrentSubjects.prototype.setCurrentImageForCurrentThing = function() {
+    var image=this.getCurrentImage();
+    var thing=this.getCurrentThing();
+    if ((thing && thing.thing_id !== image.thing_id) || !image || image.priority!==0) {
+      for (var i=0; i<this.images.length; i++) {
+        image=this.images[i];
+        if (image.thing_id === thing.thing_id && image.priority===0) {
+          this.setCurrentImage(i, true);
+          break;
+        }
+      }
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  })();
