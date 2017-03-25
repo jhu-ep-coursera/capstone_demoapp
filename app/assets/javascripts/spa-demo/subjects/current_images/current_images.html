@@ -1,0 +1,9 @@
+<ul class="items images">
+  <li ng-repeat="ti in $ctrl.images">
+      <img ng-src="{{ti.image_content_url}}?width=100"/>      
+      <span class="id image_id">{{ti.image_id}}</span>
+      <span class="caption">{{ti.image_caption}}</span>
+      <span class="id thing_id" ng-if="ti.thing_id">{{ti.thing_id}}</span>
+      <span class="thing_name" ng-if="ti.thing_id">({{ti.thing_name}})</span>
+  </li>
+</ul>

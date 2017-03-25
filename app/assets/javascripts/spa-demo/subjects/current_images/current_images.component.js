@@ -22,6 +22,12 @@
     vm.$onInit = function() {
       console.log("CurrentImagesController",$scope);
     }
+    vm.$postLink = function() {
+      $scope.$watch(
+        function() { return currentSubjects.getImages(); }, 
+        function(images) { vm.images = images; }
+      );
+    }    
     return;
     //////////////
   }

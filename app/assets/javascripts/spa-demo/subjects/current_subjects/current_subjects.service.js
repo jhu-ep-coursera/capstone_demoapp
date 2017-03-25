@@ -28,15 +28,33 @@
     ////////////////
     function refresh() {      
       var params=currentOrigin.getPosition();
-      //...
+      if (!params || !params.lng || !params.lat) {
+        params=angular.copy(APP_CONFIG.default_position);
+      } else {
+        params["distance"]=true;
+      }
+
+      if (currentOrigin.getDistance() > 0) {
+        params["miles"]=currentOrigin.getDistance();
+      }
+      params["order"]="ASC";
+      console.log("refresh",params);
+
       refreshImages(params);
-      //...
+      params["subject"]="thing";      
       refreshThings(params);
     }
 
     function refreshImages(params) {
-      subjectsResource.query(params);
-      //...
+      subjectsResource.query(params).$promise.then(
+        function(images){
+          service.images=images;
+          service.version += 1;
+          if (!service.imageIdx || service.imageIdx > images.length) {
+            service.imageIdx=0;
+          }
+          console.log("refreshImages", service);
+        });
     }
     function refreshThings(params) {
       subjectsResource.query(params);
