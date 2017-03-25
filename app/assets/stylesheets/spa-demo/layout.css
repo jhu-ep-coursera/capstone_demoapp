@@ -78,6 +78,27 @@ div.area-pane.expanded div.tab-content {
   height: 93vh;
 }
 
+div.area-pane div.tab-pane ul.items {
+  margin-top: 5px;
+  padding-left: 5px;
+}
+div.area-pane div.tab-pane ul.items span.id {
+  display: none;
+}
+div.area-pane div.tab-pane ul.items img {
+  width: 50px;
+}
+div.area-pane.expanded div.tab-pane ul.items img {
+  width: 100px;
+}
+
+div.area-pane div.tab-pane ul.items li.selected {
+  font-size: 1.2em;
+  font-weight: bold;
+  background-color: #e0e0d1;
+}
+
+
 div.areas-pane > ul.tab-label li a {
   line-height: 7px;
   font-size: 0.8em;
