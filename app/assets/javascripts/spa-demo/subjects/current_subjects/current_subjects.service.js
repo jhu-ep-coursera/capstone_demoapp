@@ -57,8 +57,15 @@
         });
     }
     function refreshThings(params) {
-      subjectsResource.query(params);
-      //...
+      subjectsResource.query(params).$promise.then(
+        function(things){
+          service.things=things;
+          service.version += 1;
+          if (!service.thingIdx || service.thingIdx > things.length) {
+            service.thingIdx=0;
+          }
+          console.log("refreshThings", service);
+        });
     }
 
     function isCurrentImageIndex(index) {

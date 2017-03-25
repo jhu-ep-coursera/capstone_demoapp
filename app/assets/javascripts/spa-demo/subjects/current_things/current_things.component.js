@@ -22,6 +22,12 @@
     vm.$onInit = function() {
       console.log("CurrentThingsController",$scope);
     }
+    vm.$postLink = function() {
+      $scope.$watch(
+        function() { return currentSubjects.getThings(); }, 
+        function(things) { vm.things = things; }
+      );
+    }    
     return;
     //////////////
   }
