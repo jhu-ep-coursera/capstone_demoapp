@@ -18,6 +18,8 @@
                                      "spa-demo.subjects.currentSubjects"];
   function CurrentThingsController($scope,currentSubjects) {
     var vm=this;
+    vm.thingClicked = thingClicked;
+    vm.isCurrentThing = currentSubjects.isCurrentThingIndex;
 
     vm.$onInit = function() {
       console.log("CurrentThingsController",$scope);
@@ -30,5 +32,8 @@
     }    
     return;
     //////////////
+    function thingClicked(index) {
+      currentSubjects.setCurrentThing(index);
+    }    
   }
 })();

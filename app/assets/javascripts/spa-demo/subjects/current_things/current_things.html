@@ -1,9 +1,12 @@
 <ul class="items things">
-  <li ng-repeat="ti in $ctrl.things">
+  <li ng-repeat="ti in $ctrl.things"
+      ng-class="{selected: $ctrl.isCurrentThing($index)}">
+    <a ng-click="$ctrl.thingClicked($index)">
       <img ng-src="{{ti.image_content_url}}?width=100"/>
       <span class="id thing_id">{{ti.thing_id}}</span>
       <span class="name">{{ti.thing_name}}</span> 
       <span class="id image_id">{{ti.image_id}}</span>
       <span class="distance" ng-if="ti.distance">({{ti.distance | number:1 }} miles)</span>
+    </a>
   </li>
 </ul>
