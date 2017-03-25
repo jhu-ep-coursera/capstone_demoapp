@@ -18,6 +18,8 @@
                                      "spa-demo.subjects.currentSubjects"];
   function CurrentImagesController($scope, currentSubjects) {
     var vm=this;
+    vm.imageClicked = imageClicked;
+    vm.isCurrentImage = currentSubjects.isCurrentImageIndex;
 
     vm.$onInit = function() {
       console.log("CurrentImagesController",$scope);
@@ -30,5 +32,8 @@
     }    
     return;
     //////////////
+    function imageClicked(index) {
+      currentSubjects.setCurrentImage(index);
+    }
   }
 })();
