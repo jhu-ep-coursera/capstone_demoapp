@@ -5,6 +5,7 @@
     .module("spa-demo.config", [])
     .constant("spa-demo.config.APP_CONFIG", {
       server_url: "<%= ENV['RAILS_API_URL'] %>",
+      default_position: {"lng":-76.61183685064316, "lat":39.28583496489344},
 
       main_page_html: "<%= asset_path('spa-demo/pages/main.html') %>",
       signup_page_html: "<%= asset_path('spa-demo/pages/signup_page.html') %>",
@@ -29,6 +30,9 @@
       image_editor_html: "<%= asset_path('spa-demo/subjects/images/image_editor.html') %>",
       thing_editor_html: "<%= asset_path('spa-demo/subjects/things/thing_editor.html') %>",
       thing_selector_html: "<%= asset_path('spa-demo/subjects/things/thing_selector.html') %>",
+
+      current_images_html: "<%= asset_path('spa-demo/subjects/current_images/current_images.html') %>",
+      current_things_html: "<%= asset_path('spa-demo/subjects/current_things/current_things.html') %>",
     });
 
 })();
