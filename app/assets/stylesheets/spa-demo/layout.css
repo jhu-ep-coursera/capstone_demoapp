@@ -180,6 +180,11 @@ sd-image-viewer .glyphicon-chevron-right {
   right: 20px;
 }
 
+sd-image-viewer div.image-items span.id {
+  display: none;
+}
+
+
 /*** media queries ****/
 
 /* Large */

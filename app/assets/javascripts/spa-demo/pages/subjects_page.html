@@ -25,10 +25,12 @@
           <sd-tab label="Thing">
               <div>Thing Info goes here</div>
           </sd-tab>
-
           <sd-tab label="Image">
-              <div>Image Viewer goes here</div>
+              <sd-current-image-viewer name="details-area"              
+                                       min-width="400">
+              </sd-current-image-viewer>
           </sd-tab>
+
         </sd-tabs>
 
       </sd-area>
@@ -53,7 +55,9 @@
               <div>Thing Info goes here</div>
           </sd-tab>
           <sd-tab label="Image">
-              <div>Image Viewer goes here</div>
+              <sd-current-image-viewer name="map-area"
+                                       min-width="800">
+              </sd-current-image-viewer>
           </sd-tab>
         </sd-tabs>
 

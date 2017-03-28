@@ -9,6 +9,8 @@
       bindings: {
         name: "@",
         images: "<",
+        currentImage: "<currentImageIndex",
+        indexChanged: "&",
         minWidth: "@"
       },
     });
@@ -30,7 +32,7 @@
     vm.nextImage=nextImage;
 
     vm.$onInit = function() {
-      vm.currentIndex = 0;      
+      if (!vm.currentIndex) { vm.currentIndex = 0; }
       console.log(vm.name, "ImageViewerController", $scope);
     }
     vm.$postLink = function() {
@@ -40,6 +42,12 @@
     }        
     vm.$onDestroy = function() {
       sizing.nolisten(resizeHandler);
+    }
+    vm.$onChanges = function(changes) {
+      console.log("$onChanges", vm.name, changes);
+      if (changes.currentImage) {
+        vm.currentIndex = changes.currentImage.currentValue;
+      }
     }
     return;
     //////////////
@@ -62,6 +70,8 @@
     }
     function setCurrentIndex(index) {
       console.log("setCurrentIndex", vm.name, index);
+      var originalValue = vm.currentIndex;
+
       if (vm.images && vm.images.length > 0) {
         if (index >= vm.images.length) {
           vm.currentIndex=0;
@@ -72,6 +82,10 @@
         }
       } else {
         vm.currentIndex=0;
+      }
+
+      if (originalValue !== vm.currentIndex) {
+        vm.indexChanged({index:vm.currentIndex});
       }
     }
 
