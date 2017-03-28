@@ -101,7 +101,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
         find("div.tabs-pane ul li a", :text=>"Images").click
         within("div.tab-content sd-tab[label='Images']") do
           true_orphan_images.each do |orphan|
-            id_node=find("ul.images span.id",text:orphan.id, visible:false)
+            id_node=find("ul.images span.image_id",text:orphan.id, visible:false)
             within(id_node.find(:xpath,"..")) do
               expect(page).to have_no_css("span.thing_name")
               expect(page).to have_no_css("span.thing_id", visible:false)
@@ -123,7 +123,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
             expect(page).to have_css("img")
             expect(page).to have_css("span.caption")
             expect(page).to have_css("span.distance")
-            expect(page).to have_css("span.id",visible:false)
+            expect(page).to have_css("span.image_id",visible:false)
             expect(page).to have_no_css("span.distance", :text=>/\.\d{2,} miles/)
             expect(page).to have_css("span.distance", :text=>/(\d+\.\d{0,1} miles)/)
           end
@@ -203,7 +203,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
             within(node) do
               expect(page).to have_css("img")
               expect(page).to have_css("span.name")
-              expect(page).to have_css("span.id", visible:false)
+              expect(page).to have_css("span.thing_id", visible:false)
               expect(page).to have_css("span.image_id", visible:false)
               expect(page).to have_no_css("span.distance")
             end
@@ -337,7 +337,8 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
               src=find("img")[:src]
               expect(width=/width=(\d+)/.match(src)[1]).to_not be_nil
               expect(width.to_i).to be >= 400
-              expect(page).to have_css("span.id", visible:false)
+              expect(page).to have_css("span.image_id", visible:false)
+              expect(page).to have_no_css("span.image_id")
             end
             within("div.image-area") do
               expect(page).to have_css("span.glyphicon-chevron-left", visible:false)
@@ -353,7 +354,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
           within("sd-area[label='Details']") do
             find("div.tabs-pane ul li a", :text=>/^Image$/).click
             within("div.tab-content sd-tab[label='Image'] div.image-items") do
-              expect(page).to have_css("span.id", visible:false, text:ti.image_id)
+              expect(page).to have_css("span.image_id", visible:false, text:ti.image_id)
             end
           end
         end
@@ -372,7 +373,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
                 find("span.glyphicon-chevron-right", visible:false).click
               end
               within("div.image-items") do
-                viewer_image_id=find("span.id", visible:false).text(:all)
+                viewer_image_id=find("span.image_id", visible:false).text(:all)
               end
             end
           end
@@ -394,7 +395,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
                 find("span.glyphicon-chevron-left", visible:false).click
               end
               within("div.image-items") do
-                viewer_image_id=find("span.id", visible:false).text(:all)
+                viewer_image_id=find("span.image_id", visible:false).text(:all)
               end
             end
           end
@@ -430,7 +431,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
           within("div.tab-content sd-tab[label='Thing']") do
             within("div.thing-info") do
               expect(page).to have_css("h4", text:selected_thing.name)
-              expect(page).to have_css("span.id", visible:false)
+              expect(page).to have_css("span.thing_id", visible:false)
               expect(page).to have_css("span.glyphicon-chevron-left", visible:false)
               expect(page).to have_css("span.glyphicon-chevron-right", visible:false)
               expect(page).to have_no_css("div.distance")
@@ -459,7 +460,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
         find("div.tabs-pane ul li a", :text=>/^Thing$/).click
         within("div.tab-content sd-tab[label='Thing']") do
           within("div.thing-info") do
-            expect(page).to have_css("span.id", visible:false, text:thing_id)
+            expect(page).to have_css("span.thing_id", visible:false, text:thing_id)
           end
         end
       end
@@ -482,7 +483,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
         within("div.tab-content sd-tab[label='Thing']") do
           within("div.thing-info") do
             find("span.glyphicon-chevron-#{direction}", visible:false).click
-            info_thing_id=find("span.id", visible:false).text(:all)
+            info_thing_id=find("span.thing_id", visible:false).text(:all)
             info_thing_id = info_thing_id.to_i  if info_thing_id
           end
         end

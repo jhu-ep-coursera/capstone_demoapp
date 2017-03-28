@@ -152,7 +152,7 @@ module SubjectsUiHelper
   def select_image image_id, thing_id=nil
     within("sd-area[label='Subjects']") do #select orphan Image
       find("div.tabs-pane ul li a", :text=>"Images").click
-      selector=["ul.images span.id", {visible:false, text:image_id}]
+      selector=["ul.images span.image_id", {visible:false, text:image_id}]
       expect(page).to have_css(*selector)
       page.document.synchronize do #re-try query if all() did get all
         id=!thing_id ? first(*selector) : all(*selector).select {|id|
