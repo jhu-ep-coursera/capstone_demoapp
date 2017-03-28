@@ -88,6 +88,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
               within(id_node.find(:xpath,"..")) do
                 expect(page).to have_css("span.thing_name")
                 expect(page).to have_css("span.thing_id", visible:false)
+                expect(page).to have_no_css("span.thing_id")
               end
             end
           end
