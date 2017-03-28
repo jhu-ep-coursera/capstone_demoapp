@@ -18,6 +18,7 @@
     ImageQuerySize.prototype.updateSizes = function(minWidth) {
       var w = this.queryWidth(this.element.innerWidth());
       var h = this.queryHeight(this.element.innerHeight());
+      if (minWidth && w < minWidth) { w = minWidth; }
       var newSize = (w != this.width) || (h != this.height);
       if (newSize) {
         this.width=w;
