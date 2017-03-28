@@ -95,6 +95,9 @@
   CurrentSubjects.prototype.getThings = function() {
     return this.things;
   }
+  CurrentSubjects.prototype.getCurrentImageIndex = function() {
+     return this.imageIdx;
+  }
   CurrentSubjects.prototype.getCurrentImage = function() {
     return this.images.length > 0 ? this.images[this.imageIdx] : null;
   }
