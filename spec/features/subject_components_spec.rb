@@ -6,12 +6,15 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
   include_context "db_cleanup"
   include SubjectsUiHelper
 
-  let(:member)        { create_user }
+  let(:member)        { @member }
   let(:origin)        { FactoryGirl.build(:location) }
   let(:true_orphan_images) { Image.where.not(:id=>ThingImage.pluck(:image_id)) }
   let(:orphan_images) { ThingImage.where.not(:thing_id=>ThingImage.where(:priority=>0).pluck(:thing_id)) }
   let(:things)        { ThingImage.within_range(origin.position).things }
   let(:images)        { ThingImage.within_range(origin.position) }
+  before(:all) do
+    @member=create_user
+  end
   before(:each) do
     unless Thing.exists?
       populate_subjects
@@ -435,7 +438,8 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
               expect(page).to have_css("span.glyphicon-chevron-left", visible:false)
               expect(page).to have_css("span.glyphicon-chevron-right", visible:false)
               expect(page).to have_no_css("div.distance")
-              expect(page).to have_css("div.description", text:selected_thing.description)
+              expect(page).to have_css("div.description",text:selected_thing.description)
+              expect(page).to have_css("div.notes",text:selected_thing.notes)
             end
           end
         end
