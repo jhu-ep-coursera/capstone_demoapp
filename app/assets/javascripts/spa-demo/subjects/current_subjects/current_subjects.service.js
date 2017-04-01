@@ -11,7 +11,9 @@
                              "spa-demo.config.APP_CONFIG"];
 
   function CurrentSubjects($rootScope, $q, $resource, currentOrigin, APP_CONFIG) {
-    var subjectsResource = $resource(APP_CONFIG.server_url + "/api/subjects",{},{});
+    var subjectsResource = $resource(APP_CONFIG.server_url + "/api/subjects",{},{
+      query: { cache:false, isArray:true }
+    });
     var service = this;
     service.version = 0;
     service.images = [];
