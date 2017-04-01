@@ -21,6 +21,8 @@
     service.refresh = refresh;
     service.isCurrentImageIndex = isCurrentImageIndex;
     service.isCurrentThingIndex = isCurrentThingIndex;
+    service.nextThing = nextThing;
+    service.previousThing = previousThing;
 
     //refresh();
     $rootScope.$watch(function(){ return currentOrigin.getVersion(); }, refresh);
@@ -84,6 +86,20 @@
       //console.log("isCurrentThingIndex", index, service.thingIdx === index);
       return service.thingIdx === index;
     }
+    function nextThing() {
+      if (service.thingIdx !== null) {
+        service.setCurrentThing(service.thingIdx + 1);
+      } else if (service.things.length >= 1) {
+        service.setCurrentThing(0);
+      }    
+    }
+    function previousThing() {
+      if (service.thingIdx !== null) {
+        service.setCurrentThing(service.thingIdx - 1);
+      } else if (service.things.length >= 1) {
+        service.setCurrentThing(service.things.length-1);
+      }
+    }    
   }
 
   CurrentSubjects.prototype.getVersion = function() {
