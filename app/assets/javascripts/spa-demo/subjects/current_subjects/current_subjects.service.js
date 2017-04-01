@@ -158,7 +158,7 @@
 
   CurrentSubjects.prototype.setCurrentThingForCurrentImage = function() {
     var image=this.getCurrentImage();
-    if (!image.thing_id) {
+    if (!image || !image.thing_id) {
       this.thingIdx = null;
     } else {
       var thing=this.getCurrentThing();
@@ -178,7 +178,9 @@
   CurrentSubjects.prototype.setCurrentImageForCurrentThing = function() {
     var image=this.getCurrentImage();
     var thing=this.getCurrentThing();
-    if ((thing && thing.thing_id !== image.thing_id) || !image || image.priority!==0) {
+    if (!thing) {
+      this.imageIdx=null;
+    } else if ((thing && thing.thing_id !== image.thing_id) || !image || image.priority!==0) {
       for (var i=0; i<this.images.length; i++) {
         image=this.images[i];
         if (image.thing_id === thing.thing_id && image.priority===0) {
