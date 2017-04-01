@@ -26,3 +26,43 @@ div.subjects-page {
   padding-left: 0px;
   padding-right: 0px;
 }
+
+div.thing-info span.id {
+  display: none;
+}
+div.thing-info {
+  margin-left: 5px;
+  position: relative;
+}
+div.thing-info .glyphicon {
+  position: absolute;
+  top: 60px;
+  font-size: 5em;
+}
+div.thing-info .glyphicon-chevron-left {
+  left: 10px;
+}
+div.thing-info .glyphicon-chevron-right {
+  right: 10px;
+}
+
+div.thing-info .overlay {
+  color: white;
+  opacity: 0.0;
+  z-index: 1002;  
+  cursor: pointer;
+}
+div.thing-info .overlay:hover {
+  opacity: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
