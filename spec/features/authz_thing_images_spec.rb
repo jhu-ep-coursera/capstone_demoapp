@@ -296,7 +296,7 @@ RSpec.feature "AuthzThingImages", type: :feature, :js=>true do
         within(image_li) do
           fill_in("image-priority", :with=>thing_image.priority+1)
         end
-        expect(page).to have_no_button("Update Thing")
+        expect(page).to have_no_button("Update Thing", :wait=>5)
         expect(page).to have_button("Update Image Links", :disabled=>false)
 
         #editing name causes entire object update to be enabled

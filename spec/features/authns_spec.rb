@@ -16,6 +16,7 @@ RSpec.feature "Authns", type: :feature, :js=>true do
         user=User.where(:email=>user_props[:email]).first
         #make sure we were the ones that created it
         expect(user.created_at).to be > start_time        
+        sleep 0.5 #give time for async requests to finish on server
       end
     end
 

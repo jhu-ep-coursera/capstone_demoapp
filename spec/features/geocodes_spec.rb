@@ -66,8 +66,12 @@ RSpec.feature "Geocodes", type: :feature, js: true do
       Capybara.reset_sessions!  #cleared up error re-visiting page in docker
       visit_image image
       expect(cloc=CachedLocation.by_address(typed_text).first).to_not be_nil
-      expect(page).to have_css(".image-location span.lng",:text=>cloc.location[:position][:lng])
-      expect(page).to have_css(".image-location span.lat",:text=>cloc.location[:position][:lat])
+      using_wait_time 5 do
+        expect(page).to have_css(".image-location span.lng",
+                                 :text=>cloc.location[:position][:lng])
+        expect(page).to have_css(".image-location span.lat",
+                                 :text=>cloc.location[:position][:lat])
+      end
     end
   end
 
@@ -114,7 +118,7 @@ RSpec.feature "Geocodes", type: :feature, js: true do
 
       fill_in("address-search", :with=>search_address)
       click_button("lookup-address")
-      using_wait_time 5 do
+      using_wait_time 10 do
         expect(page).to have_css("span.current-origin", :text=>/.+/)
       end
 

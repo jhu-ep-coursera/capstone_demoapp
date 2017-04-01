@@ -58,7 +58,8 @@ RSpec.feature "ImageContents", type: :feature, js:true do
 
       #existing image is displayed with caption
       within("sd-image-editor .image-form") do
-        expect(page).to have_css("span.image_id",:text=>image.id,:visible=>false)
+        expect(page).to have_css("span.image_id",:text=>image.id,
+                                                 :visible=>false,:wait=>5)
         expect(page).to have_field("image-caption",:with=>image.caption)
         expect(page).to have_css(".image-existing img[src*='#{image_content_path(image,width:250)}']")
       end

@@ -39,15 +39,6 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
     end
   end
 
-=begin
-  def wait_until
-    Timeout.timeout(Capybara.default_max_wait_time) do 
-      sleep(0.1) until value = yield
-      value
-    end
-  end
-=end
-
   describe "images list view" do
     it "has Image list components" do
       ["Subjects","Map"].each do |area|
@@ -157,8 +148,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
       previous_image=nil
       image_list.each do |image|
         within(image) do
-          find("a").click
-          wait_until {image[:class].include?("selected")}
+          wait_until(5) {find("a").click; image[:class].include?("selected")}
           expect(previous_image[:class]).to_not include("selected") if previous_image
           previous_image = image
         end
@@ -171,8 +161,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
 
       image_list.each do |image|
         within(image) do
-          find("a").click
-          wait_until {image[:class].include?("selected")}
+          wait_until(5) {find("a").click; image[:class].include?("selected")}
         end
         within("sd-area[label='Map']") do
           caption=find("div.tabs-pane ul li.selected").text
@@ -297,10 +286,12 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
 
       it "selects related Thing for Image" do
         things.each do |ti|  #displayed Image and Thing must be related
-          select_image(ti.image_id)
-          thing_id = get_current_thing_id()
-          expect(ThingImage.where(thing_id:thing_id, 
-                                  image_id:ti.image_id)).to exist
+          wait_until(5) do
+            select_image(ti.image_id)
+            thing_id = get_current_thing_id()
+            expect(thing_id).to_not be_nil
+            ThingImage.where(thing_id:thing_id, image_id:ti.image_id).exists?
+          end
         end
       end
 
@@ -357,7 +348,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
           within("sd-area[label='Details']") do
             find("div.tabs-pane ul li a", :text=>/^Image$/).click
             within("div.tab-content sd-tab[label='Image'] div.image-items") do
-              expect(page).to have_css("span.image_id", visible:false, text:ti.image_id)
+              expect(page).to have_css("span.image_id", visible:false, text:ti.image_id, :wait=>5)
             end
           end
         end
@@ -375,6 +366,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
               within("div.image-area") do
                 find("span.glyphicon-chevron-right", visible:false).click
               end
+              sleep 0.1 #give image (could be same image) chance to appear
               within("div.image-items") do
                 viewer_image_id=find("span.image_id", visible:false).text(:all)
               end
@@ -397,6 +389,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
               within("div.image-area") do
                 find("span.glyphicon-chevron-left", visible:false).click
               end
+              sleep 0.1 #give image (could be same image) chance to appear
               within("div.image-items") do
                 viewer_image_id=find("span.image_id", visible:false).text(:all)
               end
@@ -464,7 +457,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
         find("div.tabs-pane ul li a", :text=>/^Thing$/).click
         within("div.tab-content sd-tab[label='Thing']") do
           within("div.thing-info") do
-            expect(page).to have_css("span.thing_id", visible:false, text:thing_id)
+            expect(page).to have_css("span.thing_id",visible:false,text:thing_id,wait:5)
           end
         end
       end

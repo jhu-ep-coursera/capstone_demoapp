@@ -171,10 +171,9 @@ RSpec.feature "AuthzImages", type: :feature, js:true do
   end
   shared_examples "can delete image" do
     it "image deleted" do
+      #wait for page to load
+      image_editor_loaded! image
       within("sd-image-editor .image-form") do
-        #wait for page to load
-        expect(page).to have_css("div.image-existing img",:count=>1,:wait=>5)
-
         #delete the image
         click_button("Delete Image")
 
