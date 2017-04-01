@@ -99,7 +99,7 @@
       if (!object) { return null; }
       var url = object.image_id ? object.image_content_url : object.content_url;
       url += vm.queryString;
-      console.log(vm.name, "url=", url);
+      //console.log(vm.name, "url=", url);
       return url;
     }
     function imageId(object) {
