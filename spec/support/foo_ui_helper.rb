@@ -3,7 +3,7 @@ module FooUiHelper
   FOO_LIST_XPATH="//h3[text()='Foos']/../ul"
 
   def create_foo foo_state
-    visit "#{root_path}/#/" unless page.has_css?("h3", text:"Foos")
+    visit "#{root_path}/#/foos" unless page.has_css?("h3", text:"Foos")
     expect(page).to have_css("h3", text:"Foos") #on the Foos page
     within(:xpath,FOO_FORM_XPATH) do
       fill_in("name", :with=>foo_state[:name])
@@ -18,7 +18,7 @@ module FooUiHelper
   end
 
   def update_foo existing_name, new_name
-    visit "#{root_path}/#/" unless page.has_css?("h3", text:"Foos")
+    visit "#{root_path}/#/foos" unless page.has_css?("h3", text:"Foos")
     expect(page).to have_css("h3", text:"Foos") #on the Foos page
     within(:xpath,FOO_LIST_XPATH) do
       find("a",:text=>existing_name).click
@@ -34,7 +34,7 @@ module FooUiHelper
   end
 
   def delete_foo name
-    visit "#{root_path}/#/" unless page.has_css?("h3", text:"Foos")
+    visit "#{root_path}/#/foos" unless page.has_css?("h3", text:"Foos")
     within(:xpath,FOO_LIST_XPATH) do
       find("li a",:text=>name).click
     end
