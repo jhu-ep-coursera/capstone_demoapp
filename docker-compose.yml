@@ -42,6 +42,8 @@ services:
         - APP_PORT=3010
         - SELENIUM_REMOTE_HOST=selenium
         - COVERAGE
+        - GMAPS_GEOCODE_KEY
+        - GMAPS_JSMAPS_KEY
   test:
       build: .
       command: docker/docker-test-commands.sh
@@ -63,6 +65,8 @@ services:
         - VNC_PASSWORD=password
         - APP_PORT=3010
         - SELENIUM_REMOTE_HOST=selenium
+        - GMAPS_GEOCODE_KEY
+        - GMAPS_JSMAPS_KEY
   selenium:
 #    image: selenium/standalone-firefox-debug:2.47.1
     image: selenium/standalone-chrome-debug:2.47.1
