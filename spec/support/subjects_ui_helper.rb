@@ -186,4 +186,10 @@ module SubjectsUiHelper
       id.to_i   if id
     end
   end
+
+  def subjects_map_loaded!
+    expect(page).to have_css("div#map")
+    #wait for the map to appear
+    expect(page).to have_css("div#map div.gm-style",:wait=>10)
+  end
 end
