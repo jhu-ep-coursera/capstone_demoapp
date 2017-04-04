@@ -348,7 +348,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
           within("sd-area[label='Details']") do
             find("div.tabs-pane ul li a", :text=>/^Image$/).click
             within("div.tab-content sd-tab[label='Image'] div.image-items") do
-              expect(page).to have_css("span.image_id", visible:false, text:ti.image_id, :wait=>5)
+              expect(page).to have_css("span.image_id", visible:false, text:ti.image_id, :wait=>10)
             end
           end
         end
@@ -457,7 +457,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
         find("div.tabs-pane ul li a", :text=>/^Thing$/).click
         within("div.tab-content sd-tab[label='Thing']") do
           within("div.thing-info") do
-            expect(page).to have_css("span.thing_id",visible:false,text:thing_id,wait:5)
+            expect(page).to have_css("span.thing_id",visible:false,text:thing_id,wait:10)
           end
         end
       end

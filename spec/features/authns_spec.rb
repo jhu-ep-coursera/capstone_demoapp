@@ -119,6 +119,9 @@ RSpec.feature "Authns", type: :feature, :js=>true do
     end
 
     context "valid user login" do
+      after(:each) do
+        sleep 0.5 #give time for async requests to finish on server
+      end
       scenario "closes form and displays current user name" do
         expect(page).to have_css("#navbar-loginlabel",:text=>/#{user_props[:name]}/)
         expect(page).to have_no_css("#login-form")

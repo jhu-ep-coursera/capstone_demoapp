@@ -154,13 +154,11 @@ module SubjectsUiHelper
       find("div.tabs-pane ul li a", :text=>"Images").click
       selector=["ul.images span.image_id", {visible:false, text:image_id}]
       expect(page).to have_css(*selector)
-      page.document.synchronize do #re-try query if all() did get all
-        id=!thing_id ? first(*selector) : all(*selector).select {|id|
+      id=!thing_id ? first(*selector) : all(*selector).select {|id|
           id.find(:xpath, "..").has_css?("span.thing_id", 
                                         {visible:false, text:thing_id})
         }.first
-        id.find(:xpath,"..").click
-      end
+      id.find(:xpath,"..").click
       expect(page).to have_css("ul.images li.selected")
     end
     image_id
