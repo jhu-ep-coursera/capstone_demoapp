@@ -122,6 +122,14 @@
   CurrentSubjects.prototype.getCurrentThing = function() {
     return this.things.length > 0 ? this.things[this.thingIdx] : null;
   }
+  CurrentSubjects.prototype.getCurrentImageId = function() {
+    var currentImage = this.getCurrentImage();
+    return currentImage ? currentImage.image_id : null;
+  }
+  CurrentSubjects.prototype.getCurrentThingId = function() {
+    var currentThing = this.getCurrentThing();
+    return currentThing ? currentThing.thing_id : null;
+  }
 
 
   CurrentSubjects.prototype.setCurrentImage = function(index, skipThing) {
@@ -193,6 +201,15 @@
     }
   }
 
+  CurrentSubjects.prototype.setCurrentImageId = function(image_id, skipThing) {
+    //...
+  }
+  CurrentSubjects.prototype.setCurrentThingId = function(thing_id, skipImage) {
+    //...
+  }
+  CurrentSubjects.prototype.setCurrentSubjectId = function(thing_id, image_id) {
+    //...
+  }
 
 
 
