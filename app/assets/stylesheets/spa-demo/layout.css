@@ -103,6 +103,14 @@ div.areas-pane > ul.tab-label li a {
   line-height: 7px;
   font-size: 0.8em;
 } 
+
+/*** map height ***/
+
+div.area-pane div.tab-content div.tab-pane,
+div.area-pane div.tab-content div.tab-pane div#map {
+  height: 100%;
+}
+
 /********************************/
 
 [readonly='readonly'] {

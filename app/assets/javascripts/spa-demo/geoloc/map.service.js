@@ -7,17 +7,22 @@
 
   GeolocMapFactory.$inject = ["$timeout","spa-demo.config.APP_CONFIG"];
   function GeolocMapFactory($timeout, APP_CONFIG) {
+
     function GeolocMap(element, mapOptions) {
       var service=this;
       service.options = {}
       service.markers = [];
       service.currentMarker = null;
-      //service.options = ...
-      //service.map = ...
+      service.options = service.normalizeMapOptions(mapOptions);
+      service.map = new google.maps.Map(element, service.options);    
     }
 
     GeolocMap.prototype.normalizeMapOptions = function(mapOptions) {
-      //...
+      if (mapOptions.center) {
+        var lng = parseFloat(mapOptions.center.lng);
+        var lat = parseFloat(mapOptions.center.lat);
+        mapOptions.center = new google.maps.LatLng(lat, lng);
+      }
       return mapOptions;
     };
 
