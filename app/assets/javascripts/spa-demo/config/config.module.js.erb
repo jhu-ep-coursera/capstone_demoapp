@@ -35,6 +35,12 @@
       current_image_viewer_html: "<%= asset_path('spa-demo/subjects/current_images/current_image_viewer.html') %>",
       current_things_html: "<%= asset_path('spa-demo/subjects/current_things/current_things.html') %>",
       current_thing_info_html: "<%= asset_path('spa-demo/subjects/current_things/current_thing_info.html') %>",
+
+      optimized_markers: <%= ENV['OPTIMIZED_MARKERS']!=nil && ENV['OPTIMIZED_MARKERS'].downcase=='true' %>,
+      origin_marker: "<%= asset_path('spa-demo/geoloc/markers/marker-red-32x44.png') %>",
+      thing_marker: "<%= asset_path('spa-demo/geoloc/markers/marker-black-32x44.png') %>",
+      secondary_marker: "<%= asset_path('spa-demo/geoloc/markers/marker-grey-32x44.png') %>",
+      orphan_marker: "<%= asset_path('spa-demo/geoloc/markers/marker-yellow-32x44.png') %>",      
     });
 
 })();
