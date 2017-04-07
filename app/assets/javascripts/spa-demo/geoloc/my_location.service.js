@@ -35,11 +35,12 @@
         if (!this.isCurrentLocationSupported()) {
           deferred.reject("geolocation not supported by browser");
         } else {
-          $window.navigator.geolocation.getCurrentPosition(
-            function(position){ service.geocodeGeoposition(deferred, position); },
-            function(err){ deferred.reject(err); },
-            {timeout:10000}
-            );
+          // $window.navigator.geolocation.getCurrentPosition(
+          //   function(position){ service.geocodeGeoposition(deferred, position); },
+          //   function(err){ deferred.reject(err); },
+          //   {timeout:10000}
+          //   );
+          this.geocodeGeoposition(deferred,provider.positionOverride);
         }
 
         return deferred.promise;
