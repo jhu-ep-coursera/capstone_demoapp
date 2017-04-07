@@ -38,24 +38,58 @@
     }
 
     GeolocMap.prototype.clearMarkers = function() {
-      //...
+      angular.forEach(this.markers, function(m){
+        m.marker.setMap(null);
+      });
+      this.markers = [];
     }
 
     GeolocMap.prototype.displayMarker = function(markerOptions) {
-      if (this.map) {
-        //...
-      }
+      if (!this.map) { return; }
+      markerOptions.optimized = APP_CONFIG.optimized_markers;
+      console.log("markerOptions", markerOptions);
+
+      //display the marker
+      var marker = new google.maps.Marker(markerOptions);
+      marker.setMap(this.map);
+
+      //remember the marker
+      markerOptions.marker = marker;
+      this.markers.push(markerOptions);
+
+      //size the map to fit all markers
+      var bounds = new google.maps.LatLngBounds();
+      angular.forEach(this.markers, function(marker){
+        bounds.extend(marker.position);
+      });
+
+      //console.log("bounds", bounds);
+      this.map.fitBounds(bounds);        
+
+      return markerOptions;
     }
 
     GeolocMap.prototype.displayOriginMarker = function(content) {      
       console.log("displayOriginMarker", content, this.options.center);
-      //...
+
+      this.originMarker = this.displayMarker({
+            position: this.options.center,
+            title: "origin",
+            icon: APP_CONFIG.origin_marker
+      });
     }
 
     GeolocMap.prototype.setActiveMarker = function(markerOptions) {
       console.log("setting new marker new/old:", markerOptions, this.currentMarker);
       //...
     }
+
+
+
+
+
+
+
 
     return GeolocMap;
   }

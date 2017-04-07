@@ -32,6 +32,13 @@
           vm.location = location;
           initializeMap(element, location.position);
         });
+
+      $scope.$watch(
+        function(){ return currentSubjects.getImages(); }, 
+        function(images) { 
+          vm.images = images; 
+          displaySubjects(); 
+        }); 
     }
 
     return;
@@ -63,14 +70,37 @@
         zoom: vm.zoom || 18,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       });
+      displaySubjects();  
     }
 
     function displaySubjects(){
-      //...
+      if (!vm.map) { return; }
+      vm.map.clearMarkers();
+      vm.map.displayOriginMarker();
+
+      angular.forEach(vm.images, function(ti){
+        displaySubject(ti);
+      });
     }
 
     function displaySubject(ti) {
-      //...
+      var markerOptions = {
+        position: {
+          lng: ti.position.lng,
+          lat: ti.position.lat
+        }
+      };
+      if (ti.thing_id && ti.priority===0) {
+        markerOptions.title = ti.thing_name;
+        markerOptions.icon = APP_CONFIG.thing_marker;
+      } else if (ti.thing_id) {
+        markerOptions.title = ti.thing_name;
+        markerOptions.icon = APP_CONFIG.secondary_marker;
+      } else {
+        markerOptions.title = ti.image_caption;
+        markerOptions.icon = APP_CONFIG.orphan_marker;
+      }
+      vm.map.displayMarker(markerOptions);    
     }
   }
 
