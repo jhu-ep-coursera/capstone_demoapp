@@ -39,6 +39,7 @@
 
     GeolocMap.prototype.clearMarkers = function() {
       angular.forEach(this.markers, function(m){
+        google.maps.event.removeListener(m.listener);
         m.marker.setMap(null);
       });
       this.markers = [];
@@ -53,8 +54,17 @@
       var marker = new google.maps.Marker(markerOptions);
       marker.setMap(this.map);
 
+      //add an info pop-up
+      var service=this;
+      var infoWindow=new google.maps.InfoWindow({content: markerOptions.content});                
+      var listener=marker.addListener('click', function(){
+        service.setActiveMarker(markerOptions);
+      });
+
       //remember the marker
       markerOptions.marker = marker;
+      markerOptions.infoWindow = infoWindow;
+      markerOptions.listener = listener;
       this.markers.push(markerOptions);
 
       //size the map to fit all markers
@@ -71,17 +81,27 @@
 
     GeolocMap.prototype.displayOriginMarker = function(content) {      
       console.log("displayOriginMarker", content, this.options.center);
+      if (!content) {
+        content = "Origin";
+      }
 
       this.originMarker = this.displayMarker({
             position: this.options.center,
             title: "origin",
-            icon: APP_CONFIG.origin_marker
+            icon: APP_CONFIG.origin_marker,
+            content: content
       });
     }
 
     GeolocMap.prototype.setActiveMarker = function(markerOptions) {
       console.log("setting new marker new/old:", markerOptions, this.currentMarker);
-      //...
+      if (this.currentMarker) {
+        this.currentMarker.infoWindow.close();
+      }
+      if (markerOptions && markerOptions.infoWindow) {
+        markerOptions.infoWindow.open(this.map, markerOptions.marker);        
+      }
+      this.currentMarker = markerOptions;
     }
 
 
