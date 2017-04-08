@@ -195,6 +195,13 @@ sd-image-viewer div.image-items span.id {
 
 /*** media queries ****/
 
+/* needed for poltergeist testing */
+@media (width: 1050px) and (height: 800px) {
+  div.area-pane div.tab-content div.tab-pane div#map {
+    min-height: 700px;
+  }
+}
+
 /* Large */
 @media (min-width: 1200px) {
 }
