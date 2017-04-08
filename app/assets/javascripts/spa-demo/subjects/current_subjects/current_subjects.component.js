@@ -76,7 +76,7 @@
     function displaySubjects(){
       if (!vm.map) { return; }
       vm.map.clearMarkers();
-      vm.map.displayOriginMarker();
+      vm.map.displayOriginMarker(vm.originInfoWindow(vm.location));
 
       angular.forEach(vm.images, function(ti){
         displaySubject(ti);
@@ -93,12 +93,15 @@
       if (ti.thing_id && ti.priority===0) {
         markerOptions.title = ti.thing_name;
         markerOptions.icon = APP_CONFIG.thing_marker;
+        markerOptions.content = vm.thingInfoWindow(ti);
       } else if (ti.thing_id) {
         markerOptions.title = ti.thing_name;
         markerOptions.icon = APP_CONFIG.secondary_marker;
+        markerOptions.content = vm.thingInfoWindow(ti);
       } else {
         markerOptions.title = ti.image_caption;
         markerOptions.icon = APP_CONFIG.orphan_marker;
+        markerOptions.content = vm.imageInfoWindow(ti);
       }
       vm.map.displayMarker(markerOptions);    
     }
@@ -113,13 +116,54 @@
   }
 
   CurrentSubjectsMapController.prototype.originInfoWindow = function(location) {
-    //...
+    console.log("originInfo", location);
+    var full_address = location ? location.formatted_address : "";
+    var lng = location && location.position ? location.position.lng : "";
+    var lat = location && location.position ? location.position.lat : "";
+    var html = [
+      "<div class='origin'>",
+        "<div class='full_address'>"+ full_address + "</div>",
+        "<div class='position'>",
+          "lng: <span class='lng'>"+ lng +"</span>",
+          "lat: <span class='lat'>"+ lat +"</span>",
+        "</div>",
+      "</div>",
+    ].join("\n");
+
+    return html;
   }
+
   CurrentSubjectsMapController.prototype.thingInfoWindow = function(ti) {
-    //...
+    console.log("thingInfo", ti);
+    var html ="<div class='thing-marker-info'><div>";
+      html += "<span class='id ti_id'>"+ ti.id+"</span>";
+      html += "<span class='id thing_id'>"+ ti.thing_id+"</span>";
+      html += "<span class='id image_id'>"+ ti.image_id+"</span>";
+      html += "<span class='thing-name'>"+ ti.thing_name + "</span>";
+      if (ti.image_caption) {
+        html += "<span class='image-caption'> ("+ ti.image_caption + ")</span>";      
+      }
+      if (ti.distance) {
+        html += "<span class='distance'> ("+ Number(ti.distance).toFixed(1) +" mi)</span>";
+      }
+      html += "</div><img src='"+ ti.image_content_url+"?width=200'>";
+      html += "</div>";
+    return html;
   }
+
   CurrentSubjectsMapController.prototype.imageInfoWindow = function(ti) {
-    //...
+    console.log("imageInfo", ti);
+    var html ="<div class='image-marker-info'><div>";
+      html += "<span class='id image_id'>"+ ti.image_id+"</span>";
+      if (ti.image_caption) {
+        html += "<span class='image-caption'>"+ ti.image_caption + "</span>";      
+      }
+      if (ti.distance) {
+        html += "<span class='distance'> ("+ Number(ti.distance).toFixed(1) +" mi)</span>";
+      }
+      html += "</div><img src='"+ ti.image_content_url+"?width=200'>";
+      html += "</div>";
+    return html;    
   }
 
 
