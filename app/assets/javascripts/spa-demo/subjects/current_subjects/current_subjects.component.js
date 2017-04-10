@@ -48,6 +48,15 @@
             vm.setActiveMarker(null,null);           
           }
         }); 
+      $scope.$watch(
+        function(){ 
+            return vm.map ? vm.map.getCurrentMarker() : null; }, 
+        function(marker) { 
+          if (marker) {
+            console.log("map changed markers", marker);
+            currentSubjects.setCurrentSubjectId(marker.thing_id, marker.image_id);
+          }
+        }); 
     }
 
     return;

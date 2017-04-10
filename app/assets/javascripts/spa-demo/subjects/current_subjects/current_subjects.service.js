@@ -190,7 +190,7 @@
     var thing=this.getCurrentThing();
     if (!thing) {
       this.imageIdx=null;
-    } else if ((thing && thing.thing_id !== image.thing_id) || !image || image.priority!==0) {
+    } else if ((thing && (!image || thing.thing_id !== image.thing_id)) || image.priority!==0) {
       for (var i=0; i<this.images.length; i++) {
         image=this.images[i];
         if (image.thing_id === thing.thing_id && image.priority===0) {
@@ -202,13 +202,39 @@
   }
 
   CurrentSubjects.prototype.setCurrentImageId = function(image_id, skipThing) {
-    //...
+    var found=this.getCurrentImageId() === image_id;
+    if (image_id && !found) {
+      for(var i=0; i<this.images.length; i++) {
+        if (this.images[i].image_id === image_id) {
+          this.setCurrentImage(i, skipThing);
+          found=true;
+          break;
+        }
+      }
+    }
+    if (!found) {
+      this.setCurrentImage(null, true);      
+    }
   }
   CurrentSubjects.prototype.setCurrentThingId = function(thing_id, skipImage) {
-    //...
+    var found=this.getCurrentThingId() === thing_id;
+    if (thing_id && !found) {
+      for (var i=0; i< this.things.length; i++) {
+        if (this.things[i].thing_id === thing_id) {
+          this.setCurrentThing(i, skipImage);
+          found=true;
+          break;
+        }
+      }
+    }
+    if (!found) {
+      this.setCurrentThing(null, true);      
+    }    
   }
   CurrentSubjects.prototype.setCurrentSubjectId = function(thing_id, image_id) {
-    //...
+    console.log("setCurrentSubject", thing_id, image_id);
+    this.setCurrentThingId(thing_id, true);
+    this.setCurrentImageId(image_id, true);
   }
 
 
