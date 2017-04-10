@@ -60,6 +60,7 @@
       var listener=marker.addListener('click', function(){
         console.log("map listener called");
         service.setActiveMarker(markerOptions);
+        $timeout();
       });
 
       //remember the marker
