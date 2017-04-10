@@ -39,6 +39,15 @@
           vm.images = images; 
           displaySubjects(); 
         }); 
+      $scope.$watch(
+        function(){ return currentSubjects.getCurrentImage(); }, 
+        function(link) { 
+          if (link) { 
+            vm.setActiveMarker(link.thing_id, link.image_id); 
+          } else {
+            vm.setActiveMarker(null,null);           
+          }
+        }); 
     }
 
     return;
@@ -88,7 +97,9 @@
         position: {
           lng: ti.position.lng,
           lat: ti.position.lat
-        }
+        },
+        thing_id: ti.thing_id,
+        image_id: ti.image_id          
       };
       if (ti.thing_id && ti.priority===0) {
         markerOptions.title = ti.thing_name;
@@ -112,7 +123,20 @@
   }
 
   CurrentSubjectsMapController.prototype.setActiveMarker = function(thing_id, image_id) {
-    //...
+    if (!this.map) { 
+      return; 
+    } else if (!thing_id && !image_id) {
+        this.map.setActiveMarker(null);
+    } else {
+      var markers=this.map.getMarkers();
+      for (var i=0; i<markers.length; i++) {
+        var marker=markers[i];
+        if (marker.thing_id === thing_id && marker.image_id === image_id) {
+            this.map.setActiveMarker(marker);
+            break;
+        }
+      }
+    } 
   }
 
   CurrentSubjectsMapController.prototype.originInfoWindow = function(location) {
