@@ -58,9 +58,7 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
 
   def find_marker_infowindow ti
     search="div[title='#{ti.thing.name}']"
-    using_wait_time 5 do
-      expect(page).to have_css(search)
-    end
+    expect(page).to have_css(search, :wait=>10)
     all(search).each_with_index do |node, idx|
       previous_id=nil
       ti_id=nil
@@ -173,7 +171,7 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
           click_marker "origin"
           #save_and_open_page
           #save_and_open_screenshot
-          expect(page).to have_css("div.full_address", text:cloc[:formatted_address])
+          expect(page).to have_css("div.full_address", text:cloc[:formatted_address],wait:10)
           expect(page).to have_css("div.position span.lng", text:cloc[:position][:lng])
           expect(page).to have_css("div.position span.lat", text:cloc[:position][:lat])
         end
@@ -187,7 +185,7 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
         within("div#map") do
           ThingImage.all.each do |ti|
             within(find_marker_infowindow(ti)) do
-              expect(page).to have_css("span.thing-name", text:ti.thing.name)
+              expect(page).to have_css("span.thing-name", text:ti.thing.name, wait:10)
               if ti.image.caption
                 expect(page).to have_css("span.image-caption", text:"#{ti.image.caption}")
               else 
@@ -207,11 +205,11 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
           true_orphan_images.all.each do |image|
             within(find_image_marker_infowindow(image)) do
               if image.caption
-                expect(page).to have_css("span.image-caption", text:"#{image.caption}")
+                expect(page).to have_css("span.image-caption", text:"#{image.caption}", wait:10)
               else 
-                expect(page).to have_no_css("span.image-caption") 
+                expect(page).to have_no_css("span.image-caption", wait:10) 
               end
-              expect(page).to have_css("img[src*='images/#{image.id}/content?width=200']");
+              expect(page).to have_css("img[src*='images/#{image.id}/content?width=200']", wait:10);
             end
           end
         end
@@ -228,14 +226,14 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
           ThingImage.all.each do |ti|
             distance=ti.image.distance_from(origin.position).round(1)
             within(find_marker_infowindow(ti)) do
-              expect(page).to have_css("span.distance", text:"(#{distance} mi)")
+              expect(page).to have_css("span.distance", text:"(#{distance} mi)", wait:10)
             end
           end
           true_orphan_images.all.each do |image|
             distance=image.distance_from(origin.position).round(1)
             #save_and_open_screenshot
             within(find_image_marker_infowindow(image)) do
-              expect(page).to have_css("span.distance", text:"(#{distance} mi)")
+              expect(page).to have_css("span.distance", text:"(#{distance} mi)", wait:10)
             end
           end
         end
