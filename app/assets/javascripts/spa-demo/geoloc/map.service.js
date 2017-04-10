@@ -27,7 +27,21 @@
     };
 
     GeolocMap.prototype.center = function(mapOptions) {
-      //...
+      if (this.map && mapOptions) {
+        this.normalizeMapOptions(mapOptions);
+        if (mapOptions.center) {
+          this.options.center=mapOptions.center;
+          this.map.setCenter(this.options.center);
+        }
+        if (mapOptions.zoom) {
+          this.options.zoom = mapOptions.zoom;
+          this.map.setZoom(this.options.zoom);
+        }
+        if (mapOptions.mapTypeId) {
+          this.options.mapTypeId = mapOptions.mapTypeId;
+          this.map.setMapTypeId(this.options.mapTypeId);
+        }        
+      }
     };
 
     GeolocMap.prototype.getMarkers = function() {
@@ -43,6 +57,16 @@
         m.marker.setMap(null);
       });
       this.markers = [];
+    }
+    GeolocMap.prototype.clearOriginMarker = function() {
+      var m = this.originMarker;
+      if (m) {
+        google.maps.event.removeListener(m.listener);
+        m.marker.setMap(null);
+      };
+      if (m === this.originMarker) {
+        this.originMarker=null;
+      }
     }
 
     GeolocMap.prototype.displayMarker = function(markerOptions) {
@@ -87,17 +111,21 @@
         content = "Origin";
       }
 
-      this.originMarker = this.displayMarker({
-            position: this.options.center,
-            title: "origin",
-            icon: APP_CONFIG.origin_marker,
-            content: content
+      var service = this;
+      $timeout(function(){
+        service.clearOriginMarker();
+        service.originMarker = service.displayMarker({
+              position: service.options.center,
+              title: "origin",
+              icon: APP_CONFIG.origin_marker,
+              content: content
+        });
       });
     }
 
     GeolocMap.prototype.setActiveMarker = function(markerOptions) {
       console.log("setting new marker new/old:", markerOptions, this.currentMarker);
-      if (this.currentMarker) {
+      if (this.currentMarker && markerOptions !== this.currentMarker) {
         this.currentMarker.infoWindow.close();
       }
       if (markerOptions && markerOptions.infoWindow) {
