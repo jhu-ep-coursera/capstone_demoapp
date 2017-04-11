@@ -46,14 +46,14 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
     search="div[title='#{title}']"
     #actually - the straight javascript solution works for all drivers
     #just showing alternate approach
-    if Capybara.javascript_driver == :poltergeist
-      all(search, minimum:idx+1)[idx].trigger('click');
-    else
+    #if Capybara.javascript_driver == :poltergeist
+    #  all(search, minimum:idx+1)[idx].trigger('click');
+    #else
       array=all(search, minimum:idx+1).size > 1 ? "[#{idx}]" : ""
       script="$('div#map').find(\"#{search}\")#{array}.click()"
       #puts script
       page.execute_script(script)
-    end
+    #end
   end
 
   def find_marker_infowindow ti
@@ -248,7 +248,7 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
         within("sd-area[label='Map']") do
           find("div.tabs-pane ul li a", :text=>"Map").click
           within("div#map") do
-            expect(page).to have_css("span.image_id", text:image.id, visible:false)
+            expect(page).to have_css("span.image_id", text:image.id, visible:false, wait:10)
           end
         end
       end
@@ -260,7 +260,7 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
         within("sd-area[label='Map']") do
           find("div.tabs-pane ul li a", :text=>"Map").click
           within("div#map") do
-            expect(page).to have_css("span.thing_id", text:ti.thing_id, visible:false)
+            expect(page).to have_css("span.thing_id", text:ti.thing_id, visible:false, wait:10)
             expect(page).to have_css("span.image_id", text:ti.image_id, visible:false)
           end
         end
@@ -305,9 +305,11 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
         find("div.tabs-pane ul li a", :text=>"Map").click
         within("div#map") do
           click_marker "origin"
-          expect(page).to have_css("div.full_address", text:cloc[:formatted_address])
-          expect(page).to have_css("div.position span.lng", text:cloc[:position][:lng])
-          expect(page).to have_css("div.position span.lat", text:cloc[:position][:lat])
+          using_wait_time 30 do
+            expect(page).to have_css("div.full_address", text:cloc[:formatted_address])
+            expect(page).to have_css("div.position span.lng", text:cloc[:position][:lng])
+            expect(page).to have_css("div.position span.lat", text:cloc[:position][:lat])
+          end
         end
       end
     end

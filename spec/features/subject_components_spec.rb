@@ -95,7 +95,7 @@ RSpec.feature "SubjectComponents", type: :feature, js: true do
         find("div.tabs-pane ul li a", :text=>"Images").click
         within("div.tab-content sd-tab[label='Images']") do
           true_orphan_images.each do |orphan|
-            id_node=find("ul.images span.image_id",text:orphan.id, visible:false)
+            id_node=find("ul.images span.image_id",text:orphan.id, visible:false, wait:5)
             within(id_node.find(:xpath,"..")) do
               expect(page).to have_no_css("span.thing_name")
               expect(page).to have_no_css("span.thing_id", visible:false)
