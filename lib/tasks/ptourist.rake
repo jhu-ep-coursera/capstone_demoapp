@@ -52,7 +52,7 @@ namespace :ptourist do
 
   def create_image organizer, img
     puts "building image for #{img[:caption]}, by #{organizer.name}"
-    image=Image.create(:creator_id=>organizer.id,:caption=>img[:caption])
+    image=Image.create(:creator_id=>organizer.id,:caption=>img[:caption],:lat=>img[:lat],:lng=>img[:lng])
     organizer.add_role(Role::ORGANIZER, image).save
     create_image_content img.merge(:image=>image)
   end
@@ -80,12 +80,35 @@ namespace :ptourist do
     puts "added members for #{thing.name}: #{first_names(m)}"
     images.each do |img|
       puts "building image for #{thing.name}, #{img[:caption]}, by #{organizer.name}"
-      image=Image.create(:creator_id=>organizer.id,:caption=>img[:caption])
+      image=Image.create(:creator_id=>organizer.id,:caption=>img[:caption],:lat=>img[:lat],:lng=>img[:lng])
       organizer.add_role(Role::ORGANIZER, image).save
       ThingImage.new(:thing=>thing, :image=>image, 
                      :creator_id=>organizer.id)
                 .tap {|ti| ti.priority=img[:priority] if img[:priority]}.save!
       create_image_content img.merge(:image=>image)
+    end
+  end
+
+  def create_things things, organizer, members, images
+    images.each do |img|
+        image=Image.create(:creator_id=>organizer.id,:caption=>img[:caption],:lat=>img[:lat],:lng=>img[:lng])
+        organizer.add_role(Role::ORGANIZER, image).save
+        create_image_content img.merge(:image=>image)
+        things.each do |thing|
+            thing=Thing.create!(thing)
+            organizer.add_role(Role::ORGANIZER, thing).save
+            m=members.map { |member|
+              unless (member.id==organizer.id || member.id==mike_user.id)
+                member.add_role(Role::MEMBER, thing).save
+                member
+              end
+            }.select {|r| r}
+            puts "added organizer for #{thing.name}: #{first_names([organizer])}"
+            puts "added members for #{thing.name}: #{first_names(m)}"
+            ThingImage.new(:thing=>thing, :image=>image, 
+                         :creator_id=>organizer.id)
+                    .tap {|ti| ti.priority=img[:priority] if img[:priority]}.save!
+        end
     end
   end
 
@@ -154,9 +177,12 @@ namespace :ptourist do
     ]
     create_thing thing, organizer, members, images
 
-    thing={:name=>"Baltimore Water Taxi",
-    :description=>"The Water Taxi is more than a jaunt across the harbor; it’s a Baltimore institution and a way of life. Every day, thousands of residents and visitors not only rely on us to take them safely to their destinations, they appreciate our knowledge of the area and our courteous service. And every day, hundreds of local businesses rely on us to deliver customers to their locations.  We know the city. We love the city. We keep the city moving. We help keep businesses thriving. And most importantly, we offer the most unique way to see Baltimore and provide an unforgettable experience that keeps our passengers coming back again and again.",
-    :notes=>"No on-duty pirates, please"}
+    things=[{:name=>"Baltimore Water Taxi",
+        :description=>"The Water Taxi is more than a jaunt across the harbor; it’s a Baltimore institution and a way of life. Every day, thousands of residents and visitors not only rely on us to take them safely to their destinations, they appreciate our knowledge of the area and our courteous service. And every day, hundreds of local businesses rely on us to deliver customers to their locations.  We know the city. We love the city. We keep the city moving. We help keep businesses thriving. And most importantly, we offer the most unique way to see Baltimore and provide an unforgettable experience that keeps our passengers coming back again and again.",
+        :notes=>"No on-duty pirates, please"},
+        {:name=>"Rent-A-Tour",
+        :description=>"Professional guide services and itinerary planner in Baltimore, Washington DC, Annapolis and the surronding region",
+        :notes=>"Bus is clean and ready to roll"}]
     organizer=get_user("alice")
     members=boy_users
     images=[
@@ -178,7 +204,7 @@ namespace :ptourist do
      :lng=>-76.605206,
      :lat=>39.284038}
     ]
-    create_thing thing, organizer, members, images
+    create_things things, organizer, members, images
 
     thing={:name=>"Rent-A-Tour",
     :description=>"Professional guide services and itinerary planner in Baltimore, Washington DC, Annapolis and the surronding region",
