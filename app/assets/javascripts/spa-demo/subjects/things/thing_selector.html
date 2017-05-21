@@ -1,3 +1,4 @@
+<p class="thing-list" ng-if="$ctrl.items" ng-hide="$ctrl.authz.canQuery">Log in to see the list of things. It is visible only to members of things (certain users).</p>
 <div class="thing-list" ng-show="$ctrl.authz.canQuery">
   <ul>
     <li ng-repeat="item in $ctrl.items | orderBy:'name'">

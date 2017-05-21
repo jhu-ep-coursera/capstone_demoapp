@@ -19,6 +19,7 @@
     var vm=this;
     vm.signupForm = {}
     vm.signup = signup;
+    vm.getCurrentUser = Authn.getCurrentUser;
 
     vm.$onInit = function() {
       console.log("SignupController",$scope);
