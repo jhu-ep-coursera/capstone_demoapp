@@ -16,10 +16,10 @@ RSpec.describe "Geocoders", type: :request do
         loc=geocoder.geocode search_address
         #pp "search address=#{search_address}"
         #pp loc.to_hash
-        expect(loc.formatted_address).to eq(jhu.formatted_address)
+        expect(loc.formatted_address).to match(/#{jhu.formatted_address}/)
         expect(loc.position===jhu.position).to be true
         expect(loc.address).to eq(jhu.address)
-        expect(loc).to eq(jhu)
+        expect(loc).to be ===(jhu)
       end
 
       it "locates location by position" do
@@ -44,8 +44,11 @@ RSpec.describe "Geocoders", type: :request do
         expect(response).to have_http_status(:ok)
         payload=parsed_body
 
-        expect(payload).to include("formatted_address"=>geo.formatted_address)
-        expect(payload).to include("position"=>geo.position.to_hash.stringify_keys)
+        expect(payload).to include("formatted_address","position")
+        expect(/#{payload["formatted_address"]}/).to match(geo.formatted_address)
+        result_pos=Point.new(payload["position"]["lng"],
+                             payload["position"]["lat"])
+        expect(result_pos).to be===(geo.position)
         expect(payload).to include("address"=>geo.address.to_hash.stringify_keys)
         expect(response.header).to include("Cache-Control")
         expect(response.header["Cache-Control"].match(/max-age=(\d+),/)[1]).to eq("86400")

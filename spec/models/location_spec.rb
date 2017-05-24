@@ -20,11 +20,15 @@ RSpec.describe "Location", type: :model do
   describe "Location" do
     let(:address) { PostalAddress.new("3400 North Charles Street", "Baltimore", "MD", "21218", "US") }
     let(:position) { Point.new(-76.6200464, 39.3304957) }
-    subject       { Location.new("3400 N Charles St, Baltimore, MD 21218, USA", position, address) }
+    subject            { Location.new("3400 N Charles St, Baltimore, MD 21218, USA", position, address) }
+    let(:alt_location) { Location.new("A Place, 3400 N Charles St, Baltimore, MD 21218, USA", position, address) }
 
     it { expect(subject.to_hash).to include(formatted_address:"3400 N Charles St, Baltimore, MD 21218, USA") } 
     it { expect(subject.to_hash).to include(position:position.to_hash) } 
     it { expect(subject.to_hash).to include(address:address.to_hash) } 
+    it { expect(subject).to eq(Location.new("3400 N Charles St, Baltimore, MD 21218, USA", position, address)) }
+    it { expect(subject).to_not eq(alt_location) }
+    it { expect(subject).to be ===(alt_location) }
   end
 
   describe "Location Factories" do
