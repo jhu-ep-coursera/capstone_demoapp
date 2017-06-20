@@ -1,5 +1,5 @@
 module ImageContentHelper
-  BASE_URL="http://dev9.jhuep.com/fullstack-capstone"
+  BASE_URL="https://dev9.jhuep.com/fullstack-capstone"
   URL_PATH="db/bta/skyline.jpg"
   IMAGE_PATH="db/images/sample.jpg"
 
