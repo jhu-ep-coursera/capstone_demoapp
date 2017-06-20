@@ -14,32 +14,6 @@ RSpec.feature "UI_fixes", type: :feature, js: true do
     end
   end
 
-  describe "Things" do
-    it "displays text" do
-      visit "#{ui_path}/#/things/"
-      expect(page).to have_content("Log in to see the list of things. It is visible only to members of things (certain users).")
-    end
-
-
-   context "logged in" do
-
-    let(:user) { create_user }
-
-    it "hides when logged in" do
-      visit "#{ui_path}/#/things/"
-      login user
-      expect(page).to have_no_content("Log in to see the list of things. It is visible only to members of things (certain users).")
-    end
-   end
-
-
-    it "not displays on sole" do
-      visit "#{ui_path}/#/things/1"
-      expect(page).to have_no_content("Log in to see the list of things. It is visible only to members of things (certain users).")
-    end
-
-  end
-
  # I don't think that we really need to test a style
 #  describe "Navbar" do
 #    it "has 0 margins" do
