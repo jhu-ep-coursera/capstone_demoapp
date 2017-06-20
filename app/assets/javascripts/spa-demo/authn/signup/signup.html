@@ -1,9 +1,9 @@
-<form id="signup-form" name="signup_form" ng-submit="$ctrl.signup()">
+<form id="signup-form" name="signup_form" ng-submit="$ctrl.signup()" ng-show="!$ctrl.getCurrentUser()">
   <span class="invalid"
         ng-hide="signup_form.$dirty">{{$ctrl.signupForm.errors.full_messages}}</span>
 
   <div id="signup-email" class="row col-lg-12">
-    <label class="col-xs-3">email</label>
+    <label class="col-xs-3">E-mail:</label>
     <input class="col-xs-9"
            type="email" 
            name="signup-email" 
@@ -14,7 +14,7 @@
   </div>
 
   <div id="signup-name" class="row col-lg-12">
-    <label class="col-xs-3">name</label>
+    <label class="col-xs-3">Name:</label>
     <input class="col-xs-9"
            name="signup-name" 
            ng-model="$ctrl.signupForm.name" 
@@ -24,7 +24,7 @@
   </div>
 
   <div id="signup-password" class="row col-lg-12">
-    <label class="col-xs-3 pull-left">password</label>
+    <label class="col-xs-3 pull-left">Password:</label>
     <input class="col-xs-9"
            type="password" 
            name="signup-password" 
@@ -35,7 +35,7 @@
   </div>
 
   <div id="signup-password_confirmation" class="row col-lg-12">
-    <label class="col-xs-3 pull-left">password confirmation</label>
+    <label class="col-xs-3 pull-left">Password confirmation:</label>
     <input class="col-xs-9"
            type="password" 
            name="signup-password_confirmation" 
@@ -50,6 +50,9 @@
             ng-disabled="signup_form.$invalid"
             class="col-xs-3 btn btn-default"
             type="submit"
-            name="signup-submit">Sign Up</button>
+            name="signup-submit"
+            id="button-margin">Sign Up</button>
   </div>
 </form>
+
+<p ng-if="$ctrl.getCurrentUser()">It seems you are already logged in!</p>
