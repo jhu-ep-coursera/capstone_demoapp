@@ -60,13 +60,13 @@ GEM
       nokogiri (~> 1.6)
     cliver (0.3.2)
     coderay (1.1.1)
-    coffee-rails (4.2.1)
+    coffee-rails (4.1.1)
       coffee-script (>= 2.2.0)
-      railties (>= 4.0.0, < 5.2.x)
+      railties (>= 4.0.0, < 5.1.x)
     coffee-script (2.4.1)
       coffee-script-source
       execjs
-    coffee-script-source (1.11.1)
+    coffee-script-source (1.12.2)
     concurrent-ruby (1.0.2)
     database_cleaner (1.5.3)
     devise (4.2.0)
@@ -293,51 +293,51 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  byebug (~> 9.0, >= 9.0.6)
-  capybara (~> 2.10, >= 2.10.1)
-  chromedriver-helper (~> 1.0, >= 1.0.0)
-  coffee-rails (~> 4.1, >= 4.1.0)
-  database_cleaner (~> 1.5, >= 1.5.3)
-  devise_token_auth (~> 0.1, >= 0.1.39)
-  exifr (~> 1.2, >= 1.2.5)
-  factory_girl_rails (~> 4.7, >= 4.7.0)
-  faker (~> 1.6, >= 1.6.6)
-  geokit-rails (~> 2.2, >= 2.2.0)
-  httparty (~> 0.14, >= 0.14.0)
-  jbuilder (~> 2.0, >= 2.6.0)
-  jquery-rails (~> 4.2, >= 4.2.1)
-  launchy (~> 2.4, >= 2.4.3)
-  mini_magick (~> 4.5, >= 4.5.1)
-  mongoid (~> 5.1, >= 5.1.5)
-  mongoid-rspec (~> 3.0, >= 3.0.0)
-  pg (~> 0.19, >= 0.19.0)
-  poltergeist (~> 1.11, >= 1.11.0)
-  pry-byebug (~> 3.4, >= 3.4.0)
-  pry-rails (~> 0.3, >= 0.3.4)
-  puma (~> 3.6, >= 3.6.0)
-  pundit (~> 1.1, >= 1.1.0)
-  rack-cors (~> 0.4, >= 0.4.0)
+  byebug (~> 9.0.6)
+  capybara (~> 2.10.1)
+  chromedriver-helper (~> 1.0.0)
+  coffee-rails (~> 4.1.0)
+  database_cleaner (~> 1.5.3)
+  devise_token_auth (~> 0.1.39)
+  exifr (~> 1.2.5)
+  factory_girl_rails (~> 4.7.0)
+  faker (~> 1.6.6)
+  geokit-rails (~> 2.2.0)
+  httparty (~> 0.14.0)
+  jbuilder (~> 2.6.0)
+  jquery-rails (~> 4.2.1)
+  launchy (~> 2.4.3)
+  mini_magick (~> 4.5.1)
+  mongoid (~> 5.1.5)
+  mongoid-rspec (~> 3.0.0)
+  pg (~> 0.19.0)
+  poltergeist (~> 1.11.0)
+  pry-byebug (~> 3.4.0)
+  pry-rails (~> 0.3.4)
+  puma (~> 3.6.0)
+  pundit (~> 1.1.0)
+  rack-cors (~> 0.4.0)
   rails (= 4.2.6)
-  rails-api (~> 0.4, >= 0.4.0)
-  rails-assets-angular (= 1.5.9)!
+  rails-api (~> 0.4.0)
+  rails-assets-angular (~> 1.5.9)!
   rails-assets-angular-cookie!
-  rails-assets-angular-resource (<= 1.5.9)!
-  rails-assets-angular-ui-router (~> 0.3, >= 0.3.1)!
-  rails-assets-bootstrap (~> 3.3, >= 3.3.7)!
-  rails-assets-ng-file-upload (~> 12.2, >= 12.2.11)!
+  rails-assets-angular-resource (~> 1.5.9)!
+  rails-assets-angular-ui-router (~> 0.3.1)!
+  rails-assets-bootstrap (~> 3.3.7)!
+  rails-assets-ng-file-upload (~> 12.2.11)!
   rails-assets-ng-file-upload-shim!
-  rails-assets-ng-token-auth (~> 0.0, >= 0.0.27)!
-  rails-assets-ui-cropper (~> 1.0, >= 1.0.4)!
-  rails_12factor (~> 0.0, >= 0.0.3)
-  rspec-rails (~> 3.5, >= 3.5.2)
-  sass-rails (~> 5.0, >= 3.4.22)
-  selenium-webdriver (~> 2.53, >= 2.53.4)
-  simplecov (~> 0, >= 0.12)
-  spring (~> 2.0, >= 2.0.0)
-  sqlite3 (~> 1.3, >= 1.3.12)
+  rails-assets-ng-token-auth (~> 0.0.27)!
+  rails-assets-ui-cropper (~> 1.0.4)!
+  rails_12factor (~> 0.0.3)
+  rspec-rails (~> 3.5.2)
+  sass-rails (~> 5.0.6)
+  selenium-webdriver (~> 2.53.4)
+  simplecov (~> 0.12)
+  spring (~> 2.0.0)
+  sqlite3 (~> 1.3.12)
   tzinfo-data
-  uglifier (~> 3.0, >= 3.0.2)
-  webrick (~> 1.3, >= 1.3.1)
+  uglifier (~> 3.0.2)
+  webrick (~> 1.3.1)
 
 BUNDLED WITH
    1.13.6
