@@ -61,5 +61,5 @@ source 'http://insecure.rails-assets.org' do
   gem 'rails-assets-angular-cookie' #required by ng-token-auth
   gem 'rails-assets-ng-file-upload', '~>12.2.11'
   gem 'rails-assets-ng-file-upload-shim'
-  gem 'rails-assets-ui-cropper', '~>1.0.4'
+  gem 'rails-assets-ui-cropper', '~>1.0.6'
 end
