@@ -49,7 +49,8 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
     #if Capybara.javascript_driver == :poltergeist
     #  all(search, minimum:idx+1)[idx].trigger('click');
     #else
-      array=all(search, minimum:idx+1).size > 1 ? "[#{idx}]" : ""
+      #2020-01 - markers are no longer found using visible, even when visible
+      array=all(search, minimum:idx+1, visible:false).size > 1 ? "[#{idx}]" : ""
       script="$('div#map').find(\"#{search}\")#{array}.click()"
       #puts script
       page.execute_script(script)
@@ -58,8 +59,9 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
 
   def find_marker_infowindow ti
     search="div[title='#{ti.thing.name}']"
-    expect(page).to have_css(search, :wait=>10)
-    all(search).each_with_index do |node, idx|
+        #2020-01 - info windows no longer found using visible
+    expect(page).to have_css(search, visible:false, :wait=>10)
+    all(search, visible:false).each_with_index do |node, idx|
       previous_id=nil
       ti_id=nil
       found=false
@@ -82,8 +84,8 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
 
   def find_image_marker_infowindow image
     search="div[title='#{image.caption}']"
-    expect(page).to have_css(search)
-    all(search).size.times do |idx|
+    expect(page).to have_css(search, visible:false)
+    all(search, visible:false).size.times do |idx|
       click_marker image.caption, idx
       if page.has_css?("div.image-marker-info span.image_id", text:image.id, visible:false)
         break
@@ -112,8 +114,8 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
       within("sd-area[label='Map']") do
         find("div.tabs-pane ul li a", :text=>"Map").click
         within("div#map") do
-          expect(page).to have_css("div[title='origin']")
-          expect(page).to have_css("img[src*='marker-red']")
+          expect(page).to have_css("div[title='origin']", visible:false)
+          expect(page).to have_css("img[src*='marker-red']", visible:false)
         end
       end
     end
@@ -124,8 +126,8 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
         within("div#map") do
           using_wait_time 5 do
             things.each do |ti|
-              expect(page).to have_css("div[title='#{ti.thing_name}']")
-              expect(page).to have_css("img[src*='marker-black']")
+              expect(page).to have_css("div[title='#{ti.thing_name}']", visible:false)
+              expect(page).to have_css("img[src*='marker-black']", visible:false)
             end
           end
         end
@@ -138,8 +140,8 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
         within("div#map") do
           using_wait_time 5 do
             secondaries.each do |ti|
-              expect(page).to have_css("div[title='#{ti.thing.name}']")
-              expect(page).to have_css("img[src*='marker-grey']")
+              expect(page).to have_css("div[title='#{ti.thing.name}']", visible:false)
+              expect(page).to have_css("img[src*='marker-grey']", visible:false)
             end
           end
         end
@@ -152,8 +154,8 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
         within("div#map") do
           using_wait_time 5 do
             true_orphan_images.each do |image|
-              expect(page).to have_css("div[title='#{image.caption}']")
-              expect(page).to have_css("img[src*='marker-yellow']")
+              expect(page).to have_css("div[title='#{image.caption}']", visible:false)
+              expect(page).to have_css("img[src*='marker-yellow']", visible:false)
             end
           end
         end
@@ -246,10 +248,12 @@ RSpec.feature "SubjectMaps", type: :feature, js:true do
     it "displays InfoWindow for current Image" do
       Image.all.each do |image|
         select_image image.id
+        select_image image.id
         within("sd-area[label='Map']") do
           find("div.tabs-pane ul li a", :text=>"Map").click
           within("div#map") do
-            expect(page).to have_css("span.image_id", text:image.id, visible:false, wait:10)
+            #puts "id=#{image.id}"
+            expect(page).to have_css("span.image_id", text:image.id, visible:false, wait:20)
           end
         end
       end
