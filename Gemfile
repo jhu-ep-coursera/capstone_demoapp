@@ -44,7 +44,7 @@ group :production do
 end
 
 gem 'pg', '~>0.19.0'
-gem 'puma', '~>3.12.2', :platforms=>:ruby
+gem 'puma', '~>3.12.3', :platforms=>:ruby
 gem 'mongoid', '~>5.1.5'
 gem 'mongo', '~>2.4.0'
 gem 'database_cleaner', '~>1.5.3'
