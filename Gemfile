@@ -28,7 +28,7 @@ group :development, :test do
   gem 'sqlite3', '~>1.3.12'
   gem 'byebug', '~>9.0.6'
   gem 'pry-byebug', '~>3.4.0'
-  gem 'httparty', '~>0.14.0'
+  gem 'httparty', '~>0.21.0'
 
   gem 'rspec-rails', '~> 3.5.2'
   gem 'mongoid-rspec', '~> 3.0.0'
